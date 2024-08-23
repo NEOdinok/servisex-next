@@ -1,5 +1,11 @@
+import { BaseLayout } from "@/layouts/BaseLayout";
+
 const CartPage = () => {
-  return <div>cart</div>;
+  return (
+    <BaseLayout>
+      <div>cart</div>
+    </BaseLayout>
+  );
 };
 
 export default CartPage;

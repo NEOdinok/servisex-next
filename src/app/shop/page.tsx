@@ -1,5 +1,11 @@
+import { BaseLayout } from "@/layouts/BaseLayout";
+
 const ShopPage = () => {
-  return <div>shop</div>;
+  return (
+    <BaseLayout>
+      <div>shop</div>
+    </BaseLayout>
+  );
 };
 
 export default ShopPage;

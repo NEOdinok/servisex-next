@@ -1,5 +1,11 @@
+import { BaseLayout } from "@/layouts/BaseLayout";
+
 const AboutPage = () => {
-  return <div>about</div>;
+  return (
+    <BaseLayout>
+      <div>about</div>
+    </BaseLayout>
+  );
 };
 
 export default AboutPage;

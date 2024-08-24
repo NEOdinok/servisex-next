@@ -3,7 +3,6 @@ import Link from "next/link";
 import { IconInstagram, IconYoutube, IconGoatLogo } from "public/icons";
 import Image from "next/image";
 import { HomeNavigation } from "./HomeNavigation";
-import { GoatLogo } from "@/components";
 
 const Welcome = () => {
   return (

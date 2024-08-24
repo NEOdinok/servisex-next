@@ -2,11 +2,13 @@ import Link from "next/link";
 import { HeaderNavigation } from "./HeaderNavigation";
 
 const BaseHeader = () => {
+  const environment = process.env.NEXT_PUBLIC_ENV;
   return (
     <header className="sticky z-10 top-0 flex h-16 items-center justify-between px-4 bg-background">
       <div className="header-left flex justify-start">
         <HeaderNavigation />
       </div>
+      {environment}
       <div className="header-right flex justify-start">
         <Link
           href="/cart"

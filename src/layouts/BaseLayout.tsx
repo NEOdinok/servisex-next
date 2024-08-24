@@ -9,7 +9,7 @@ const BaseLayout = ({ children }: Props) => {
   return (
     <div className="root flex flex-col min-h-screen">
       <BaseHeader />
-      <div className="content flex flex-col grow">{children}</div>
+      <main className="content flex flex-col grow">{children}</main>
       <BaseFooter />
     </div>
   );

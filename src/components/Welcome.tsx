@@ -11,6 +11,7 @@ const Welcome = () => {
         src={background}
         alt="Goat.Corp home background"
         className="absolute z-[-1] w-full h-full object-cover object-[right_50%_bottom_-96px] opacity-45 scale-[1.8] sm:top-0 sm:left-0 sm:object-[right_50%_top_42%] sm:scale-100"
+        priority
       />
       <div className="content flex flex-col">
         <IconGoatLogo className="w-full h-[128px] mt-[220px] mb-0 ml-auto mr-auto text-white sm:mt-[10%]" />

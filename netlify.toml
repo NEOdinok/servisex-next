@@ -1,0 +1,11 @@
+[context.production.environment]
+  NEXT_PUBLIC_ENV = "production"
+
+[context.deploy-preview.environment]
+  NEXT_PUBLIC_ENV = "development"
+
+[context.branch-deploy.environment]
+  NEXT_PUBLIC_ENV = "development"
+
+[context.dev.environment]
+  NEXT_PUBLIC_ENV = "local"

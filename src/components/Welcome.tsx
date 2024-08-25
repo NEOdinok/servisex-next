@@ -15,7 +15,6 @@ const Welcome = () => {
       />
       <div className="content flex flex-col">
         <IconGoatLogo className="w-full h-[128px] mt-[220px] mb-0 ml-auto mr-auto text-white sm:mt-[10%]" />
-        {/* <GoatLogo /> */}
 
         <HomeNavigation className="w-full flex justify-center items-center" />
 

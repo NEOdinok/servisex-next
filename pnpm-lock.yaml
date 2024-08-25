@@ -5,6 +5,10 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@netlify/blobs':
+    specifier: |
+      ^7.0.0
+    version: 7.4.0
   '@reduxjs/toolkit':
     specifier: ^2.2.7
     version: 2.2.7(react-redux@9.1.2)(react@18.3.1)
@@ -1516,6 +1520,11 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  /@netlify/blobs@7.4.0:
+    resolution: {integrity: sha512-7rdPzo8bggt3D2CVO+U1rmEtxxs8X7cLusDbHZRJaMlxqxBD05mXgThj5DUJMFOvmfVjhEH/S/3AyiLUbDQGDg==}
+    engines: {node: ^14.16.0 || >=16.0.0}
+    dev: false
 
   /@next/env@14.2.6:
     resolution: {integrity: sha512-bs5DFKV+08EjWrl8EB+KKqev1ZTNONH1vFCaHh911aaB362NnP32UDTbE9VQhyiAgbFqJsfDkSxFERNDDb3j0g==}

@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   "font-mono inline-flex items-center transition-shadow duration-150 justify-center whitespace-nowrap text-xs font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50",
@@ -30,7 +30,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -41,19 +41,7 @@ export interface ButtonProps
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      variant,
-      size,
-      asChild = false,
-      type = "button",
-      className,
-      loading = false,
-      children,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ variant, size, asChild = false, type = "button", className, loading = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
@@ -67,6 +55,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {loading ? "ЗАГРУЗКА" : children}
       </Comp>
     );
-  },
+  }
 );
 Button.displayName = "Button";

@@ -67,9 +67,6 @@ const transformAllProductsData = (products: Product[]): { transformedProducts: S
 };
 
 const fetchProducts = async (): Promise<ShopItem[]> => {
-  // const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/getProducts`, {
-  //   cache: "force-cache", // This ensures the data is fetched during build time
-  // });
   const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
   const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}`, {
     cache: "force-cache",

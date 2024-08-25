@@ -10,7 +10,7 @@ interface ProductsShowcaseProps {
 }
 
 const ProductsShowcase = ({ products }: ProductsShowcaseProps) => {
-  const showAnimation = true;
+  const showAnimation = false;
 
   return (
     <AnimatePresence>

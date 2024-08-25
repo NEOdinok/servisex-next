@@ -5,11 +5,11 @@ import { AnimatePresence } from "framer-motion";
 import { ShopCard } from "./ShopCard";
 import { ShopItem } from "@/types";
 
-interface ShopPreviewAnimationProps {
+interface ProductsShowcaseProps {
   products: ShopItem[];
 }
 
-const ShopPreviewAnimation = ({ products }: ShopPreviewAnimationProps) => {
+const ProductsShowcase = ({ products }: ProductsShowcaseProps) => {
   const showAnimation = true;
 
   return (
@@ -29,4 +29,4 @@ const ShopPreviewAnimation = ({ products }: ShopPreviewAnimationProps) => {
   );
 };
 
-export { ShopPreviewAnimation };
+export { ProductsShowcase };

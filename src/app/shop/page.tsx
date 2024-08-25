@@ -1,7 +1,7 @@
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { Product, GetProductsResponse, ShopItem } from "@/types";
 
-import { ShopCard } from "@/components";
+import { ProductsShowcase } from "@/components";
 
 const transformAllProductsData = (products: Product[]): { transformedProducts: ShopItem[] } => {
   const transformedProducts: ShopItem[] = [];
@@ -87,9 +87,7 @@ const ShopPage = async () => {
   return (
     <BaseLayout>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 py-2 px-2 sm:py-0">
-        {products.map((product, index) => (
-          <ShopCard key={product.parentProductId} product={product} />
-        ))}
+        <ProductsShowcase products={products} />
       </div>
     </BaseLayout>
   );

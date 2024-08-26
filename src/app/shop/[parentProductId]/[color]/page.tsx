@@ -28,7 +28,7 @@ const transformAllProductsData = (products: Product[]): { transformedProducts: S
             price: product.minPrice,
             isOutOfStock: offer.quantity === 0,
             description: product.description,
-            color: color,
+            color: color || "one-color", // Fallback value
           };
         } else {
           noColorProduct.isOutOfStock = noColorProduct.isOutOfStock && offer.quantity === 0;

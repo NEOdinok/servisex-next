@@ -5,9 +5,10 @@ import Image from "next/image";
 
 interface Props {
   product: ShopItem;
+  onClick?: () => void;
 }
 
-export const ShopCard = ({ product }: Props) => {
+export const ShopCard = ({ product, onClick }: Props) => {
   const showAnimation = true;
 
   return (
@@ -15,6 +16,7 @@ export const ShopCard = ({ product }: Props) => {
       className={`cursor-pointer group h-full flex flex-col relative ${
         product.isOutOfStock ? "pointer-events-none" : ""
       }`}
+      onClick={onClick}
     >
       <div className="relative">
         <Image

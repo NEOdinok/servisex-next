@@ -8,6 +8,8 @@ interface ProductPageProps {
   };
 }
 
+export const dynamicParams = false;
+
 const transformAllProductsData = (products: Product[]): { transformedProducts: ShopItem[] } => {
   const transformedProducts: ShopItem[] = [];
 

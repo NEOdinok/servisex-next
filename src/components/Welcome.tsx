@@ -18,22 +18,28 @@ const Welcome = () => {
 
         <HomeNavigation className="w-full flex justify-center items-center" />
 
-        <div className="flex gap-4 items-center justify-center justify-self-end absolute bottom-4 w-full">
-          <Link
-            href="https://www.instagram.com/goat__corp/?hl=en"
-            target="_blank"
-            className="uppercase hover:cursor-pointer hover:underline hover:text-primary"
-          >
-            <IconInstagram className="opacity-45 h-10 hover:opacity-30" />
-          </Link>
+        <div className="flex gap-4 justify-between absolute bottom-4 w-full px-6">
+          <div className="flex justify-end gap-4">
+            <Link
+              href="https://www.instagram.com/goat__corp/?hl=en"
+              target="_blank"
+              className="uppercase hover:cursor-pointer hover:underline hover:text-primary"
+            >
+              <IconInstagram className="opacity-45 h-10 hover:opacity-30" />
+            </Link>
 
-          <Link
-            href="https://www.youtube.com/watch?v=e3KmM2JxRrg"
-            target="_blank"
-            className="uppercase hover:cursor-pointer hover:underline hover:text-primary"
-          >
-            <IconYoutube className="opacity-45 h-10  hover:opacity-30" />
-          </Link>
+            <Link
+              href="https://www.youtube.com/watch?v=e3KmM2JxRrg"
+              target="_blank"
+              className="uppercase hover:cursor-pointer hover:underline hover:text-primary"
+            >
+              <IconYoutube className="opacity-45 h-10  hover:opacity-30" />
+            </Link>
+          </div>
+
+          <div className="flex justify-end gap-4 opacity-55 items-center">
+            <p className="uppercase">©2024 ГОАТ.КОРП МОСКВА</p>
+          </div>
         </div>
       </div>
     </div>

@@ -22,9 +22,7 @@ const BaseFooter = () => {
       </div>
 
       <div className="flex justify-end gap-4">
-        <div className="flex gap-4">
-          <p className="uppercase">©2024 ГОАТ.КОРП МОСКВА</p>
-        </div>
+        <p className="uppercase">©2024 ГОАТ.КОРП МОСКВА</p>
       </div>
     </footer>
   );

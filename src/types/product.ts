@@ -77,3 +77,17 @@ export interface GetProductsResponse {
   pagination: Pagination;
   products: Product[];
 }
+
+export interface ProductPreviewData {
+  name: string;
+  imgs: string[];
+  parentProductId: number;
+  price: number;
+  description: string;
+  color?: string;
+  sizes: Array<{
+    value: string;
+    quantity: number;
+  }>;
+  defaultSize: string;
+}

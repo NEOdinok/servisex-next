@@ -1,5 +1,5 @@
 import { BaseLayout } from "@/layouts";
-import { ShopItem, GetProductsResponse, Product } from "@/types";
+import { ShopItem, GetProductsResponse, Product, ProductPreviewData } from "@/types";
 
 interface ProductPageProps {
   params: {
@@ -73,8 +73,57 @@ const transformAllProductsData = (products: Product[]): { transformedProducts: S
   return { transformedProducts };
 };
 
-// TODO: abstract this function out into util
-// fetch products (same as in ShopPage)
+const transformProductData = (product: Product, color?: string): ProductPreviewData => {
+  // const product = response.products[0]; // Since we're expecting a single product
+
+  const filteredOffers = color ? product.offers.filter((offer) => offer.properties?.cvet === color) : product.offers;
+
+  const sizes =
+    product.options
+      ?.find((option) => option.code === "razmer")
+      ?.values.map((value) => {
+        const quantity = filteredOffers
+          .filter((offer) => offer.properties?.razmer === value.value)
+          .reduce((sum, offer) => sum + (offer.quantity || 0), 0);
+        return { value: value.value, quantity };
+      }) || [];
+
+  // Find the first available size
+  const defaultSize = sizes.find((size) => size.quantity > 0)?.value || "";
+
+  // Ensure images are added only once per color
+  const colorImagesMap: { [key: string]: string[] } = {};
+  filteredOffers.forEach((offer) => {
+    const offerColor = offer.properties?.cvet;
+    if (offerColor && !colorImagesMap[offerColor]) {
+      colorImagesMap[offerColor] = offer.images;
+    }
+  });
+
+  let imgs;
+
+  if (color) {
+    imgs = colorImagesMap[color] || [];
+  } else {
+    imgs = Object.values(colorImagesMap).flat();
+    if (imgs.length === 0 && product.offers.length > 0) {
+      // If no images from colorImagesMap, take images from the first available offer
+      imgs = product.offers[0].images;
+    }
+  }
+
+  return {
+    name: product.name,
+    imgs,
+    parentProductId: product.id,
+    price: product.minPrice,
+    description: product.description,
+    color,
+    sizes,
+    defaultSize, // Add defaultSize to the transformed data
+  };
+};
+
 const fetchProducts = async (): Promise<ShopItem[]> => {
   const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
   const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}`, {
@@ -90,6 +139,26 @@ const fetchProducts = async (): Promise<ShopItem[]> => {
   return transformedProducts;
 };
 
+const fetchSingleProduct = async (parentProductId: string, color?: string): Promise<ProductPreviewData> => {
+  const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
+  const response = await fetch(
+    `${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}&filter[ids][]=${parentProductId}`,
+    {
+      cache: "force-cache",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
+  const data: GetProductsResponse = await response.json();
+  const product = data.products[0]; // sinse we are expecting single product
+
+  const productPreviewData = transformProductData(product, color);
+  return productPreviewData;
+};
+
 // Generate static paths based on fetched products
 export async function generateStaticParams() {
   const products = await fetchProducts();
@@ -103,11 +172,14 @@ export async function generateStaticParams() {
 export default async function ProductPage({ params }: ProductPageProps) {
   const { parentProductId, color } = params;
 
+  const product = await fetchSingleProduct(parentProductId, color);
+
   return (
     <BaseLayout>
       <div className="flex flex-col items-center justify-center">
-        <span>productId: {parentProductId}</span>
-        <span>color: {color}</span>
+        <span>productId: {product.parentProductId}</span>
+        <span>color: {product.color}</span>
+        <span>description: {product.description}</span>
       </div>
     </BaseLayout>
   );

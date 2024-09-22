@@ -6,4 +6,5 @@ export {
   type ProductGroup,
   type Pagination,
   type ShopItem,
+  type ProductPreviewData,
 } from "./product";

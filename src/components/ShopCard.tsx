@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Card, CardContent, Label } from "@/components/ui";
+import { Card, CardContent, Label } from "@/components";
 import type { ShopItem } from "@/types";
 import Image from "next/image";
 

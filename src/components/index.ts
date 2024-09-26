@@ -6,7 +6,7 @@ export { Welcome } from "./Welcome";
 export { ShopCard } from "./ShopCard";
 export { ProductsShowcase } from "./ProductsShowcase";
 
-export { Loading } from "./ui";
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./ui";
-export { Button } from "./ui";
-export { Label } from "./ui";
+export { Loading } from "./ui/loading";
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./ui/card";
+export { Button } from "./ui/button";
+export { Label } from "./ui/label";

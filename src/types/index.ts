@@ -7,4 +7,5 @@ export {
   type Pagination,
   type ShopItem,
   type ProductPreviewData,
+  type PossibleOffer,
 } from "./product";

@@ -91,3 +91,15 @@ export interface ProductPreviewData {
   }>;
   defaultSize: string;
 }
+
+export interface PossibleOffer {
+  parentProductName: string;
+  name: string;
+  price: number;
+  images: string[];
+  id: number;
+  properties: {
+    color?: string;
+    size?: string;
+  };
+}

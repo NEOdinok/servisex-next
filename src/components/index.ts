@@ -5,8 +5,11 @@ export { HomeNavigation } from "./HomeNavigation";
 export { Welcome } from "./Welcome";
 export { ShopCard } from "./ShopCard";
 export { ProductsShowcase } from "./ProductsShowcase";
+export { Gallery } from "./Gallery";
 
 export { Loading } from "./ui/loading";
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./ui/card";
 export { Button } from "./ui/button";
 export { Label } from "./ui/label";
+export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, BaseCarousel } from "./ui/carousel";
+export { InfoBlock } from "./ui/info-block";

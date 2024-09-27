@@ -1,7 +1,7 @@
 import { BaseLayout } from "@/layouts";
-import { ShopItem, GetProductsResponse, Product, ProductPreviewData } from "@/types";
+import { ShopItem, GetProductsResponse, Product, ProductPreviewData, PossibleOffer } from "@/types";
 
-import { Gallery, BaseCarousel, InfoBlock } from "@/components";
+import { Gallery, BaseCarousel, InfoBlock, AddToCartForm } from "@/components";
 
 interface ProductPageProps {
   params: {
@@ -93,12 +93,16 @@ const transformProductData = (product: Product, color?: string): ProductPreviewD
           const quantity = filteredOffers
             .filter((offer) => offer.properties?.size === value.value)
             .reduce((sum, offer) => sum + (offer.quantity || 0), 0);
-          return { value: value.value, quantity };
+          return { value: value.value, quantity, isDefault: value.default };
         }) || []
     : [];
 
-  // Find the first available size
-  const defaultSize = sizes.find((size) => size.quantity > 0)?.value || "";
+  /**
+   * This one sets first size with quantity > 0 as a defaut one.
+   * Setting real default is complicated because we run into the problem
+   * of setting it in select even though it being out of stock.
+   */
+  const defaultSize = sizes.find((size) => size.quantity)?.value || "one-size";
 
   // Build images
   let imgs: string[] = [];
@@ -145,7 +149,21 @@ const fetchProducts = async (): Promise<ShopItem[]> => {
   return transformedProducts;
 };
 
-const fetchSingleProduct = async (parentProductId: string, color?: string): Promise<ProductPreviewData> => {
+const transformProductOffers = (product: Product): PossibleOffer[] =>
+  product.offers.map((offer) => ({
+    isOutOfStock: offer.quantity === 0 ? true : false,
+    parentProductName: product.name,
+    name: offer.name,
+    price: offer.price,
+    images: offer.images || [],
+    id: offer.id,
+    properties: {
+      color: offer.properties?.color,
+      size: offer.properties?.size,
+    },
+  }));
+
+const fetchSingleProduct = async (parentProductId: string, color?: string): Promise<Product> => {
   const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
   const response = await fetch(
     `${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}&filter[ids][]=${parentProductId}`,
@@ -161,8 +179,7 @@ const fetchSingleProduct = async (parentProductId: string, color?: string): Prom
   const data: GetProductsResponse = await response.json();
   const product = data.products[0]; // sinse we are expecting single product
 
-  const productPreviewData = transformProductData(product, color);
-  return productPreviewData;
+  return product;
 };
 
 // Generate static paths based on fetched products
@@ -178,7 +195,9 @@ export async function generateStaticParams() {
 export default async function ProductPage({ params }: ProductPageProps) {
   const { parentProductId, color } = params;
 
-  const product = await fetchSingleProduct(parentProductId, color);
+  const rawProduct = await fetchSingleProduct(parentProductId, color);
+  const product = transformProductData(rawProduct, color);
+  const productPossibleOffers = transformProductOffers(rawProduct);
 
   return (
     <BaseLayout>
@@ -209,101 +228,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <InfoBlock title="описание" content={<span className="font-mono">{product?.description}</span>} />
             </div>
 
-            {/* {productsData?.sizes.length ? (
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleAddProductToCart)} className="grid gap-4 mt-4">
-                  <div className="flex flex-col items-center gap-4 w-full">
-                    <div className="flex gap-4 w-full">
-                      {productsData?.sizes.length && (
-                        <FormField
-                          control={form.control}
-                          name="size"
-                          render={({ field, fieldState }) => (
-                            <FormItem className="w-full">
-                              <DelayedSelect onValueChange={field.onChange} defaultValue={productsData?.defaultSize}>
-                                <FormControl>
-                                  <SelectTrigger
-                                    className={cn("border-foreground focus-visible:border-primary", {
-                                      "border-error": fieldState.error,
-                                    })}
-                                  >
-                                    <SelectValue placeholder={<p className="text-muted-foreground">Размер</p>} />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {productsData.sizes.map((size) => (
-                                    <SelectItem key={size.value} value={size.value} disabled={!size.quantity}>
-                                      <span
-                                        className={cn(" uppercase font-mono w-full", {
-                                          "text-error pointer-events-none": !size.quantity,
-                                        })}
-                                      >
-                                        {!size.quantity ? (
-                                          <span className="font-mono text-error uppercase">
-                                            {size.value} - Распродано
-                                          </span>
-                                        ) : (
-                                          <span>{size.value}</span>
-                                        )}
-                                      </span>
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </DelayedSelect>
-                            </FormItem>
-                          )}
-                        />
-                      )}
-                      <AmountSelector
-                        offer={currentOffer}
-                        prepareProductForDeletion={prepareProductForDeletion}
-                        className="w-full"
-                      />
-                    </div>
-                    <Button
-                      type="submit"
-                      className="w-full text-foreground"
-                      variant="outline"
-                      size="lg"
-                      disabled={isItemInCart}
-                    >
-                      {isItemInCart ? "УЖЕ В КОРЗИНЕ" : "ДОБАВИТЬ В КОРЗИНУ"}
-                    </Button>
-                  </div>
-                </form>
-              </Form>
-            ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleAddProductToCart({ size: "" });
-                }}
-                className="grid gap-4 mt-4"
-              >
-                <div className="flex flex-col items-center gap-4 w-full">
-                  <div className="flex gap-4 w-full">
-                    <div className="h-12 w-full border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
-                      один размер
-                    </div>
-                    <AmountSelector
-                      offer={currentOffer}
-                      prepareProductForDeletion={prepareProductForDeletion}
-                      className="w-full"
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full text-foreground"
-                    variant="outline"
-                    size="lg"
-                    disabled={isItemInCart}
-                  >
-                    {isItemInCart ? "УЖЕ В КОРЗИНЕ" : "ДОБАВИТЬ В КОРЗИНУ"}
-                  </Button>
-                </div>
-              </form>
-            )} */}
+            <AddToCartForm product={product} color={color} possibleOffers={productPossibleOffers} />
           </div>
         </div>
 

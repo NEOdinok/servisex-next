@@ -10,8 +10,7 @@ const transformAllProductsData = (products: Product[]): { transformedProducts: S
     let noColorProduct: ShopItem | null = null;
 
     product.offers.forEach((offer) => {
-      const color = offer.properties?.cvet;
-      const size = offer.properties?.razmer;
+      const color = offer.properties?.color;
 
       if (!color) {
         if (!noColorProduct) {

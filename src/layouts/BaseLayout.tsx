@@ -7,7 +7,7 @@ interface Props {
 
 const BaseLayout = ({ children }: Props) => {
   return (
-    <div className="root flex flex-col min-h-screen">
+    <div className="root flex flex-col min-h-screen max-w-screen-2xl">
       <BaseHeader />
       <main className="content flex flex-col grow">{children}</main>
       <BaseFooter />

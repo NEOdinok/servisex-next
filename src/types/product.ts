@@ -78,6 +78,12 @@ export interface GetProductsResponse {
   products: Product[];
 }
 
+/**
+ * TODO:
+ *
+ * rename my app types to GoatProductPrevuew, GoatPossibleOffer, GoatShopItem
+ * and move them out into separate files
+ */
 export interface ProductPreviewData {
   name: string;
   imgs: string[];

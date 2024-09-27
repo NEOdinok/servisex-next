@@ -99,6 +99,7 @@ export interface ProductPreviewData {
 }
 
 export interface PossibleOffer {
+  isOutOfStock: boolean;
   parentProductName: string;
   name: string;
   price: number;

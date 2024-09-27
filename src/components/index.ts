@@ -12,6 +12,7 @@ export { Welcome } from "./Welcome";
 export { ShopCard } from "./ShopCard";
 export { ProductsShowcase } from "./ProductsShowcase";
 export { Gallery } from "./Gallery";
+export { ImageSlider } from "./ImageSlider";
 
 export { Loading } from "./ui/loading";
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./ui/card";
@@ -19,4 +20,33 @@ export { Button } from "./ui/button";
 export { Label } from "./ui/label";
 export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, BaseCarousel } from "./ui/carousel";
 export { InfoBlock } from "./ui/info-block";
-export { ImageSlider } from "./ImageSlider";
+
+export {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormFieldContext,
+  FormItemContext,
+  type FormFieldContextValue,
+  type FormItemContextValue,
+} from "./ui/form";
+
+export {
+  Select,
+  DelayedSelect,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+
+export { AddToCartForm } from "./AddToCartForm";

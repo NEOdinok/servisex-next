@@ -1,3 +1,9 @@
+/**
+ * TODO:
+ * move all base components to ui
+ * move all compoles stuff like carousel, gallery out of ui
+ */
+
 export { BaseHeader } from "./BaseHeader";
 export { BaseFooter } from "./BaseFooter";
 export { HeaderNavigation } from "./HeaderNavigation";
@@ -13,3 +19,4 @@ export { Button } from "./ui/button";
 export { Label } from "./ui/label";
 export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, BaseCarousel } from "./ui/carousel";
 export { InfoBlock } from "./ui/info-block";
+export { ImageSlider } from "./ImageSlider";

@@ -84,9 +84,7 @@ const ShopPage = async () => {
 
   return (
     <BaseLayout>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 py-2 px-2 sm:py-0">
-        <ProductsShowcase products={products} />
-      </div>
+      <ProductsShowcase products={products} />
     </BaseLayout>
   );
 };

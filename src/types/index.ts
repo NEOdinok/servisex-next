@@ -9,3 +9,5 @@ export {
   type ProductPreviewData,
   type PossibleOffer,
 } from "./product";
+
+export { type CartItem } from "./cart";

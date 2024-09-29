@@ -1,14 +1,10 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { PossibleOffer } from "@/types";
-
-export interface CartItem extends PossibleOffer {
-  quantity: number;
-}
+import { PossibleOffer, CartItem } from "@/types";
 
 interface CartState {
   items: CartItem[];
-  addItem: (item: CartItem) => void;
+  addItem: (item: PossibleOffer) => void;
   removeItem: (id: number) => void;
   incrementItemQuantity: (id: number) => void;
   decrementItemQuantity: (id: number) => void;
@@ -23,13 +19,13 @@ export const useCart = create<CartState>()(
       // Update quantity if item already exists, add new item if it doesn't
       addItem: (item) =>
         set((state) => {
-          const existingItem = state.items.find((i) => i.id === item.id);
-          if (existingItem) {
+          const itemAlreadyInCart = state.items.find((i) => i.id === item.id);
+          if (itemAlreadyInCart) {
             return {
-              items: state.items.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i)),
+              items: state.items.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i)),
             };
           }
-          return { items: [...state.items, item] };
+          return { items: [...state.items, { ...item, quantity: 1 }] };
         }),
       removeItem: (id) =>
         set((state) => ({

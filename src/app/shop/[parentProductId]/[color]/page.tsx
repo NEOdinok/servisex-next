@@ -1,7 +1,7 @@
 import { BaseLayout } from "@/layouts";
 import { ShopItem, GetProductsResponse, Product, ProductPreviewData, PossibleOffer } from "@/types";
 
-import { Gallery, BaseCarousel, InfoBlock, AddToCartForm } from "@/components";
+import { Gallery, BaseCarousel, InfoBlock, AddToCartForm, ConfirmationDialog } from "@/components";
 
 interface ProductPageProps {
   params: {
@@ -231,13 +231,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <AddToCartForm product={product} color={color} possibleOffers={productPossibleOffers} />
           </div>
         </div>
-
-        {/* <ConfirmationDialog
-          productToRemove={offerToRemove}
-          isOpen={isDialogOpen}
-          onOpenChange={setIsDialogOpen}
-          handleRemoveProduct={handleRemoveProduct}
-        /> */}
       </>
     </BaseLayout>
   );

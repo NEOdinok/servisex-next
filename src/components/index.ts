@@ -13,6 +13,9 @@ export { ShopCard } from "./ShopCard";
 export { ProductsShowcase } from "./ProductsShowcase";
 export { Gallery } from "./Gallery";
 export { ImageSlider } from "./ImageSlider";
+export { QuantitySelector } from "./QuantitySelector";
+export { ConfirmationDialog } from "./ConfirmationDialog";
+export { HeaderCartCounter } from "./HeaderCartCounter";
 
 export { Loading } from "./ui/loading";
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./ui/card";
@@ -20,6 +23,7 @@ export { Button } from "./ui/button";
 export { Label } from "./ui/label";
 export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, BaseCarousel } from "./ui/carousel";
 export { InfoBlock } from "./ui/info-block";
+export { Toaster } from "./ui/toast";
 
 export {
   Form,
@@ -48,5 +52,15 @@ export {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+
+export {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "./ui/dialog";
 
 export { AddToCartForm } from "./AddToCartForm";

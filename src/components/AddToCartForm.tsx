@@ -1,9 +1,8 @@
 "use client";
 
 import { z } from "zod";
-import { FormEvent } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, UseFormReturn, useWatch } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { cn, findOffer } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { PossibleOffer } from "@/types";
@@ -83,45 +82,64 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
 
   const handleAddProductToCart = (data: ProductForm) => {
     const offer = findOffer(possibleOffers, color, data.size, product?.name);
-    const offerId = offer?.id;
-    console.log("[handleAddToCart] set new offer", offerId);
-    if (offerId !== null) {
-      const offer = possibleOffers.find((offer) => offer.id === offerId);
-      if (offer) {
-        addItem(offer);
-        handleToast(offer);
-      }
+    if (offer) {
+      addItem(offer);
+      handleToast(offer);
     }
-  };
-
-  /**TODO: refactor form submition. looks weird */
-  const handleSubmitOneSizeForm = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleAddProductToCart({ size: "one-size" });
-  };
-
-  const handleSubmitMultipleSizedForm = (form: MultipleSizeForm) => {
-    form.handleSubmit(handleAddProductToCart);
   };
 
   return (
     <>
-      {isOneSize ? (
-        <form
-          onSubmit={(e) => {
-            handleSubmitOneSizeForm(e);
-          }}
-          className="grid gap-4 mt-4"
-        >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleAddProductToCart)} className="grid gap-4 mt-4">
           <div className="flex flex-col items-center gap-4 w-full">
             <div className="flex gap-4 w-full">
-              <div className="h-12 w-full border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
-                один размер
-              </div>
+              {isOneSize ? (
+                <div className="h-12 w-full border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
+                  один размер
+                </div>
+              ) : (
+                <FormField
+                  control={form.control}
+                  name="size"
+                  render={({ field, fieldState }) => (
+                    <FormItem className="w-full max-w-[50%]">
+                      <DelayedSelect onValueChange={field.onChange} defaultValue={product?.defaultSize}>
+                        <FormControl>
+                          <SelectTrigger
+                            className={cn("border-foreground focus-visible:border-primary", {
+                              "border-error": fieldState.error,
+                            })}
+                          >
+                            <SelectValue placeholder={<p className="text-muted-foreground">Размер</p>} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {product.sizes.map((size) => (
+                            <SelectItem key={size.value} value={size.value} disabled={!size.quantity}>
+                              <span
+                                className={cn("uppercase font-mono w-full", {
+                                  "text-error pointer-events-none": !size.quantity,
+                                })}
+                              >
+                                {!size.quantity ? (
+                                  <span className="font-mono text-error uppercase">{size.value} - Распродано</span>
+                                ) : (
+                                  <span>{size.value}</span>
+                                )}
+                              </span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </DelayedSelect>
+                    </FormItem>
+                  )}
+                />
+              )}
               <QuantitySelector
                 offer={currentOffer}
                 prepareProductForDeletion={prepareProductForDeletion}
-                className="w-full"
+                className="w-full max-w-[50%]"
               />
             </div>
 
@@ -130,62 +148,7 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
             </Button>
           </div>
         </form>
-      ) : (
-        <Form {...form}>
-          <form onSubmit={() => handleSubmitMultipleSizedForm(form)} className="grid gap-4 mt-4">
-            <div className="flex flex-col items-center gap-4 w-full">
-              <div className="flex gap-4 w-full ">
-                {product?.sizes.length && (
-                  <FormField
-                    control={form.control}
-                    name="size"
-                    render={({ field, fieldState }) => (
-                      <FormItem className="w-full max-w-[50%]">
-                        <DelayedSelect onValueChange={field.onChange} defaultValue={product?.defaultSize}>
-                          <FormControl>
-                            <SelectTrigger
-                              className={cn("border-foreground focus-visible:border-primary", {
-                                "border-error": fieldState.error,
-                              })}
-                            >
-                              <SelectValue placeholder={<p className="text-muted-foreground">Размер</p>} />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {product.sizes.map((size) => (
-                              <SelectItem key={size.value} value={size.value} disabled={!size.quantity}>
-                                <span
-                                  className={cn(" uppercase font-mono w-full", {
-                                    "text-error pointer-events-none": !size.quantity,
-                                  })}
-                                >
-                                  {!size.quantity ? (
-                                    <span className="font-mono text-error uppercase">{size.value} - Распродано</span>
-                                  ) : (
-                                    <span>{size.value}</span>
-                                  )}
-                                </span>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </DelayedSelect>
-                      </FormItem>
-                    )}
-                  />
-                )}
-                <QuantitySelector
-                  offer={currentOffer}
-                  prepareProductForDeletion={prepareProductForDeletion}
-                  className="w-full max-w-[50%]"
-                />
-              </div>
-              <Button type="submit" className="w-full text-foreground" variant="outline" size="lg" disabled={false}>
-                {itemAlreadyInCart ? "УЖЕ В КОРЗИНЕ" : "ДОБАВИТЬ В КОРЗИНУ"}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
+      </Form>
 
       <ConfirmationDialog
         productToRemove={offerToRemove}

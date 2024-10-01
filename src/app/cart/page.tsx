@@ -1,9 +1,169 @@
+"use client";
 import { BaseLayout } from "@/layouts/BaseLayout";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { memo } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useCart, useProductDialog } from "@/hooks";
+import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
+import {
+  Button,
+  Card,
+  CardContent,
+  ConfirmationDialog,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Label,
+  Loading,
+  QuantitySelector,
+  // Input,
+  // RadioGroup,
+  // RadioGroupItem,
+  // Separator,
+  // Tabs,
+  // TabsContent,
+  // TabsList,
+  // TabsTrigger,
+} from "@/components";
+
+const formSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "Имя должно быть более 2 символов",
+  }),
+  lastName: z.string().min(2, {
+    message: "Фамилия должна быть более 2 символов",
+  }),
+  familyName: z.string().optional(),
+  email: z
+    .string()
+    .min(2, {
+      message: "Email должен быть длиннее 2 символов",
+    })
+    .email({
+      message: "Введите корректный email",
+    }),
+  phone: z
+    .string({
+      message: "Введите номер",
+    })
+    .min(2, {
+      message: "[Строка] Номер не может быть таким коротким",
+    }),
+  address: z
+    .string({
+      message: "Введите",
+    })
+    .min(2, {
+      message: "Введите больше 2 символов",
+    }),
+});
+
+type CheckoutForm = z.infer<typeof formSchema>;
+
+interface CheckoutBlockProps {
+  form: UseFormReturn<CheckoutForm>;
+}
+const CartEmptyState = () => (
+  <p className="text-base font-mono leading-none w-full items-left sm:px-4 sm:py-4 text-muted-foreground">
+    Тут пока пусто...
+  </p>
+);
+
+const CheckoutBlockCart = () => {
+  const { isDialogOpen, setIsDialogOpen, offerToRemove, prepareProductForDeletion, handleRemoveProduct } =
+    useProductDialog();
+  const { items } = useCart();
+
+  return (
+    <Card className="border-0 sm:border">
+      <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">КОРЗИНА</p>
+
+      <>
+        {items.length ? (
+          items?.map((product) => (
+            <CardContent key={product.id} className="p-0 py-2 sm:p-4">
+              <div className="grid gap-2">
+                <div className="flex justify-between items-center gap-2">
+                  <h3 className="font-mono font-medium uppercase">{product.parentProductName}</h3>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      prepareProductForDeletion(product);
+                    }}
+                  >
+                    <X />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-[64px_1fr_auto] items-center gap-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={product.images[0]} alt="Product template" width={64} height={64} />
+                  <div>
+                    <p className="font-mono text-xs sm:text-sm text-muted-foreground ">
+                      Цвет: {product.properties?.color ? <>{product.properties?.color} </> : <>Один цвет</>}
+                    </p>
+                    <p className="font-mono text-xs md:text-sm text-muted-foreground ">
+                      Размер: {product.properties?.size ? <>{product.properties?.size}</> : <>Один размер</>}
+                    </p>
+                  </div>
+                  <QuantitySelector offer={product} prepareProductForDeletion={prepareProductForDeletion} />
+                </div>
+              </div>
+            </CardContent>
+          ))
+        ) : (
+          <CartEmptyState />
+        )}
+
+        <ConfirmationDialog
+          productToRemove={offerToRemove}
+          isOpen={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          handleRemoveProduct={handleRemoveProduct}
+        />
+      </>
+    </Card>
+  );
+};
 
 const CartPage = () => {
+  const onSubmit = async (values: CheckoutForm) => {
+    console.log("[checkout] submit values:", values);
+  };
+
+  const form = useForm<CheckoutForm>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "Гоша",
+      lastName: "Гоша",
+      familyName: "Гоша",
+      email: "gosha@gmail.com",
+      phone: "+79093555555",
+      address: "Видное Солнечный 5 кв95",
+    },
+  });
+
   return (
     <BaseLayout>
-      <div>cart</div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid md:grid-cols-[1fr_350px] gap-8 py-4 px-2">
+          <div className="grid gap-8">
+            <CheckoutBlockCart />
+            {/* <CheckoutBlockContacts form={form} />
+            <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} />
+            <CheckoutBlockPayment /> */}
+          </div>
+          {/* <CheckoutBlockTotal isLoading={isOrderCreationLoading || isPaymentLoading} deliveryPrice={deliveryPrice} /> */}
+        </form>
+      </Form>
     </BaseLayout>
   );
 };

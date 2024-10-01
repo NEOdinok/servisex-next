@@ -141,7 +141,7 @@ const fetchProducts = async (): Promise<ShopItem[]> => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch products");
+    throw new Error("[Product] Failed to fetch products");
   }
 
   const data: GetProductsResponse = await response.json();
@@ -173,7 +173,7 @@ const fetchSingleProduct = async (parentProductId: string, color?: string): Prom
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch products");
+    throw new Error("[Product] Failed to fetch one product");
   }
 
   const data: GetProductsResponse = await response.json();

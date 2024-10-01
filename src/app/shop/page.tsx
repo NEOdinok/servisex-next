@@ -71,7 +71,7 @@ const fetchProducts = async (): Promise<ShopItem[]> => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch products");
+    throw new Error("[Shop] Failed to fetch products");
   }
 
   const data: GetProductsResponse = await response.json();

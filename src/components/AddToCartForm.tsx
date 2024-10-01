@@ -41,7 +41,7 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
   const { addItem, items } = useCart();
   const isOneSize = !product?.sizes.length;
   const [currentOffer, setCurrentOffer] = useState<PossibleOffer>();
-  const itemAlreadyInCart = currentOffer && items.find((item) => item.id === currentOffer?.id);
+  const itemAlreadyInCart = currentOffer && items.some((item) => item.id === currentOffer?.id);
   type ProductForm = z.infer<typeof FormSchema>;
   const { isDialogOpen, offerToRemove, setIsDialogOpen, prepareProductForDeletion, handleRemoveProduct } =
     useProductDialog();
@@ -143,7 +143,13 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
               />
             </div>
 
-            <Button type="submit" className="w-full text-foreground" variant="outline" size="lg" disabled={false}>
+            <Button
+              type="submit"
+              className="w-full text-foreground"
+              variant="outline"
+              size="lg"
+              disabled={itemAlreadyInCart}
+            >
               {itemAlreadyInCart ? "УЖЕ В КОРЗИНЕ" : "ДОБАВИТЬ В КОРЗИНУ"}
             </Button>
           </div>

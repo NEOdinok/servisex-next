@@ -1,14 +1,10 @@
 "use client";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { memo } from "react";
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useCart, useProductDialog } from "@/hooks";
-import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
 import {
   Button,
   Card,
@@ -23,50 +19,17 @@ import {
   FormMessage,
   Label,
   Loading,
-  QuantitySelector,
-  // Input,
+  Input,
   // RadioGroup,
   // RadioGroupItem,
   Separator,
+  CheckoutFormField,
   // Tabs,
   // TabsContent,
   // TabsList,
   // TabsTrigger,
 } from "@/components";
-
-const formSchema = z.object({
-  firstName: z.string().min(2, {
-    message: "Имя должно быть более 2 символов",
-  }),
-  lastName: z.string().min(2, {
-    message: "Фамилия должна быть более 2 символов",
-  }),
-  familyName: z.string().optional(),
-  email: z
-    .string()
-    .min(2, {
-      message: "Email должен быть длиннее 2 символов",
-    })
-    .email({
-      message: "Введите корректный email",
-    }),
-  phone: z
-    .string({
-      message: "Введите номер",
-    })
-    .min(2, {
-      message: "[Строка] Номер не может быть таким коротким",
-    }),
-  address: z
-    .string({
-      message: "Введите",
-    })
-    .min(2, {
-      message: "Введите больше 2 символов",
-    }),
-});
-
-type CheckoutForm = z.infer<typeof formSchema>;
+import { formSchema, CheckoutForm } from "@/lib/checkout-form";
 
 interface CheckoutBlockProps {
   form: UseFormReturn<CheckoutForm>;
@@ -113,8 +76,6 @@ interface TotalBlockProps {
 }
 
 const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) => {
-  // const productsPrice = useAppSelector((state: RootState) => selectCartTotalPrice(state));
-  // const cartItemsCount = useAppSelector((state: RootState) => selectCartItemCount(state));
   const { items } = useCart();
   const cartItemsCount = items.length;
   const productsPrice = items.reduce((total, item) => {
@@ -165,6 +126,22 @@ const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) =
   );
 };
 
+const CheckoutBlockContacts = ({ form }: CheckoutBlockProps) => {
+  return (
+    <Card className="border-0 sm:border">
+      <Separator className="sm:hidden" />
+      <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">КОНТАКТНАЯ ИНФОРМАЦИЯ</p>
+      <CardContent className="grid gap-2 p-0 sm:p-4">
+        <CheckoutFormField control={form.control} name="firstName" label="Имя" placeholder="Козел" />
+        <CheckoutFormField control={form.control} name="lastName" label="Фамилия" placeholder="Козлов" />
+        <CheckoutFormField control={form.control} name="familyName" label="Отчество" placeholder="Козлович" />
+        <CheckoutFormField control={form.control} name="email" label="Почта" placeholder="kozel666@goatcorp.com" />
+        <CheckoutFormField control={form.control} name="phone" label="Телефон" placeholder="+6 (666) 666 66-66" />
+      </CardContent>
+    </Card>
+  );
+};
+
 const CartPage = () => {
   const onSubmit = async (values: CheckoutForm) => {
     console.log("[checkout] submit values:", values);
@@ -192,7 +169,8 @@ const CartPage = () => {
           >
             <div className="grid gap-8">
               <CheckoutBlockCart />
-              {/* <CheckoutBlockContacts form={form} />
+              <CheckoutBlockContacts form={form} />
+              {/*
             <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} />
             <CheckoutBlockPayment /> */}
             </div>

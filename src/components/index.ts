@@ -17,6 +17,7 @@ export { ImageSlider } from "./ImageSlider";
 export { QuantitySelector } from "./QuantitySelector";
 export { ConfirmationDialog } from "./ConfirmationDialog";
 export { HeaderCartCounter } from "./HeaderCartCounter";
+export { CheckoutFormField } from "./CheckoutFormField";
 
 export { Loading } from "./ui/loading";
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./ui/card";

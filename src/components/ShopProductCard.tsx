@@ -8,7 +8,7 @@ interface Props {
   onClick?: () => void;
 }
 
-export const ShopCard = ({ product, onClick }: Props) => {
+export const ShopProductCard = ({ product, onClick }: Props) => {
   const showAnimation = true;
 
   return (

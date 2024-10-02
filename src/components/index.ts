@@ -9,7 +9,7 @@ export { BaseFooter } from "./BaseFooter";
 export { HeaderNavigation } from "./HeaderNavigation";
 export { HomeNavigation } from "./HomeNavigation";
 export { Welcome } from "./Welcome";
-export { ShopCard } from "./ShopCard";
+export { ShopProductCard } from "./ShopProductCard";
 export { ProductsShowcase } from "./ProductsShowcase";
 export { Gallery } from "./Gallery";
 export { ImageSlider } from "./ImageSlider";

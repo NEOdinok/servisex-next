@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components";
 
+import Script from "next/script"; // Import Next.js Script component
+
 const roboto_mono = Roboto_Mono({ subsets: ["cyrillic"] });
 
 export const metadata: Metadata = {
@@ -24,6 +26,11 @@ export default function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
+        <Script
+          src="https://cdn.jsdelivr.net/npm/@cdek-it/widget@3"
+          strategy="afterInteractive" // Loads the script after the page is interactive
+          async // Adds async attribute
+        />
       </body>
     </html>
   );

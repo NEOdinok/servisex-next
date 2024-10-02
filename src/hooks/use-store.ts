@@ -4,7 +4,7 @@ import { PossibleOffer, CartItem } from "@/types";
 
 interface CartState {
   items: CartItem[];
-  addItem: (item: PossibleOffer) => void;
+  addItem: (item: PossibleOffer | CartItem) => void;
   removeItem: (id: number) => void;
   incrementItemQuantity: (id: number) => void;
   decrementItemQuantity: (id: number) => void;

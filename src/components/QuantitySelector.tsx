@@ -14,7 +14,7 @@ import { useCart } from "@/hooks";
 interface QuantitySelectorProps {
   className?: string | undefined;
   offer: PossibleOffer | CartItem | undefined;
-  prepareProductForDeletion: (offer: PossibleOffer) => void;
+  prepareProductForDeletion: (offer: PossibleOffer | CartItem) => void;
 }
 
 export const QuantitySelector = ({ offer, prepareProductForDeletion, className }: QuantitySelectorProps) => {

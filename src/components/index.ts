@@ -67,4 +67,6 @@ export {
   DialogFooter,
 } from "./ui/dialog";
 
+export { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+
 export { AddToCartForm } from "./AddToCartForm";

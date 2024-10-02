@@ -24,11 +24,12 @@ import {
   // RadioGroupItem,
   Separator,
   CheckoutFormField,
-  // Tabs,
-  // TabsContent,
-  // TabsList,
-  // TabsTrigger,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@/components";
+import { cn } from "@/lib/utils";
 import { formSchema, CheckoutForm } from "@/lib/checkout-form";
 
 interface CheckoutBlockProps {
@@ -126,6 +127,145 @@ const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) =
   );
 };
 
+interface DeliveryBlockProps {
+  setDeliveryPrice: React.Dispatch<SetStateAction<number | null>>;
+}
+
+const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
+  const [pickupPointAddress, setPickupPointAddress] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<string>("delivery");
+  const [isWidgetReady, setIsWidgetReady] = useState<boolean>(false);
+  // const widgetContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const onTabChange = (value: string) => {
+    setActiveTab(value);
+  };
+
+  // const initializeCDEKWidget = (
+  //   servicePath: string,
+  //   setPickupPointAddress: React.Dispatch<React.SetStateAction<string>>,
+  //   setPrice: React.Dispatch<React.SetStateAction<number | null>>,
+  //   setIsWidgetReady: React.Dispatch<React.SetStateAction<boolean>>
+  // ) => {
+  //   if (!document.getElementById("cdek-map")) return;
+
+  //   const cdekWidget = new window.CDEKWidget({
+  //     from: {
+  //       country_code: "RU",
+  //       city: "Видное",
+  //       postal_code: 142701,
+  //       code: 1100,
+  //       address: "ул. Советская, 10/1",
+  //     },
+  //     canChoose: true,
+  //     hideFilters: {
+  //       have_cashless: false,
+  //       have_cash: false,
+  //       is_dressing_room: false,
+  //       type: false,
+  //     },
+  //     hideDeliveryOptions: {
+  //       office: false,
+  //       door: true,
+  //     },
+  //     defaultLocation: [37.70721858666978, 55.554841615315645],
+  //     goods: [
+  //       {
+  //         width: 10,
+  //         height: 10,
+  //         length: 10,
+  //         weight: 10,
+  //       },
+  //     ],
+  //     root: "cdek-map",
+  //     apiKey: import.meta.env.VITE_YANDEX_MAPS_KEY,
+  //     servicePath: servicePath,
+  //     lang: "rus",
+  //     currency: "RUB",
+  //     tariffs: {
+  //       office: [234, 136, 138],
+  //       door: [233, 137, 139],
+  //     },
+  //     onReady() {
+  //       setIsWidgetReady(true); // Hide loading component
+  //     },
+  //     onChoose(mode: unknown, second: { delivery_sum: number }, office: { address: SetStateAction<string> }) {
+  //       console.log("[Widget] onChoose", mode, "second:", second, "office:", office);
+  //       setPickupPointAddress(office.address);
+  //       setPrice(second.delivery_sum);
+  //     },
+  //     onCalculate(obj: unknown) {
+  //       console.log("[Widget] onCalculate", obj);
+  //     },
+  //   });
+
+  //   if (cdekWidget) {
+  //     window.CDEKWidgetInitialized = true;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const servicePath = `${process.env.NEXT_PUBLIC_SITE_URL}/api/cdek`;
+
+  //   if (document.getElementById("cdek-map") && !window.CDEKWidgetInitialized) {
+  //     setIsWidgetReady(false); // Show loading component
+  //     initializeCDEKWidget(servicePath, setPickupPointAddress, setDeliveryPrice, setIsWidgetReady);
+  //   }
+  // }, [setPickupPointAddress, setDeliveryPrice]);
+
+  return (
+    <div>
+      <p className="text-xxl font-mono text-3xl font-bold w-full items-left pb-4">ДОСТАВКА</p>
+      <Tabs className="relative flex flex-col" defaultValue="delivery" onValueChange={onTabChange}>
+        <TabsList>
+          <TabsTrigger value="delivery" className="w-full font-mono rounded-none p-0 h-full">
+            ДОСТАВКА
+          </TabsTrigger>
+          <TabsTrigger value="pickup" className="w-full font-mono rounded-none p-0 h-full">
+            САМОВЫВОЗ
+          </TabsTrigger>
+        </TabsList>
+
+        <div className={cn("relative", activeTab === "delivery" ? "h-delivery-tab" : "h-pickup-tab")}>
+          <TabsContent
+            value="delivery"
+            className={cn("absolute top-0 w-full", activeTab === "delivery" ? "" : "invisible")}
+          >
+            <div id="cdek-tab" className="relative grid gap-2 p-0">
+              {/* <div
+                id="cdek-map"
+                className={cn("", !isWidgetReady ? "invisible" : "h-96")}
+                ref={widgetContainerRef}
+              ></div> */}
+              {!isWidgetReady && (
+                <div className="h-96 flex flex-col items-center justify-center">
+                  <Loading />
+                </div>
+              )}
+
+              <div className="flex flex-col gap-2 items-start justify-center">
+                <span className="font-mono">Выбранный пункт: {pickupPointAddress}</span>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent
+            value="pickup"
+            className={cn("absolute top-0 w-full", activeTab === "pickup" ? "" : "invisible")}
+          >
+            <div className="font-mono">
+              Электролитный Проезд, 3, строение 19, Москва, Россия, 115230 <br />
+              <br />
+              10:00 - 18:00 <br />
+              Каждый день
+            </div>
+          </TabsContent>
+        </div>
+      </Tabs>
+    </div>
+  );
+};
+
 const CheckoutBlockContacts = ({ form }: CheckoutBlockProps) => {
   return (
     <Card className="border-0 sm:border">
@@ -143,6 +283,8 @@ const CheckoutBlockContacts = ({ form }: CheckoutBlockProps) => {
 };
 
 const CartPage = () => {
+  const [deliveryPrice, setDeliveryPrice] = useState<number | null>(0);
+
   const onSubmit = async (values: CheckoutForm) => {
     console.log("[checkout] submit values:", values);
   };
@@ -170,8 +312,8 @@ const CartPage = () => {
             <div className="grid gap-8">
               <CheckoutBlockCart />
               <CheckoutBlockContacts form={form} />
+              <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} />
               {/*
-            <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} />
             <CheckoutBlockPayment /> */}
             </div>
             {/* isOrderCreationLoading || isPaymentLoading */}

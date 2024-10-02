@@ -135,7 +135,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
   const [pickupPointAddress, setPickupPointAddress] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("delivery");
   const [isWidgetReady, setIsWidgetReady] = useState<boolean>(false);
-  // const widgetContainerRef = useRef<HTMLDivElement | null>(null);
+  const widgetContainerRef = useRef<HTMLDivElement | null>(null);
 
   const onTabChange = (value: string) => {
     setActiveTab(value);
@@ -178,7 +178,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
   //       },
   //     ],
   //     root: "cdek-map",
-  //     apiKey: import.meta.env.VITE_YANDEX_MAPS_KEY,
+  //     apiKey: process.env.VITE_YANDEX_MAPS_KEY,
   //     servicePath: servicePath,
   //     lang: "rus",
   //     currency: "RUB",
@@ -232,11 +232,11 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
             className={cn("absolute top-0 w-full", activeTab === "delivery" ? "" : "invisible")}
           >
             <div id="cdek-tab" className="relative grid gap-2 p-0">
-              {/* <div
+              <div
                 id="cdek-map"
                 className={cn("", !isWidgetReady ? "invisible" : "h-96")}
                 ref={widgetContainerRef}
-              ></div> */}
+              ></div>
               {!isWidgetReady && (
                 <div className="h-96 flex flex-col items-center justify-center">
                   <Loading />

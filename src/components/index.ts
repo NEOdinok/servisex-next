@@ -10,6 +10,7 @@ export { HeaderNavigation } from "./HeaderNavigation";
 export { HomeNavigation } from "./HomeNavigation";
 export { Welcome } from "./Welcome";
 export { ShopProductCard } from "./ShopProductCard";
+export { CartProductCard } from "./CartProductCard";
 export { ProductsShowcase } from "./ProductsShowcase";
 export { Gallery } from "./Gallery";
 export { ImageSlider } from "./ImageSlider";

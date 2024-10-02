@@ -33,6 +33,7 @@ export const CartProductCard = ({ product, prepareProductForDeletion }: CartProd
             <p className="font-mono text-xs md:text-sm text-muted-foreground ">
               Размер: {product.properties?.size ? <>{product.properties?.size}</> : <>Один размер</>}
             </p>
+            <p className="font-mono text-xs md:text-sm text-muted-foreground ">Цена: {product.price}₽</p>
           </div>
           <QuantitySelector offer={product} prepareProductForDeletion={prepareProductForDeletion} />
         </div>

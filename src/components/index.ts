@@ -25,6 +25,7 @@ export { Label } from "./ui/label";
 export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, BaseCarousel } from "./ui/carousel";
 export { InfoBlock } from "./ui/info-block";
 export { Toaster } from "./ui/toast";
+export { Separator } from "./ui/separator";
 
 export {
   Form,

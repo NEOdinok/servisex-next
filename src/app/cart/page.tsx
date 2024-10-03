@@ -19,9 +19,8 @@ import {
   FormMessage,
   Label,
   Loading,
-  Input,
-  // RadioGroup,
-  // RadioGroupItem,
+  RadioGroup,
+  RadioGroupItem,
   Separator,
   CheckoutFormField,
   Tabs,
@@ -282,6 +281,22 @@ const CheckoutBlockContacts = ({ form }: CheckoutBlockProps) => {
   );
 };
 
+const CheckoutBlockPayment = () => {
+  return (
+    <Card className="border-0 sm:border">
+      <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">СПОСОБ ОПЛАТЫ</p>
+      <CardContent className="p-0 sm:p-4">
+        <RadioGroup defaultValue="russian" className="grid gap-">
+          <Label htmlFor="russian" className="flex font-mono items-center gap-2 cursor-pointer ">
+            <RadioGroupItem id="russian" value="russian" />
+            РОССИЙСКАЯ КАРТА
+          </Label>
+        </RadioGroup>
+      </CardContent>
+    </Card>
+  );
+};
+
 const CartPage = () => {
   const [deliveryPrice, setDeliveryPrice] = useState<number | null>(0);
 
@@ -313,8 +328,7 @@ const CartPage = () => {
               <CheckoutBlockCart />
               <CheckoutBlockContacts form={form} />
               <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} />
-              {/*
-            <CheckoutBlockPayment /> */}
+              <CheckoutBlockPayment />
             </div>
             {/* isOrderCreationLoading || isPaymentLoading */}
             <CheckoutBlockTotal isLoading={false} deliveryPrice={0} />

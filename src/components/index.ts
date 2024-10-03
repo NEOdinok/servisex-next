@@ -28,6 +28,7 @@ export { InfoBlock } from "./ui/info-block";
 export { Toaster } from "./ui/toast";
 export { Separator } from "./ui/separator";
 export { Input } from "./ui/input";
+export { RadioGroup, RadioGroupItem } from "./ui/radio";
 
 export {
   Form,

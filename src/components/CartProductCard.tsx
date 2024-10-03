@@ -1,7 +1,8 @@
-import { CardContent, QuantitySelector, Button } from "@/components";
+import { MouseEvent } from "react";
+
+import { Button, CardContent, QuantitySelector } from "@/components";
 import { CartItem, PossibleOffer } from "@/types";
 import { X } from "lucide-react";
-import { MouseEvent } from "react";
 
 interface CartProductCardProps {
   product: CartItem;

@@ -1,6 +1,6 @@
+import { CartItem, PossibleOffer } from "@/types";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { PossibleOffer, CartItem } from "@/types";
 
 interface CartState {
   items: CartItem[];
@@ -38,7 +38,7 @@ export const useCart = create<CartState>()(
       decrementItemQuantity: (id) =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+            item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item,
           ),
         })),
       clearCart: () => set({ items: [] }),
@@ -46,6 +46,6 @@ export const useCart = create<CartState>()(
     {
       name: "goat-cart-storage",
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );

@@ -1,6 +1,6 @@
-import { BaseLayout } from "@/layouts/BaseLayout";
-import { Product, GetProductsResponse, ShopItem } from "@/types";
 import { ProductsShowcase } from "@/components";
+import { BaseLayout } from "@/layouts/BaseLayout";
+import { GetProductsResponse, Product, ShopItem } from "@/types";
 
 const transformAllProductsData = (products: Product[]): { transformedProducts: ShopItem[] } => {
   const transformedProducts: ShopItem[] = [];

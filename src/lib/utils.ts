@@ -1,6 +1,6 @@
+import { PossibleOffer } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { PossibleOffer } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -12,7 +12,7 @@ export const findOffer = (
   possibleOffers: PossibleOffer[],
   color: string | null,
   size: string | null,
-  productName: string
+  productName: string,
 ): PossibleOffer | null => {
   // Step 1: Find all offers that match the product name
   const matchingNameOffers = possibleOffers.filter((offer) => offer.name.includes(productName));

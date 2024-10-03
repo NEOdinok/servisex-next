@@ -1,7 +1,8 @@
-import background from "public/images/goat-home-image.webp";
-import Link from "next/link";
-import { IconInstagram, IconYoutube, IconGoatLogo } from "public/icons";
 import Image from "next/image";
+import Link from "next/link";
+import { IconGoatLogo, IconInstagram, IconYoutube } from "public/icons";
+import background from "public/images/goat-home-image.webp";
+
 import { HomeNavigation } from "./HomeNavigation";
 
 const Welcome = () => {

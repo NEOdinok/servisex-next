@@ -1,12 +1,12 @@
 "use client";
 
-import { PossibleOffer, CartItem } from "@/types";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components";
-import { PlusIcon, MinusIcon } from "lucide-react";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks";
+import { cn } from "@/lib/utils";
+import { CartItem, PossibleOffer } from "@/types";
+import { MinusIcon, PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 /** TODO:
  * is this ok or not: offer: PossibleOffer | CartItem;

@@ -1,5 +1,6 @@
-import { FormField, FormItem, FormControl, FormLabel, FormMessage, Input } from "@/components";
 import { Control } from "react-hook-form";
+
+import { FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@/components";
 import { CheckoutForm } from "@/lib/checkout-form";
 
 interface CheckoutFormFieldProps {

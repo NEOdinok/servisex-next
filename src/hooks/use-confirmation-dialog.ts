@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+
 import { PossibleOffer } from "@/types";
+
 import { useCart } from "./use-store";
 
 export const useProductDialog = () => {

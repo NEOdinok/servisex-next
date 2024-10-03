@@ -1,10 +1,11 @@
 "use client";
 
+import { ShopItem } from "@/types";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
-import { ShopProductCard } from "./ShopProductCard";
-import { ShopItem } from "@/types";
 import { useRouter } from "next/navigation";
+
+import { ShopProductCard } from "./ShopProductCard";
 
 interface ProductsShowcaseProps {
   products: ShopItem[];

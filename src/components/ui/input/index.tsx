@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FieldError } from "react-hook-form";
+
 import { cn } from "@/lib/utils";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -24,7 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
         isError
           ? "border-error focus-visible:ring-error focus-visible:border-error"
           : "border-input focus-visible:ring-primary  focus-visible:border-primary",
-        className
+        className,
       )}
       ref={ref}
       {...props}

@@ -1,7 +1,6 @@
+import { AddToCartForm, BaseCarousel, ConfirmationDialog, Gallery, InfoBlock } from "@/components";
 import { BaseLayout } from "@/layouts";
-import { ShopItem, GetProductsResponse, Product, ProductPreviewData, PossibleOffer } from "@/types";
-
-import { Gallery, BaseCarousel, InfoBlock, AddToCartForm, ConfirmationDialog } from "@/components";
+import { GetProductsResponse, PossibleOffer, Product, ProductPreviewData, ShopItem } from "@/types";
 
 interface ProductPageProps {
   params: {
@@ -169,7 +168,7 @@ const fetchSingleProduct = async (parentProductId: string, color?: string): Prom
     `${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}&filter[ids][]=${parentProductId}`,
     {
       cache: "force-cache",
-    }
+    },
   );
 
   if (!response.ok) {

@@ -1,11 +1,13 @@
+import { Toaster } from "@/components";
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/providers/ThemeProvider";
-import { cn } from "@/lib/utils";
-import { Toaster } from "@/components";
+import Script from "next/script";
 
-import Script from "next/script"; // Import Next.js Script component
+import "./globals.css";
+
+// Import Next.js Script component
 
 const roboto_mono = Roboto_Mono({ subsets: ["cyrillic"] });
 

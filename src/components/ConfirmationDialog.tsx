@@ -1,6 +1,5 @@
 "use client";
 
-import { PossibleOffer } from "@/types";
 import {
   Button,
   Dialog,
@@ -10,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components";
+import { PossibleOffer } from "@/types";
 
 interface Props {
   productToRemove?: PossibleOffer;

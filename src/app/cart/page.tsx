@@ -1,17 +1,17 @@
 "use client";
-import { BaseLayout } from "@/layouts/BaseLayout";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { useCart, useProductDialog } from "@/hooks";
+
 import {
   Button,
   Card,
   CardContent,
+  CartProductCard,
+  CheckoutFormField,
   ConfirmationDialog,
   Form,
-  CartProductCard,
   FormControl,
   FormField,
   FormItem,
@@ -22,14 +22,16 @@ import {
   RadioGroup,
   RadioGroupItem,
   Separator,
-  CheckoutFormField,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components";
+import { useCart, useProductDialog } from "@/hooks";
+import { BaseLayout } from "@/layouts/BaseLayout";
+import { CheckoutForm, formSchema } from "@/lib/checkout-form";
 import { cn } from "@/lib/utils";
-import { formSchema, CheckoutForm } from "@/lib/checkout-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface CheckoutBlockProps {
   form: UseFormReturn<CheckoutForm>;

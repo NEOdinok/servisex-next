@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { HeaderCartCounter, HeaderNavigation } from "@/components";
+import Link from "next/link";
 
 const BaseHeader = () => {
   const environment = process.env.NEXT_PUBLIC_ENV;

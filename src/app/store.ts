@@ -1,8 +1,8 @@
+import { baseApi } from "@/api";
+import { rootReducer } from "@/app/rootReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { baseApi } from "@/api";
-import { rootReducer } from "@/app/rootReducer";
 
 const persistConfig = {
   key: "root",

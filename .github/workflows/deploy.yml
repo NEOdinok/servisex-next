@@ -32,13 +32,6 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API}}
 
-      - name: Start deployment
-        uses: bobheadxi/deployments@v1
-        id: deployment
-        with:
-          env: prod
-          step: start
-
       - name: Deploy to Netlify
         uses: South-Paw/action-netlify-cli@v2
         id: netlify
@@ -49,3 +42,9 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API}}
+
+      - name: 'Deploy to Netlify'
+        uses: jsmrcaga/action-netlify-deploy@v2.0.0
+        with:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

@@ -32,6 +32,13 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API}}
 
+      - name: Start deployment
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          env: prod
+          step: start
+
       - name: Deploy to Netlify
         uses: South-Paw/action-netlify-cli@v2
         id: netlify

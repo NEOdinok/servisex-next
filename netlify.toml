@@ -1,11 +1,11 @@
-[context.production.environment]
-  NEXT_PUBLIC_ENV = "production"
+[site]
+  name = "goat-corp-next"
+  id = "feda64e1-4901-4701-9749-d7dce6d22a9f"
 
-[context.deploy-preview.environment]
-  NEXT_PUBLIC_ENV = "development"
+[functions]
+  directory = "netlify/functions"
 
-[context.branch-deploy.environment]
-  NEXT_PUBLIC_ENV = "development"
-
-[context.dev.environment]
-  NEXT_PUBLIC_ENV = "local"
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

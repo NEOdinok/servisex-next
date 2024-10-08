@@ -1,0 +1,21 @@
+.root {
+  height: 50px;
+  box-sizing: border-box;
+  border: 10px solid #000;
+  animation: l14 1s infinite;
+  aspect-ratio: 2;
+  background:
+    radial-gradient(farthest-side, #fff 98%, #0000) left/20px 20px,
+    radial-gradient(farthest-side, #fff 98%, #0000) left/20px 20px,
+    radial-gradient(farthest-side, #fff 98%, #0000) center/20px 20px,
+    radial-gradient(farthest-side, #fff 98%, #0000) right/20px 20px,
+    #000;
+  background-repeat: no-repeat;
+  filter: blur(4px) contrast(10);
+}
+
+@keyframes l14 {
+  100% {
+    background-position: right, left, center, right;
+  }
+}

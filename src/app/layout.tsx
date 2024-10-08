@@ -1,7 +1,13 @@
+import { Toaster } from "@/components";
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
+import Script from "next/script";
+
 import "./globals.css";
-import { ThemeProvider } from "@/providers/ThemeProvider";
+
+// Import Next.js Script component
 
 const roboto_mono = Roboto_Mono({ subsets: ["cyrillic"] });
 
@@ -17,10 +23,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto_mono.className}>
+      <body className={cn("antialiased", roboto_mono.className)}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           {children}
+          <Toaster />
         </ThemeProvider>
+        <Script
+          src="https://cdn.jsdelivr.net/npm/@cdek-it/widget@3"
+          strategy="afterInteractive" // Loads the script after the page is interactive
+          async // Adds async attribute
+        />
       </body>
     </html>
   );

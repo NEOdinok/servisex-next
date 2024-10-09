@@ -9,3 +9,9 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+[build]
+  command = "pnpm build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

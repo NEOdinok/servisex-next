@@ -36,23 +36,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build project
-        run: pnpm build
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API}}
-
       - name: Deploy to Netlify
         uses: South-Paw/action-netlify-cli@v2
         id: netlify
         with:
-          # note that the --json flag has been passed so we can parse outputs
-          args: deploy --json --prod --dir './public' --message 'production [${{ github.sha }}]'
+          args: deploy --json --prod --build --message 'production [${{ github.sha }}]'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API}}
+          NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API }}
 
       - name: Debug Netlify output
         run: echo "${{ steps.netlify.outputs.NETLIFY_OUTPUT }}"

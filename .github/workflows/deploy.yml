@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  deployments: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -50,6 +54,9 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API}}
 
+      - name: Debug Netlify output
+        run: echo "${{ steps.netlify.outputs.NETLIFY_OUTPUT }}"
+
       - name: Finish deployment
         uses: bobheadxi/deployments@v1
         if: always()
@@ -58,4 +65,4 @@ jobs:
           step: finish
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env_url: ${{ fromJson(steps.netlify.outputs.NETLIFY_OUTPUT).url }}
+          env_url: ${{ steps.netlify.outputs.NETLIFY_OUTPUT && fromJson(steps.netlify.outputs.NETLIFY_OUTPUT).url || '' }}

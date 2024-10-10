@@ -69,8 +69,8 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       height: {
-        "delivery-tab": "449px",
-        "pickup-tab": "129px",
+        "delivery-tab": "459px",
+        "pickup-tab": "153px",
       },
     },
   },

@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
-import Script from "next/script";
 
 import "./globals.css";
 
@@ -28,11 +27,6 @@ export default function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
-        <Script
-          src="https://cdn.jsdelivr.net/npm/@cdek-it/widget@3"
-          strategy="afterInteractive" // Loads the script after the page is interactive
-          async // Adds async attribute
-        />
       </body>
     </html>
   );

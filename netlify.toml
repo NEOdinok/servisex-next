@@ -2,12 +2,9 @@
   name = "goat-corp-next"
   id = "feda64e1-4901-4701-9749-d7dce6d22a9f"
 
-[functions]
-  directory = "netlify/functions"
-
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "/api/:splat"
   status = 200
 
 [build]

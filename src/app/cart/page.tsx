@@ -160,10 +160,10 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
       .then((position) => {
         const { latitude, longitude } = position.coords;
         setUserLocation([longitude, latitude]);
-        // setUserLocation([30.3609, 59.9311]);// piter debug
       })
       .catch((error) => {
-        console.error("Error getting user location:", error);
+        console.error("Error getting user location. Fallback to Moscow Kremlin 🇷🇺🐻🪆:", error);
+        setUserLocation([37.617664, 55.752121]); // moscow kremlin
       });
   }, []);
 

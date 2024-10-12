@@ -1,8 +1,6 @@
-import { baseApi } from "@/api";
-import { cartSlice } from "@/slices/cartSlice";
+import { clientApi } from "@/client-api";
 import { combineReducers } from "@reduxjs/toolkit";
 
 export const rootReducer = combineReducers({
-  [cartSlice.reducerPath]: cartSlice.reducer,
-  [baseApi.reducerPath]: baseApi.reducer,
+  [clientApi.reducerPath]: clientApi.reducer,
 });

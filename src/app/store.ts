@@ -1,5 +1,5 @@
-import { baseApi } from "@/api";
 import { rootReducer } from "@/app/rootReducer";
+import { clientApi } from "@/client-api";
 import { configureStore } from "@reduxjs/toolkit";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -19,7 +19,7 @@ export function makeStore() {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }).concat(baseApi.middleware),
+      }).concat(clientApi.middleware),
   });
 
   return store;

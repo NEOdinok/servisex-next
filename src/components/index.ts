@@ -20,6 +20,7 @@ export { HeaderCartCounter } from "./HeaderCartCounter";
 export { CheckoutFormField } from "./CheckoutFormField";
 
 export { Loading } from "./ui/loading";
+export { LoadingEllipsis } from "./ui/loading-ellipsis";
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./ui/card";
 export { Button } from "./ui/button";
 export { Label } from "./ui/label";

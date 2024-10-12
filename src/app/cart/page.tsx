@@ -19,6 +19,7 @@ import {
   FormMessage,
   Label,
   Loading,
+  LoadingEllipsis,
   RadioGroup,
   RadioGroupItem,
   Separator,
@@ -270,7 +271,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
                 ></div>
                 {!isWidgetReady && (
                   <div className="h-96 flex flex-col items-center justify-center">
-                    <Loading />
+                    <LoadingEllipsis text="СДЭК" />
                   </div>
                 )}
 

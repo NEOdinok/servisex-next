@@ -11,6 +11,8 @@ interface ProductPageProps {
 
 export const dynamicParams = false;
 
+// ---
+
 const transformAllProductsData = (products: Product[]): { transformedProducts: ShopItem[] } => {
   const transformedProducts: ShopItem[] = [];
 
@@ -133,21 +135,6 @@ const transformProductData = (product: Product, color?: string): ProductPreviewD
   };
 };
 
-const fetchProducts = async (): Promise<ShopItem[]> => {
-  const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
-  const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}`, {
-    cache: "force-cache",
-  });
-
-  if (!response.ok) {
-    throw new Error("[Product] Failed to fetch products");
-  }
-
-  const data: GetProductsResponse = await response.json();
-  const { transformedProducts } = transformAllProductsData(data.products);
-  return transformedProducts;
-};
-
 const transformProductOffers = (product: Product): PossibleOffer[] =>
   product.offers.map((offer) => ({
     isOutOfStock: offer.quantity === 0 ? true : false,
@@ -162,6 +149,23 @@ const transformProductOffers = (product: Product): PossibleOffer[] =>
       size: offer.properties?.size,
     },
   }));
+
+// ---
+
+const fetchProducts = async (): Promise<ShopItem[]> => {
+  const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
+  const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}`, {
+    cache: "force-cache",
+  });
+
+  if (!response.ok) {
+    throw new Error("[Product] Failed to fetch products");
+  }
+
+  const data: GetProductsResponse = await response.json();
+  const { transformedProducts } = transformAllProductsData(data.products);
+  return transformedProducts;
+};
 
 const fetchSingleProduct = async (parentProductId: string, color?: string): Promise<Product> => {
   const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
@@ -181,6 +185,8 @@ const fetchSingleProduct = async (parentProductId: string, color?: string): Prom
 
   return product;
 };
+
+// ---
 
 // Generate static paths based on fetched products
 export async function generateStaticParams() {

@@ -274,10 +274,6 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
                     <LoadingEllipsis text="СДЭК" />
                   </div>
                 )}
-
-                <div className="flex flex-col gap-2 items-start justify-center mt-2">
-                  <span className="font-mono">Выбранный пункт: {pickupPointAddress}</span>
-                </div>
               </div>
             </TabsContent>
 
@@ -293,6 +289,12 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
               </div>
             </TabsContent>
           </div>
+          {pickupPointAddress && (
+            <div className="flex flex-col gap-2 items-start justify-center mt-2">
+              <span className="font-mono">Выбранный пункт:</span>
+              <span className="font-mono">{pickupPointAddress}</span>
+            </div>
+          )}
         </Tabs>
       </div>
       <Script

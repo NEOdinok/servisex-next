@@ -1,8 +1,12 @@
+"use client";
+
 import { MouseEvent } from "react";
 
 import { Button, CardContent, QuantitySelector } from "@/components";
+import { formatPrice } from "@/lib/utils";
 import { CartItem, PossibleOffer } from "@/types";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface CartProductCardProps {
   product: CartItem;
@@ -10,16 +14,23 @@ interface CartProductCardProps {
 }
 
 export const CartProductCard = ({ product, prepareProductForDeletion }: CartProductCardProps) => {
+  const router = useRouter();
   const handleRemoveProduct = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     prepareProductForDeletion(product);
   };
 
+  const handleClick = () => {
+    router.push(`/shop/${product.parentProductId}/${product.properties.color || "one-color"}`);
+  };
+
   return (
     <CardContent className="p-0 py-2 sm:p-4">
-      <div className="grid gap-2">
+      <div className="grid gap-2 cursor-pointer">
         <div className="flex justify-between items-center gap-2">
-          <h3 className="font-mono font-medium uppercase">{product.parentProductName}</h3>
+          <h3 className="font-mono font-medium uppercase hover:underline" onClick={handleClick}>
+            {product.parentProductName}
+          </h3>
           <Button variant="ghost" size="icon" onClick={(e) => handleRemoveProduct(e)}>
             <X />
           </Button>
@@ -34,7 +45,7 @@ export const CartProductCard = ({ product, prepareProductForDeletion }: CartProd
             <p className="font-mono text-xs md:text-sm text-muted-foreground ">
               Размер: {product.properties?.size ? <>{product.properties?.size}</> : <>Один размер</>}
             </p>
-            <p className="font-mono text-xs md:text-sm text-muted-foreground ">Цена: {product.price}₽</p>
+            <p className="font-mono text-xs md:text-sm text-muted-foreground ">Цена: {formatPrice(product.price)} ₽</p>
           </div>
           <QuantitySelector offer={product} prepareProductForDeletion={prepareProductForDeletion} />
         </div>

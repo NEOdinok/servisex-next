@@ -152,6 +152,7 @@ const transformProductOffers = (product: Product): PossibleOffer[] =>
   product.offers.map((offer) => ({
     isOutOfStock: offer.quantity === 0 ? true : false,
     parentProductName: product.name,
+    parentProductId: product.id,
     name: offer.name,
     price: offer.price,
     images: offer.images || [],

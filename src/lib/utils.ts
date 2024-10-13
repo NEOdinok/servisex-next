@@ -36,3 +36,7 @@ export const findOffer = (
   // Return the first matching offer or null if no match is found
   return finalFilteredOffers.length > 0 ? finalFilteredOffers[0] : null;
 };
+
+export const formatPrice = (price: number): string => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};

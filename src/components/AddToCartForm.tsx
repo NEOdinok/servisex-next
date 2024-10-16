@@ -53,8 +53,6 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
     },
   });
 
-  type MultipleSizeForm = typeof form;
-
   const handleToast = (product: PossibleOffer) => {
     console.log("toast");
     toast("ТОВАР ДОБАВЛЕН В КОРЗИНУ", {

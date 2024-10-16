@@ -62,16 +62,6 @@ export interface Product {
   markable: boolean;
 }
 
-export interface ShopItem {
-  name: string;
-  imgs: string[];
-  parentProductId: number;
-  isOutOfStock: boolean;
-  price: number;
-  description: string;
-  color?: string;
-}
-
 export interface GetProductsResponse {
   success: boolean;
   pagination: Pagination;
@@ -110,4 +100,14 @@ export interface PossibleOffer {
     color?: string;
     size?: string;
   };
+}
+
+export interface ShopItem {
+  name: string;
+  imgs: string[];
+  parentProductId: number;
+  isOutOfStock: boolean;
+  price: number;
+  description: string;
+  color?: string;
 }

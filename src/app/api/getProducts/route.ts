@@ -1,7 +1,8 @@
 import { GetProductsResponse } from "@/types";
 import { NextResponse } from "next/server";
 
-// Make sure this path points to where your types are defined
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
 
@@ -17,7 +18,6 @@ export async function GET(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(data, {
       status: 200,
-      headers: createCorsHeaders(),
     });
   } catch (error) {
     console.error("❌ Error fetching products:", error);
@@ -25,16 +25,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       { error: "Failed fetching data" },
       {
         status: 500,
-        headers: createCorsHeaders(),
       },
     );
   }
-}
-
-function createCorsHeaders(): HeadersInit {
-  return {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
 }

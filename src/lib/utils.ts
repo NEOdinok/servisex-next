@@ -1,4 +1,5 @@
 import { PossibleOffer } from "@/types";
+import { Product, ShopItem } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -39,4 +40,66 @@ export const findOffer = (
 
 export const formatPrice = (price: number): string => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+export const transformAllProductsData = (products: Product[]): { transformedProducts: ShopItem[] } => {
+  const transformedProducts: ShopItem[] = [];
+
+  products.forEach((product) => {
+    const colorMap: { [key: string]: ShopItem } = {};
+    let noColorProduct: ShopItem | null = null;
+
+    product.offers.forEach((offer) => {
+      const color = offer.properties?.color;
+
+      if (!color) {
+        if (!noColorProduct) {
+          noColorProduct = {
+            name: product.name,
+            imgs: [...offer.images],
+            parentProductId: product.id,
+            price: product.minPrice,
+            isOutOfStock: offer.quantity === 0,
+            description: product.description,
+            color: color || "one-color", // Fallback value
+          };
+        } else {
+          noColorProduct.isOutOfStock = noColorProduct.isOutOfStock && offer.quantity === 0;
+
+          // Manually add unique images to the array
+          offer.images.forEach((img) => {
+            if (!noColorProduct!.imgs.includes(img)) {
+              noColorProduct!.imgs.push(img);
+            }
+          });
+        }
+      } else {
+        if (!colorMap[color]) {
+          colorMap[color] = {
+            name: `${product.name} ${color}`,
+            imgs: [...offer.images],
+            parentProductId: product.id,
+            price: offer.price,
+            isOutOfStock: true,
+            description: product.description,
+            color: color,
+          };
+        }
+
+        if (offer.quantity > 0) {
+          colorMap[color].isOutOfStock = false;
+        }
+      }
+    });
+
+    if (noColorProduct) {
+      transformedProducts.push(noColorProduct);
+    }
+
+    Object.values(colorMap).forEach((colorProduct) => {
+      transformedProducts.push(colorProduct);
+    });
+  });
+
+  return { transformedProducts };
 };

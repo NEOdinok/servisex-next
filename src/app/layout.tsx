@@ -1,12 +1,9 @@
-import { Toaster } from "@/components";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/providers/ThemeProvider";
+import { Providers } from "@/providers";
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 
 import "./globals.css";
-
-// Import Next.js Script component
 
 const roboto_mono = Roboto_Mono({ subsets: ["cyrillic"] });
 
@@ -15,18 +12,11 @@ export const metadata: Metadata = {
   description: "Description",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={cn("antialiased", roboto_mono.className)}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

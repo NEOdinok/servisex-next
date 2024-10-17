@@ -31,7 +31,7 @@ import {
 import { useCart, useProductDialog } from "@/hooks";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { CheckoutForm, formSchema } from "@/lib/checkout-form";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Script from "next/script";
 
@@ -106,7 +106,7 @@ const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) =
         <div className="grid gap-2">
           <div className="flex justify-between font-mono">
             <span>ТОВАРЫ</span>
-            <span>{productsPrice} ₽</span>
+            <span>{formatPrice(productsPrice)} ₽</span>
           </div>
           <div className="flex justify-between font-mono">
             <span>ДОСТАВКА</span>
@@ -274,10 +274,6 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
                     <LoadingEllipsis text="СДЭК" />
                   </div>
                 )}
-
-                <div className="flex flex-col gap-2 items-start justify-center mt-2">
-                  <span className="font-mono">Выбранный пункт: {pickupPointAddress}</span>
-                </div>
               </div>
             </TabsContent>
 
@@ -293,6 +289,12 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
               </div>
             </TabsContent>
           </div>
+          {pickupPointAddress && (
+            <div className="flex flex-col gap-2 items-start justify-center mt-2">
+              <span className="font-mono">Выбранный пункт:</span>
+              <span className="font-mono">{pickupPointAddress}</span>
+            </div>
+          )}
         </Tabs>
       </div>
       <Script

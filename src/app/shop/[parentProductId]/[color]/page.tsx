@@ -11,6 +11,8 @@ interface ProductPageProps {
 
 export const dynamicParams = false;
 
+// ---
+
 const transformAllProductsData = (products: Product[]): { transformedProducts: ShopItem[] } => {
   const transformedProducts: ShopItem[] = [];
 
@@ -133,6 +135,23 @@ const transformProductData = (product: Product, color?: string): ProductPreviewD
   };
 };
 
+const transformProductOffers = (product: Product): PossibleOffer[] =>
+  product.offers.map((offer) => ({
+    isOutOfStock: offer.quantity === 0 ? true : false,
+    parentProductName: product.name,
+    parentProductId: product.id,
+    name: offer.name,
+    price: offer.price,
+    images: offer.images || [],
+    id: offer.id,
+    properties: {
+      color: offer.properties?.color,
+      size: offer.properties?.size,
+    },
+  }));
+
+// ---
+
 const fetchProducts = async (): Promise<ShopItem[]> => {
   const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
   const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}`, {
@@ -147,20 +166,6 @@ const fetchProducts = async (): Promise<ShopItem[]> => {
   const { transformedProducts } = transformAllProductsData(data.products);
   return transformedProducts;
 };
-
-const transformProductOffers = (product: Product): PossibleOffer[] =>
-  product.offers.map((offer) => ({
-    isOutOfStock: offer.quantity === 0 ? true : false,
-    parentProductName: product.name,
-    name: offer.name,
-    price: offer.price,
-    images: offer.images || [],
-    id: offer.id,
-    properties: {
-      color: offer.properties?.color,
-      size: offer.properties?.size,
-    },
-  }));
 
 const fetchSingleProduct = async (parentProductId: string, color?: string): Promise<Product> => {
   const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
@@ -180,6 +185,8 @@ const fetchSingleProduct = async (parentProductId: string, color?: string): Prom
 
   return product;
 };
+
+// ---
 
 // Generate static paths based on fetched products
 export async function generateStaticParams() {

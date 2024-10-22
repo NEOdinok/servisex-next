@@ -115,7 +115,7 @@ const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) =
           <Separator />
           <div className="flex justify-between font-medium font-mono">
             <span>ИТОГО</span>
-            <span>{deliveryPrice ? deliveryPrice + productsPrice : productsPrice} ₽</span>
+            <span>{deliveryPrice ? formatPrice(deliveryPrice + productsPrice) : formatPrice(productsPrice)} ₽</span>
           </div>
         </div>
         <div className="relative group">
@@ -164,7 +164,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
       })
       .catch((error) => {
         console.error("Error getting user location. Fallback to Moscow Kremlin 🇷🇺🐻🪆:", error);
-        setUserLocation([37.617664, 55.752121]); // moscow kremlin
+        setUserLocation([37.617664, 55.752121]);
       });
   }, []);
 
@@ -290,7 +290,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
             </TabsContent>
           </div>
           {pickupPointAddress && (
-            <div className="flex flex-col gap-2 items-start justify-center mt-2">
+            <div className="flex flex-col gap-0 items-start justify-center mt-2">
               <span className="font-mono">Выбранный пункт:</span>
               <span className="font-mono">{pickupPointAddress}</span>
             </div>

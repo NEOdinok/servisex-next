@@ -16,12 +16,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Skeleton,
 } from "@/components";
 import { useCart, useProductDialog } from "@/hooks";
-import { cn, findOffer } from "@/lib/utils";
+import { cn, findAllPossibleOffersOfAProduct, findOffer, transformSingleProductData } from "@/lib/utils";
 import { PossibleOffer } from "@/types";
 import { ProductPreviewData } from "@/types";
+import { GetProductsResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -36,22 +39,35 @@ const FormSchema = z.object({
   size: z.string().min(1, { message: "Выберите размер" }),
 });
 
-const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
+const AddToCartForm = ({ product, color }: Props) => {
   const router = useRouter();
   const { addItem, items } = useCart();
-  const isOneSize = !product?.sizes.length;
   const [currentOffer, setCurrentOffer] = useState<PossibleOffer>();
-  const itemAlreadyInCart = currentOffer && items.some((item) => item.id === currentOffer?.id);
   type ProductForm = z.infer<typeof FormSchema>;
   const { isDialogOpen, offerToRemove, setIsDialogOpen, prepareProductForDeletion, handleRemoveProduct } =
     useProductDialog();
 
-  const form = useForm<ProductForm>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      size: product?.defaultSize,
+  type TransformedProductData = {
+    dynamicProduct: ProductPreviewData;
+    dynamicPossibleOffers: PossibleOffer[];
+  };
+
+  const { isLoading, error, data } = useQuery<GetProductsResponse, Error, TransformedProductData>({
+    queryKey: [product.parentProductId],
+    queryFn: () => fetch(`/api/getProductsByIds?ids=${product.parentProductId}`).then((res) => res.json()),
+    select: (data) => {
+      const rawProduct = data.products[0];
+      return {
+        dynamicProduct: transformSingleProductData(rawProduct),
+        dynamicPossibleOffers: findAllPossibleOffersOfAProduct(rawProduct),
+      };
     },
   });
+
+  const dynamicProduct = data?.dynamicProduct;
+  const dynamicPossibleOffers = data?.dynamicPossibleOffers;
+  const itemAlreadyInCart = dynamicPossibleOffers && items.some((item) => item.id === dynamicProduct?.parentProductId);
+  const isOneSize = !dynamicProduct?.sizes.length;
 
   const handleToast = (product: PossibleOffer) => {
     console.log("toast");
@@ -68,23 +84,48 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
     });
   };
 
+  const handleAddProductToCart = (data: ProductForm) => {
+    if (dynamicPossibleOffers) {
+      const offer = findOffer(dynamicPossibleOffers, color, data.size, product?.name);
+      if (offer) {
+        addItem(offer);
+        handleToast(offer);
+      }
+    }
+  };
+
+  const form = useForm<ProductForm>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      size: "",
+    },
+  });
+
   const size = useWatch({
     control: form.control,
     name: "size",
   });
 
   useEffect(() => {
-    const offer = findOffer(possibleOffers, color, size, product?.name);
-    offer && setCurrentOffer(offer);
-  }, [color, size, possibleOffers, product?.name]);
-
-  const handleAddProductToCart = (data: ProductForm) => {
-    const offer = findOffer(possibleOffers, color, data.size, product?.name);
-    if (offer) {
-      addItem(offer);
-      handleToast(offer);
+    if (dynamicPossibleOffers) {
+      const offer = findOffer(dynamicPossibleOffers, color, size, product?.name);
+      offer && setCurrentOffer(offer);
     }
-  };
+  }, [color, size, dynamicPossibleOffers, product?.name]);
+
+  if (isLoading) {
+    return (
+      <div className="grid gap-4 mt-4 pointer-events-none">
+        <div className="flex flex-col items-center gap-4 w-full">
+          <div className="flex gap-4 w-full">
+            <Skeleton className="h-12 flex-grow border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium" />
+            <Skeleton className="h-12 flex-grow border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium" />
+          </div>
+          <Skeleton className="h-12 w-full border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium"></Skeleton>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -93,7 +134,7 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
           <div className="flex flex-col items-center gap-4 w-full">
             <div className="flex gap-4 w-full">
               {isOneSize ? (
-                <div className="h-12 w-full border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
+                <div className="h-12 w-full flex-grow max-w-[50%] border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
                   один размер
                 </div>
               ) : (
@@ -101,11 +142,11 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
                   control={form.control}
                   name="size"
                   render={({ field, fieldState }) => (
-                    <FormItem className="w-full max-w-[50%]">
+                    <FormItem className="h-12 border border-foreground w-full flex-grow max-w-[50%] flex items-center justify-center font-mono uppercase text-xs font-medium">
                       <DelayedSelect onValueChange={field.onChange} defaultValue={product?.defaultSize}>
                         <FormControl>
                           <SelectTrigger
-                            className={cn("border-foreground focus-visible:border-primary", {
+                            className={cn("focus-visible:border-primary w-full", {
                               "border-error": fieldState.error,
                             })}
                           >
@@ -113,7 +154,7 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {product.sizes.map((size) => (
+                          {dynamicProduct.sizes.map((size) => (
                             <SelectItem key={size.value} value={size.value} disabled={!size.quantity}>
                               <span
                                 className={cn("uppercase font-mono w-full", {
@@ -137,7 +178,7 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
               <QuantitySelector
                 offer={currentOffer}
                 prepareProductForDeletion={prepareProductForDeletion}
-                className="w-full max-w-[50%]"
+                className="flex-grow max-w-[50%]"
               />
             </div>
 
@@ -162,6 +203,29 @@ const AddToCartForm = ({ product, color, possibleOffers }: Props) => {
       />
     </>
   );
+
+  // return (
+  //   <>
+  //     <Form {...form}>
+  //       <form onSubmit={form.handleSubmit(handleAddProductToCart)} className="grid gap-4 mt-4">
+  //         <div className="flex flex-col items-center gap-4 w-full">
+  //           <div className="flex gap-4 w-full">
+  //             <div className="h-12 w-full flex-grow max-w-[50%] border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
+  //               Size
+  //             </div>
+  //             <div className="h-12 w-full flex-grow max-w-[50%] border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
+  //               Quantity
+  //             </div>
+  //           </div>
+
+  //           <div className="h-12 w-full flex-grow border border-primary flex items-center justify-center font-mono uppercase text-xs font-medium">
+  //             submit
+  //           </div>
+  //         </div>
+  //       </form>
+  //     </Form>
+  //   </>
+  // );
 };
 
 export { AddToCartForm };

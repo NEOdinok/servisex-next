@@ -30,6 +30,7 @@ export { Toaster } from "./ui/toast";
 export { Separator } from "./ui/separator";
 export { Input } from "./ui/input";
 export { RadioGroup, RadioGroupItem } from "./ui/radio";
+export { Skeleton } from "./ui/skeleton";
 
 export {
   Form,

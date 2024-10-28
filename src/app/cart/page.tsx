@@ -32,6 +32,7 @@ import { useCart, useProductDialog } from "@/hooks";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { CheckoutForm, formSchema } from "@/lib/checkout-form";
 import { cn, formatPrice } from "@/lib/utils";
+import { PickupPoint } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Script from "next/script";
 
@@ -130,11 +131,11 @@ const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) =
   );
 };
 
-interface DeliveryBlockProps {
+interface DeliveryBlockProps extends CheckoutBlockProps {
   setDeliveryPrice: React.Dispatch<SetStateAction<number | null>>;
 }
 
-const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
+const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockProps) => {
   const [pickupPointAddress, setPickupPointAddress] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("delivery");
   const [isWidgetReady, setIsWidgetReady] = useState<boolean>(false);
@@ -145,6 +146,12 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
   const onTabChange = (value: string) => {
     setActiveTab(value);
   };
+
+  useEffect(() => {
+    if (pickupPointAddress) {
+      form.setValue("address", pickupPointAddress);
+    }
+  }, [pickupPointAddress, form]);
 
   const getUserLocation = (): Promise<GeolocationPosition> => {
     return new Promise((resolve, reject) => {
@@ -219,9 +226,9 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
         onReady() {
           setIsWidgetReady(true); // Hide loading component
         },
-        onChoose(mode: unknown, second: { delivery_sum: number }, office: { address: SetStateAction<string> }) {
+        onChoose(mode: unknown, second: { delivery_sum: number }, office: PickupPoint) {
           console.log("[Widget] onChoose", mode, "second:", second, "office:", office);
-          setPickupPointAddress(office.address);
+          setPickupPointAddress(office.city + office.address);
           setPrice(second.delivery_sum);
         },
         onCalculate(obj: unknown) {
@@ -237,10 +244,9 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
     const servicePath = `${process.env.NEXT_PUBLIC_SITE_URL}/api/cdek`;
 
     if (document.getElementById("cdek-map") && !window.CDEKWidgetInitialized) {
-      setIsWidgetReady(false); // Show loading component
+      setIsWidgetReady(false);
       initializeCDEKWidget(servicePath, setPickupPointAddress, setDeliveryPrice, setIsWidgetReady);
       console.log("useEffect:", isScriptLoaded);
-      console.log("useEffect:", userLocation);
     }
   }, [isScriptLoaded, setPickupPointAddress, setDeliveryPrice, userLocation]);
 
@@ -376,11 +382,11 @@ const CartPage = () => {
             <div className="grid gap-8">
               <CheckoutBlockCart />
               <CheckoutBlockContacts form={form} />
-              <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} />
+              <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} form={form} />
               <CheckoutBlockPayment />
             </div>
             {/* isOrderCreationLoading || isPaymentLoading */}
-            <CheckoutBlockTotal isLoading={false} deliveryPrice={0} />
+            <CheckoutBlockTotal isLoading={false} deliveryPrice={deliveryPrice} />
           </form>
         </div>
       </Form>

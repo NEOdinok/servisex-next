@@ -15,3 +15,5 @@ export { type CartItem } from "./cart";
 export { type YookassaPaymentResponse } from "./yookassa";
 
 export { type Customer, type OrderItem, type Order, type CreateOrderResponse } from "./retail-crm";
+
+export { type PickupPoint } from "./cdek";

@@ -228,7 +228,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockProps) =
         },
         onChoose(mode: unknown, second: { delivery_sum: number }, office: PickupPoint) {
           console.log("[Widget] onChoose", mode, "second:", second, "office:", office);
-          setPickupPointAddress(office.city + office.address);
+          setPickupPointAddress(`${office.city} ${office.address}`);
           setPrice(second.delivery_sum);
         },
         onCalculate(obj: unknown) {

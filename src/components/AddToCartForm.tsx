@@ -42,7 +42,7 @@ const FormSchema = z.object({
 const AddToCartForm = ({ product, color }: Props) => {
   const router = useRouter();
   const { addItem, items } = useCart();
-  const [currentOffer, setCurrentOffer] = useState<PossibleOffer>();
+  const [currentOffer, setCurrentOffer] = useState<PossibleOffer | undefined>();
   type ProductForm = z.infer<typeof FormSchema>;
   const { isDialogOpen, offerToRemove, setIsDialogOpen, prepareProductForDeletion, handleRemoveProduct } =
     useProductDialog();
@@ -57,17 +57,21 @@ const AddToCartForm = ({ product, color }: Props) => {
     queryFn: () => fetch(`/api/getProductsByIds?ids=${product.parentProductId}`).then((res) => res.json()),
     select: (data) => {
       const rawProduct = data.products[0];
+      const dynamicProduct = transformSingleProductData(rawProduct);
+      const dynamicPossibleOffers = findAllPossibleOffersOfAProduct(rawProduct);
       return {
-        dynamicProduct: transformSingleProductData(rawProduct),
-        dynamicPossibleOffers: findAllPossibleOffersOfAProduct(rawProduct),
+        dynamicProduct,
+        dynamicPossibleOffers,
       };
     },
   });
 
   const dynamicProduct = data?.dynamicProduct;
   const dynamicPossibleOffers = data?.dynamicPossibleOffers;
-  const itemAlreadyInCart = dynamicPossibleOffers && items.some((item) => item.id === dynamicProduct?.parentProductId);
+  const itemAlreadyInCart = dynamicPossibleOffers && items.some((item) => item.id === currentOffer?.id);
   const isOneSize = !dynamicProduct?.sizes.length;
+  const initialSize =
+    dynamicPossibleOffers && dynamicPossibleOffers?.find((offer) => !offer.isOutOfStock)?.properties.size;
 
   const handleToast = (product: PossibleOffer) => {
     console.log("toast");
@@ -101,6 +105,14 @@ const AddToCartForm = ({ product, color }: Props) => {
     },
   });
 
+  useEffect(() => {
+    if (initialSize) {
+      form.reset({
+        size: initialSize,
+      });
+    }
+  }, [initialSize, form]);
+
   const size = useWatch({
     control: form.control,
     name: "size",
@@ -113,7 +125,7 @@ const AddToCartForm = ({ product, color }: Props) => {
     }
   }, [color, size, dynamicPossibleOffers, product?.name]);
 
-  if (isLoading) {
+  if (isLoading || !initialSize) {
     return (
       <div className="grid gap-4 mt-4 pointer-events-none">
         <div className="flex flex-col items-center gap-4 w-full">
@@ -143,7 +155,7 @@ const AddToCartForm = ({ product, color }: Props) => {
                   name="size"
                   render={({ field, fieldState }) => (
                     <FormItem className="h-12 border border-foreground w-full flex-grow max-w-[50%] flex items-center justify-center font-mono uppercase text-xs font-medium">
-                      <DelayedSelect onValueChange={field.onChange} defaultValue={product?.defaultSize}>
+                      <DelayedSelect onValueChange={field.onChange} defaultValue={initialSize}>
                         <FormControl>
                           <SelectTrigger
                             className={cn("focus-visible:border-primary w-full", {
@@ -203,29 +215,6 @@ const AddToCartForm = ({ product, color }: Props) => {
       />
     </>
   );
-
-  // return (
-  //   <>
-  //     <Form {...form}>
-  //       <form onSubmit={form.handleSubmit(handleAddProductToCart)} className="grid gap-4 mt-4">
-  //         <div className="flex flex-col items-center gap-4 w-full">
-  //           <div className="flex gap-4 w-full">
-  //             <div className="h-12 w-full flex-grow max-w-[50%] border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
-  //               Size
-  //             </div>
-  //             <div className="h-12 w-full flex-grow max-w-[50%] border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
-  //               Quantity
-  //             </div>
-  //           </div>
-
-  //           <div className="h-12 w-full flex-grow border border-primary flex items-center justify-center font-mono uppercase text-xs font-medium">
-  //             submit
-  //           </div>
-  //         </div>
-  //       </form>
-  //     </Form>
-  //   </>
-  // );
 };
 
 export { AddToCartForm };

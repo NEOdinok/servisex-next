@@ -11,15 +11,15 @@ export const isClient = (): boolean => typeof window !== "undefined";
 
 export const findOffer = (
   possibleOffers: PossibleOffer[],
-  color: string | null,
-  size: string | null,
+  color: string | null | undefined,
+  size: string | null | undefined,
   productName: string,
-): PossibleOffer | null => {
+): PossibleOffer | undefined => {
   // Step 1: Find all offers that match the product name
   const matchingNameOffers = possibleOffers.filter((offer) => offer.name.includes(productName));
 
   if (matchingNameOffers.length === 0) {
-    return null; // No matching name offers
+    return undefined; // No matching name offers
   }
 
   // Step 2: If size is not "one-size", filter by matching size
@@ -35,7 +35,7 @@ export const findOffer = (
   }
 
   // Return the first matching offer or null if no match is found
-  return finalFilteredOffers.length > 0 ? finalFilteredOffers[0] : null;
+  return finalFilteredOffers.length > 0 ? finalFilteredOffers[0] : undefined;
 };
 
 export const formatPrice = (price: number): string => {
@@ -174,7 +174,7 @@ export const findAllPossibleOffersOfAProduct = (product: Product): PossibleOffer
     images: offer.images || [],
     id: offer.id,
     properties: {
-      color: offer.properties?.color,
-      size: offer.properties?.size,
+      color: offer.properties?.color || "one-color",
+      size: offer.properties?.size || "one-size",
     },
   }));

@@ -89,10 +89,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             <div className="grid gap-4 mt-8 text-xs leading-loose">
-              <InfoBlock
-                title="описание"
-                content={<span className="font-mono uppercase">{product?.description}</span>}
-              />
+              <InfoBlock title="описание" content={<span className="font-mono">{product?.description}</span>} />
             </div>
 
             <AddToCartForm product={product} color={color} possibleOffers={productPossibleOffers} />

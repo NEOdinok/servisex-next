@@ -1,5 +1,3 @@
-import { Control, FieldValues, useForm } from "react-hook-form";
-
 import { z } from "zod";
 
 export const formSchema = z.object({
@@ -25,13 +23,9 @@ export const formSchema = z.object({
     .min(2, {
       message: "[Строка] Номер не может быть таким коротким",
     }),
-  address: z
-    .string({
-      message: "Введите",
-    })
-    .min(2, {
-      message: "Введите больше 2 символов",
-    }),
+  address: z.string({
+    message: "Для заказа, выберите пункт выдачи СДЭК",
+  }),
 });
 
 export type CheckoutForm = z.infer<typeof formSchema>;

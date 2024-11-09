@@ -20,3 +20,9 @@ export interface YookassaPaymentResponse {
   refundable: boolean;
   test: boolean;
 }
+
+export interface YookassaPaymentRequest {
+  value: number;
+  description: string;
+  metadata: { orderId: number };
+}

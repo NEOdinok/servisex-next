@@ -1,3 +1,3 @@
-export { useProductDialog } from "./use-confirmation-dialog";
-export { useCart } from "./use-store";
-export { useIntro } from "./use-intro";
+export { useProductDialog } from "./useConfirmationDialog";
+export { useCart } from "./useStore";
+export { useIntro } from "./useIntro";

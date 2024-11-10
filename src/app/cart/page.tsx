@@ -1,8 +1,7 @@
 "use client";
 
 import { SetStateAction, useEffect, useRef, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { useForm } from "react-hook-form";
+import { FieldError, UseFormReturn, useForm } from "react-hook-form";
 
 import {
   Button,
@@ -12,13 +11,7 @@ import {
   CheckoutFormField,
   ConfirmationDialog,
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   Label,
-  Loading,
   LoadingEllipsis,
   RadioGroup,
   RadioGroupItem,
@@ -32,7 +25,10 @@ import { useCart, useProductDialog } from "@/hooks";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { CheckoutForm, formSchema } from "@/lib/checkout-form";
 import { cn, formatPrice } from "@/lib/utils";
+import { CreateOrderResponse, Order, PickupPoint, YookassaPaymentResponse } from "@/types";
+import { YookassaPaymentRequest } from "@/types/yookassa";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import Script from "next/script";
 
 interface CheckoutBlockProps {
@@ -115,13 +111,19 @@ const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) =
           <Separator />
           <div className="flex justify-between font-medium font-mono">
             <span>ИТОГО</span>
-            <span>{deliveryPrice ? deliveryPrice + productsPrice : productsPrice} ₽</span>
+            <span>{deliveryPrice ? formatPrice(deliveryPrice + productsPrice) : formatPrice(productsPrice)} ₽</span>
           </div>
         </div>
         <div className="relative group">
           {/* group-hover:visible */}
           {/* <img src={speed2} alt="Speed gif" className="absolute invisible -top-24 left-0 " /> */}
-          <Button type="submit" size="lg" className="w-full" loading={isLoading} disabled={cartItemsCount === 0}>
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full"
+            loading={isLoading}
+            disabled={cartItemsCount === 0 || isLoading}
+          >
             ОПЛАТИТЬ
           </Button>
         </div>
@@ -130,21 +132,53 @@ const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) =
   );
 };
 
-interface DeliveryBlockProps {
-  setDeliveryPrice: React.Dispatch<SetStateAction<number | null>>;
+interface DeliveryBlockProps extends CheckoutBlockProps {
+  setDeliveryPrice: React.Dispatch<SetStateAction<number>>;
 }
 
-const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
+const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockProps) => {
   const [pickupPointAddress, setPickupPointAddress] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("delivery");
   const [isWidgetReady, setIsWidgetReady] = useState<boolean>(false);
+  const addressErrorRef = useRef<HTMLSpanElement | null>(null);
   const widgetContainerRef = useRef<HTMLDivElement | null>(null);
   const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 
+  const { formState, setValue, trigger } = form;
+  const addressError = formState.errors.address as FieldError | undefined;
+
+  // Only scroll to address if no errors in contacts
+  const anyErrorApartFromAddress =
+    (formState.errors.firstName as FieldError) ||
+    (formState.errors.lastName as FieldError) ||
+    (formState.errors.email as FieldError) ||
+    (formState.errors.phone as FieldError);
+
+  // This eslint disable helps us only scroll to address error when submit btn is re-clicked
+  // If we keep anyErrorApartFromAddress in a dependency array then page is scrolled weirdly as soon as
+  // letters are typed in an input.
+  // ***
+  // This leads to error inputs being impossible to type in
+  // And weird scroll behavior. Page does not even scroll to address error
+  // it does a random scroll
+  useEffect(() => {
+    if (!anyErrorApartFromAddress && addressError && addressErrorRef.current) {
+      addressErrorRef.current.scrollIntoView({ behavior: "instant", block: "center" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addressError]);
+
   const onTabChange = (value: string) => {
     setActiveTab(value);
   };
+
+  useEffect(() => {
+    if (pickupPointAddress) {
+      setValue("address", pickupPointAddress);
+      trigger("address");
+    }
+  }, [pickupPointAddress, setValue, trigger]);
 
   const getUserLocation = (): Promise<GeolocationPosition> => {
     return new Promise((resolve, reject) => {
@@ -164,7 +198,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
       })
       .catch((error) => {
         console.error("Error getting user location. Fallback to Moscow Kremlin 🇷🇺🐻🪆:", error);
-        setUserLocation([37.617664, 55.752121]); // moscow kremlin
+        setUserLocation([37.617664, 55.752121]);
       });
   }, []);
 
@@ -174,7 +208,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
     const initializeCDEKWidget = (
       servicePath: string,
       setPickupPointAddress: React.Dispatch<React.SetStateAction<string>>,
-      setPrice: React.Dispatch<React.SetStateAction<number | null>>,
+      setPrice: React.Dispatch<React.SetStateAction<number>>,
       setIsWidgetReady: React.Dispatch<React.SetStateAction<boolean>>,
     ) => {
       if (!document.getElementById("cdek-map")) return;
@@ -219,9 +253,9 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
         onReady() {
           setIsWidgetReady(true); // Hide loading component
         },
-        onChoose(mode: unknown, second: { delivery_sum: number }, office: { address: SetStateAction<string> }) {
+        onChoose(mode: unknown, second: { delivery_sum: number }, office: PickupPoint) {
           console.log("[Widget] onChoose", mode, "second:", second, "office:", office);
-          setPickupPointAddress(office.address);
+          setPickupPointAddress(`${office.city} ${office.address}`);
           setPrice(second.delivery_sum);
         },
         onCalculate(obj: unknown) {
@@ -237,10 +271,8 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
     const servicePath = `${process.env.NEXT_PUBLIC_SITE_URL}/api/cdek`;
 
     if (document.getElementById("cdek-map") && !window.CDEKWidgetInitialized) {
-      setIsWidgetReady(false); // Show loading component
+      setIsWidgetReady(false);
       initializeCDEKWidget(servicePath, setPickupPointAddress, setDeliveryPrice, setIsWidgetReady);
-      console.log("useEffect:", isScriptLoaded);
-      console.log("useEffect:", userLocation);
     }
   }, [isScriptLoaded, setPickupPointAddress, setDeliveryPrice, userLocation]);
 
@@ -290,10 +322,15 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice }: DeliveryBlockProps) => {
             </TabsContent>
           </div>
           {pickupPointAddress && (
-            <div className="flex flex-col gap-2 items-start justify-center mt-2">
+            <div className="flex flex-col gap-0 items-start justify-center mt-2">
               <span className="font-mono">Выбранный пункт:</span>
               <span className="font-mono">{pickupPointAddress}</span>
             </div>
+          )}
+          {addressError && (
+            <span className="text-xs text-error mt-2" ref={addressErrorRef}>
+              {addressError.message}
+            </span>
           )}
         </Tabs>
       </div>
@@ -347,11 +384,13 @@ const CheckoutBlockPayment = () => {
 };
 
 const CartPage = () => {
-  const [deliveryPrice, setDeliveryPrice] = useState<number | null>(0);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [deliveryPrice, setDeliveryPrice] = useState<number>(0);
+  const { items: cartItems } = useCart();
 
-  const onSubmit = async (values: CheckoutForm) => {
-    console.log("[checkout] submit values:", values);
-  };
+  const productsPrice = cartItems.reduce((total, item) => {
+    return total + item.price * item.quantity;
+  }, 0);
 
   const form = useForm<CheckoutForm>({
     resolver: zodResolver(formSchema),
@@ -361,9 +400,68 @@ const CartPage = () => {
       familyName: "Гоша",
       email: "gosha@gmail.com",
       phone: "+79093555555",
-      address: "Видное Солнечный 5 кв95",
+      address: undefined,
     },
   });
+
+  const createOrderMutation = useMutation<CreateOrderResponse, Error, Partial<Order>>({
+    mutationFn: async (order) => {
+      const response = await fetch("/api/createOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ order }),
+      });
+      if (!response.ok) throw new Error("Failed to create order");
+      return response.json() as Promise<CreateOrderResponse>;
+    },
+  });
+
+  const createTestPaymentMutation = useMutation<YookassaPaymentResponse, Error, YookassaPaymentRequest>({
+    mutationFn: async (paymentDetails) => {
+      const response = await fetch("/api/createTestPayment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paymentDetails),
+      });
+      if (!response.ok) throw new Error("Failed to create payment");
+      return response.json() as Promise<YookassaPaymentResponse>;
+    },
+  });
+
+  const onSubmit = async (values: CheckoutForm) => {
+    try {
+      setIsSubmitting(true);
+      const order = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+        items: cartItems.map((item) => ({
+          offer: { id: item.id },
+          quantity: item.quantity,
+        })),
+        delivery: {
+          code: "courier",
+          address: { text: values.address },
+        },
+      };
+      // Using await instead of nesting with callbacks
+      const createOrderRes = await createOrderMutation.mutateAsync(order);
+      console.log("Order created successfully:", createOrderRes);
+
+      const paymentDetails = {
+        value: productsPrice + deliveryPrice,
+        description: `Created order id: ${createOrderRes.id} Offer ids: ${cartItems.map((item) => item.id)}`,
+        metadata: { orderId: createOrderRes.id },
+      };
+
+      const createPaymentRes = await createTestPaymentMutation.mutateAsync(paymentDetails);
+
+      window.location.href = createPaymentRes.confirmation.confirmation_url;
+      setIsSubmitting(false);
+    } catch (error) {
+      console.error("Submission failed:", error);
+    }
+  };
 
   return (
     <BaseLayout>
@@ -376,11 +474,11 @@ const CartPage = () => {
             <div className="grid gap-8">
               <CheckoutBlockCart />
               <CheckoutBlockContacts form={form} />
-              <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} />
+              <CheckoutBlockDelivery setDeliveryPrice={setDeliveryPrice} form={form} />
               <CheckoutBlockPayment />
             </div>
             {/* isOrderCreationLoading || isPaymentLoading */}
-            <CheckoutBlockTotal isLoading={false} deliveryPrice={0} />
+            <CheckoutBlockTotal isLoading={isSubmitting} deliveryPrice={deliveryPrice} />
           </form>
         </div>
       </Form>

@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 
 const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
 
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const ids = searchParams.get("ids");

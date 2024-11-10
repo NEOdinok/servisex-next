@@ -55,6 +55,9 @@ importers:
       framer-motion:
         specifier: ^11.3.30
         version: 11.3.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      ip-range-check:
+        specifier: ^0.2.0
+        version: 0.2.0
       lucide-react:
         specifier: ^0.435.0
         version: 0.435.0(react@18.3.1)
@@ -97,6 +100,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.10(ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4)))
+      uuid:
+        specifier: ^11.0.2
+        version: 11.0.2
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -5079,6 +5085,10 @@ packages:
     resolution:
       { integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA== }
 
+  ip-range-check@0.2.0:
+    resolution:
+      { integrity: sha512-oaM3l/3gHbLlt/tCWLvt0mj1qUaI+STuRFnUvARGCujK9vvU61+2JsDpmkMzR4VsJhuFXWWgeKKVnwwoFfzCqw== }
+
   ipaddr.js@1.9.1:
     resolution:
       { integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g== }
@@ -8082,6 +8092,11 @@ packages:
     resolution:
       { integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA== }
     engines: { node: ">= 0.4.0" }
+
+  uuid@11.0.2:
+    resolution:
+      { integrity: sha512-14FfcOJmqdjbBPdDjFQyk/SdT4NySW4eM0zcG+HqbHP5jzuH56xO3J1DGhgs/cEMCfwYi3HQI1gnTO62iaG+tQ== }
+    hasBin: true
 
   uuid@9.0.1:
     resolution:
@@ -13013,6 +13028,10 @@ snapshots:
     dependencies:
       loose-envify: 1.4.0
 
+  ip-range-check@0.2.0:
+    dependencies:
+      ipaddr.js: 1.9.1
+
   ipaddr.js@1.9.1: {}
 
   ipx@2.1.0(@netlify/blobs@8.0.0):
@@ -15580,6 +15599,8 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   utils-merge@1.0.1: {}
+
+  uuid@11.0.2: {}
 
   uuid@9.0.1: {}
 

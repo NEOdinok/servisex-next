@@ -46,6 +46,10 @@ export const transformAllProductsData = (products: Product[]): { transformedProd
   const transformedProducts: ShopItem[] = [];
 
   products.forEach((product) => {
+    if (!product.active) {
+      return;
+    }
+
     const colorMap: { [key: string]: ShopItem } = {};
     let noColorProduct: ShopItem | null = null;
 

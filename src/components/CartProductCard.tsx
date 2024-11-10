@@ -37,7 +37,13 @@ export const CartProductCard = ({ product, prepareProductForDeletion }: CartProd
         </div>
         <div className="grid grid-cols-[64px_1fr_auto] items-center gap-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={product.images[0]} alt="Product template" width={64} height={64} />
+          <img
+            src={product.images[0]}
+            alt="Product template"
+            width={64}
+            height={64}
+            className="object-cover aspect-square"
+          />
           <div>
             <p className="font-mono text-xs sm:text-sm text-muted-foreground ">
               Цвет: {product.properties?.color ? <>{product.properties?.color} </> : <>Один цвет</>}

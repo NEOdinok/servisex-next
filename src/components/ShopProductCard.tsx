@@ -26,7 +26,7 @@ export const ShopProductCard = ({ product, onClick }: Props) => {
           unoptimized
           width={1}
           height={1}
-          className={`w-full h-auto ${
+          className={`aspect-square w-full h-auto object-cover ${
             product.isOutOfStock
               ? "opacity-50"
               : "group-hover:opacity-70 group-hover:border-2 group-hover:border-primary"

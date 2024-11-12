@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Card, CardContent, Label } from "@/components";
+import { formatPrice } from "@/lib/utils";
 import type { ShopItem } from "@/types";
 import Image from "next/image";
 
@@ -42,7 +43,7 @@ export const ShopProductCard = ({ product, onClick }: Props) => {
         <div className="grid w-full h-full items-center gap-4">
           <div className="flex flex-col space-y-1.5 gap-2 font-mono">
             <Label className="font-mono font-normal">{product.name}</Label>
-            <Label className="font-mono font-normal">{product.price} ₽</Label>
+            <Label className="font-mono font-normal">{formatPrice(product.price)} ₽</Label>
           </div>
         </div>
       </CardContent>

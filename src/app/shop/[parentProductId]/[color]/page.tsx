@@ -1,5 +1,6 @@
 import { AddToCartForm, BaseCarousel, ConfirmationDialog, Gallery, InfoBlock } from "@/components";
 import { BaseLayout } from "@/layouts";
+import { formatPrice } from "@/lib/utils";
 import { findAllPossibleOffersOfAProduct, transformAllProductsData, transformSingleProductData } from "@/lib/utils";
 import { GetProductsResponse, PossibleOffer, Product, ProductPreviewData, ShopItem } from "@/types";
 
@@ -84,7 +85,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="flex flex-col gap-8">
               <h1 className="text-3xl font-mono font-bold uppercase">{product?.name}</h1>
               <div className="flex items-center justify-between">
-                <span className="text-3xl font-mono uppercase">{product.price} ₽</span>
+                <span className="text-3xl font-mono uppercase">{formatPrice(product.price)} ₽</span>
               </div>
             </div>
 

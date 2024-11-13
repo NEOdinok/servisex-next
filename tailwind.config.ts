@@ -71,7 +71,8 @@ const config = {
       height: {
         // "delivery-tab": "459px",// with selected address inside
         "delivery-tab": "417px",
-        "pickup-tab": "153px",
+        // "pickup-tab": "153px",
+        "pickup-tab": "129px",
       },
     },
   },

@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 import { ShopProductCard } from "./ShopProductCard";
+import { Loading } from "./ui/loading";
 
 interface ProductsShowcaseProps {
   products: ShopItem[];
@@ -23,7 +24,12 @@ const ProductsShowcase = ({ products }: ProductsShowcaseProps) => {
     queryFn: () => fetch("/api/getProducts").then((res) => res.json()),
   });
 
-  if (isLoading) return "Loading...";
+  if (isLoading)
+    return (
+      <div className="justify-center items-center flex h-screen w-screen">
+        <Loading />
+      </div>
+    );
 
   if (error) return "An error has occurred: " + (error as Error).message;
 

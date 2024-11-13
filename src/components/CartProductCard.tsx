@@ -45,7 +45,7 @@ export const CartProductCard = ({ product, prepareProductForDeletion }: CartProd
             className="object-cover aspect-square"
           />
           <div>
-            <p className="font-mono text-xs sm:text-sm text-muted-foreground ">
+            <p className="font-mono text-xs md:text-sm text-muted-foreground ">
               Цвет: {product.properties?.color ? <>{product.properties?.color} </> : <>Один цвет</>}
             </p>
             <p className="font-mono text-xs md:text-sm text-muted-foreground ">

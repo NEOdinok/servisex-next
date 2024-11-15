@@ -431,6 +431,7 @@ const CartPage = () => {
   const onSubmit = async (values: CheckoutForm) => {
     try {
       setIsSubmitting(true);
+
       const order = {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -444,13 +445,13 @@ const CartPage = () => {
           address: { text: values.address },
         },
       };
-      // Using await instead of nesting with callbacks
+
       const createOrderRes = await createOrderMutation.mutateAsync(order);
       console.log("Order created successfully:", createOrderRes);
 
       const paymentDetails = {
         value: productsPrice + deliveryPrice,
-        description: `Created order id: ${createOrderRes.id} Offer ids: ${cartItems.map((item) => item.id)}`,
+        description: `Created order id: ${createOrderRes.id}}`,
         metadata: { orderId: createOrderRes.id },
       };
 

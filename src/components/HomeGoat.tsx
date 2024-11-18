@@ -1,3 +1,4 @@
+import { CopyrightGoat } from "@/components";
 import Image from "next/image";
 import Link from "next/link";
 import { IconGoatLogo, IconInstagram, IconYoutube } from "public/icons";
@@ -5,7 +6,7 @@ import background from "public/images/goat-home-image.webp";
 
 import { HomeNavigation } from "./HomeNavigation";
 
-const Welcome = () => {
+const HomeGoat = () => {
   return (
     <div className="welcome grow relative overflow-hidden w-[calc(100%-32px)] h-[calc(100%-32px)] m-4 sm:w-[calc(100%-64px)] sm:h-[calc(100%-64px)] sm:m-8">
       <Image
@@ -39,7 +40,7 @@ const Welcome = () => {
           </div>
 
           <div className="flex justify-end gap-4 opacity-55 items-center">
-            <p className="uppercase">©2024 ГОАТ.КОРП МОСКВА</p>
+            <CopyrightGoat />
           </div>
         </div>
       </div>
@@ -47,4 +48,4 @@ const Welcome = () => {
   );
 };
 
-export { Welcome };
+export { HomeGoat };

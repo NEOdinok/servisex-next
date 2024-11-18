@@ -5,23 +5,14 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-  deployments: write
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
 jobs:
-  build:
-    environment: production
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Start deployment
-        uses: bobheadxi/deployments@v1
-        id: deployment
-        with:
-          env: production
-          step: start
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -38,35 +29,32 @@ jobs:
         run: pnpm install
 
       - name: Install Vercel CLI
-        run: pnpm add -g vercel
+        run: pnpm add -g vercel@latest
+
+      - name: Build Project
+        env:
+          # Include all environment variables for the build
+          NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API }}
+          run: echo "NEXT_PUBLIC_RETAIL_CRM_API=$NEXT_PUBLIC_RETAIL_CRM_API"
+
+          NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER: ${{ secrets.NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER }}
+          NEXT_PUBLIC_CDEK_SECRET: ${{ secrets.NEXT_PUBLIC_CDEK_SECRET }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_ENVIRONMENT: ${{ secrets.NEXT_PUBLIC_ENVIRONMENT }}
+          NEXT_PUBLIC_YANDEX_MAPS_SECRET: ${{ secrets.NEXT_PUBLIC_YANDEX_MAPS_SECRET }}
+          NEXT_PUBLIC_YOOKASSA_TEST_KEY: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_KEY }}
+          NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID }}
+        run: vercel build --prod --token $VERCEL_TOKEN
 
       - name: Deploy to Vercel
         env:
+          # Include all environment variables for the deployment
           NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API }}
           NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER: ${{ secrets.NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER }}
           NEXT_PUBLIC_CDEK_SECRET: ${{ secrets.NEXT_PUBLIC_CDEK_SECRET }}
-          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
-          NEXT_PUBLIC_ENVIRONMENT: ${{ vars.NEXT_PUBLIC_ENVIRONMENT }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_ENVIRONMENT: ${{ secrets.NEXT_PUBLIC_ENVIRONMENT }}
           NEXT_PUBLIC_YANDEX_MAPS_SECRET: ${{ secrets.NEXT_PUBLIC_YANDEX_MAPS_SECRET }}
           NEXT_PUBLIC_YOOKASSA_TEST_KEY: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_KEY }}
-          NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID: ${{ vars.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: |
-          vercel deploy --prod --yes \
-            --token $VERCEL_TOKEN \
-            --build-env NEXT_PUBLIC_RETAIL_CRM_API=$NEXT_PUBLIC_RETAIL_CRM_API \
-            --build-env NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER=$NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER \
-            --build-env NEXT_PUBLIC_CDEK_SECRET=$NEXT_PUBLIC_CDEK_SECRET \
-            --build-env NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
-            --build-env NEXT_PUBLIC_ENVIRONMENT=$NEXT_PUBLIC_ENVIRONMENT \
-            --build-env NEXT_PUBLIC_YANDEX_MAPS_SECRET=$NEXT_PUBLIC_YANDEX_MAPS_SECRET \
-            --build-env NEXT_PUBLIC_YOOKASSA_TEST_KEY=$NEXT_PUBLIC_YOOKASSA_TEST_KEY \
-            --build-env NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID=$NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID \
-            --env NEXT_PUBLIC_RETAIL_CRM_API=$NEXT_PUBLIC_RETAIL_CRM_API \
-            --env NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER=$NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER \
-            --env NEXT_PUBLIC_CDEK_SECRET=$NEXT_PUBLIC_CDEK_SECRET \
-            --env NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
-            --env NEXT_PUBLIC_ENVIRONMENT=$NEXT_PUBLIC_ENVIRONMENT \
-            --env NEXT_PUBLIC_YANDEX_MAPS_SECRET=$NEXT_PUBLIC_YANDEX_MAPS_SECRET \
-            --env NEXT_PUBLIC_YOOKASSA_TEST_KEY=$NEXT_PUBLIC_YOOKASSA_TEST_KEY \
-            --env NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID=$NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID
+          NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID }}
+        run: vercel deploy --prebuilt --prod --token $VERCEL_TOKEN

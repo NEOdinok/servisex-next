@@ -35,6 +35,8 @@ jobs:
         env:
           # Include all environment variables for the build
           NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API }}
+          run: echo "NEXT_PUBLIC_RETAIL_CRM_API=$NEXT_PUBLIC_RETAIL_CRM_API"
+
           NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER: ${{ secrets.NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER }}
           NEXT_PUBLIC_CDEK_SECRET: ${{ secrets.NEXT_PUBLIC_CDEK_SECRET }}
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}

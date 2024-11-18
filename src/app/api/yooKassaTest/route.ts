@@ -31,7 +31,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const { orderId }: { orderId: string } = metadata;
 
     const shopId = process.env.YOOKASSA_TEST_SHOP_ID;
-    const secretKey = process.env.YOOKASSA_TEST_KEY;
+    const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
     const retailCrmApiKey = process.env.NEXT_PUBLIC_RETAIL_CRM_API;
     const notificationIp = request.headers.get("x-forwarded-for") || request.headers.get("client-ip");
 

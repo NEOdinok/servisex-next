@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     //TODO: thanks page or page with error
     const returnUrl = process.env.NEXT_PUBLIC_SITE_URL;
     const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
-    const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
+    const secretKey = process.env.YOOKASSA_TEST_KEY;
 
     const paymentData = {
       amount: {

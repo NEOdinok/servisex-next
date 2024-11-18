@@ -31,30 +31,7 @@ jobs:
       - name: Install Vercel CLI
         run: pnpm add -g vercel@latest
 
-      - name: Build Project
-        env:
-          # Include all environment variables for the build
-          NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API }}
-          run: echo "NEXT_PUBLIC_RETAIL_CRM_API=$NEXT_PUBLIC_RETAIL_CRM_API"
-
-          NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER: ${{ secrets.NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER }}
-          NEXT_PUBLIC_CDEK_SECRET: ${{ secrets.NEXT_PUBLIC_CDEK_SECRET }}
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
-          NEXT_PUBLIC_ENVIRONMENT: ${{ secrets.NEXT_PUBLIC_ENVIRONMENT }}
-          NEXT_PUBLIC_YANDEX_MAPS_SECRET: ${{ secrets.NEXT_PUBLIC_YANDEX_MAPS_SECRET }}
-          NEXT_PUBLIC_YOOKASSA_TEST_KEY: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_KEY }}
-          NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID }}
-        run: vercel build --prod --token $VERCEL_TOKEN
-
-      - name: Deploy to Vercel
-        env:
-          # Include all environment variables for the deployment
-          NEXT_PUBLIC_RETAIL_CRM_API: ${{ secrets.NEXT_PUBLIC_RETAIL_CRM_API }}
-          NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER: ${{ secrets.NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER }}
-          NEXT_PUBLIC_CDEK_SECRET: ${{ secrets.NEXT_PUBLIC_CDEK_SECRET }}
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
-          NEXT_PUBLIC_ENVIRONMENT: ${{ secrets.NEXT_PUBLIC_ENVIRONMENT }}
-          NEXT_PUBLIC_YANDEX_MAPS_SECRET: ${{ secrets.NEXT_PUBLIC_YANDEX_MAPS_SECRET }}
-          NEXT_PUBLIC_YOOKASSA_TEST_KEY: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_KEY }}
-          NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID }}
-        run: vercel deploy --prebuilt --prod --token $VERCEL_TOKEN
+      - name: Build and Deploy with Vercel
+        run: |
+          vercel build --prod --token $VERCEL_TOKEN
+          vercel deploy --prebuilt --prod --token $VERCEL_TOKEN

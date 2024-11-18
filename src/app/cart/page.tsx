@@ -242,7 +242,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockProps) =
           },
         ],
         root: "cdek-map",
-        apiKey: process.env.NEXT_PUBLIC_YANDEX_MAPS_SECRET,
+        apiKey: process.env.YANDEX_MAPS_SECRET,
         servicePath: servicePath,
         lang: "rus",
         currency: "RUB",

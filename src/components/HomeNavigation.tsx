@@ -12,9 +12,9 @@ const HomeNavigation = ({ className }: MenuProps) => {
           <Link
             className="cursor-pointer p-2 w-fit hover:bg-foreground hover:text-background hover:underline uppercase"
             target="_blank"
-            href="https://www.youtube.com/watch?v=e3KmM2JxRrg"
+            href="https://www.youtube.com"
           >
-            РЭД СПРИНГ [2022]
+            Какое-то видео
           </Link>
         </li>
         <li>

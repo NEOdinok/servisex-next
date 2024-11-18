@@ -44,6 +44,7 @@ jobs:
           NEXT_PUBLIC_YANDEX_MAPS_SECRET: ${{ secrets.NEXT_PUBLIC_YANDEX_MAPS_SECRET }}
           NEXT_PUBLIC_YOOKASSA_TEST_KEY: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_KEY }}
           NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel build --prod --token $VERCEL_TOKEN
 
       - name: Deploy to Vercel
@@ -57,4 +58,5 @@ jobs:
           NEXT_PUBLIC_YANDEX_MAPS_SECRET: ${{ secrets.NEXT_PUBLIC_YANDEX_MAPS_SECRET }}
           NEXT_PUBLIC_YOOKASSA_TEST_KEY: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_KEY }}
           NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID: ${{ secrets.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel deploy --prebuilt --prod --token $VERCEL_TOKEN

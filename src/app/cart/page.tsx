@@ -357,11 +357,11 @@ const CheckoutBlockContacts = ({ form }: CheckoutBlockProps) => {
       <Separator className="sm:hidden" />
       <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">КОНТАКТНАЯ ИНФОРМАЦИЯ</p>
       <CardContent className="grid gap-2 p-0 sm:p-4">
-        <CheckoutFormField control={form.control} name="firstName" label="Имя" placeholder="Козел" />
-        <CheckoutFormField control={form.control} name="lastName" label="Фамилия" placeholder="Козлов" />
-        <CheckoutFormField control={form.control} name="familyName" label="Отчество" placeholder="Козлович" />
-        <CheckoutFormField control={form.control} name="email" label="Почта" placeholder="kozel666@goatcorp.com" />
-        <CheckoutFormField control={form.control} name="phone" label="Телефон" placeholder="+6 (666) 666 66-66" />
+        <CheckoutFormField control={form.control} name="firstName" label="Имя" placeholder="Ванька" />
+        <CheckoutFormField control={form.control} name="lastName" label="Фамилия" placeholder="Иванов" />
+        <CheckoutFormField control={form.control} name="familyName" label="Отчество" placeholder="Иванович" />
+        <CheckoutFormField control={form.control} name="email" label="Почта" placeholder="servisex@sex.com" />
+        <CheckoutFormField control={form.control} name="phone" label="Телефон" placeholder="+6 (666) 666 66-69" />
       </CardContent>
     </Card>
   );

@@ -76,7 +76,7 @@ export async function POST(request: Request) {
 
 async function getAuthToken() {
   const CDEK_LOGIN = process.env.NEXT_PUBLIC_CDEK_ACCOUNT_IDENTIFIER;
-  const NEXT_PUBLIC_CDEK_SECRET = process.env.NEXT_PUBLIC_CDEK_SECRET;
+  const CDEK_SECRET = process.env.NEXT_PUBLIC_CDEK_SECRET;
 
   const response = await fetch(`${baseUrl}/oauth/token`, {
     method: "POST",
@@ -86,7 +86,7 @@ async function getAuthToken() {
     body: new URLSearchParams({
       grant_type: "client_credentials",
       client_id: CDEK_LOGIN as string,
-      client_secret: NEXT_PUBLIC_CDEK_SECRET as string,
+      client_secret: CDEK_SECRET as string,
     }),
   });
 

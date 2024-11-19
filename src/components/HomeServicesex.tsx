@@ -1,21 +1,35 @@
 import { CopyrightServicesex } from "@/components";
+import { url } from "inspector";
 import Image from "next/image";
 import Link from "next/link";
 import { IconInstagram, IconServicesexLogo, IconYoutube } from "public/icons";
 import logo from "public/icons/servicesex-logo-icon.png";
 import background from "public/images/servicesex-home-image.webp";
+import verified from "public/images/verified-opacity-15.png";
 
 import { HomeNavigation } from "./HomeNavigation";
 
 const HomeServicesex = () => {
   return (
-    <div className="welcome grow relative overflow-hidden w-[calc(100%-32px)] h-[calc(100%-32px)] m-4 sm:w-[calc(100%-64px)] sm:h-[calc(100%-64px)] sm:m-8">
-      <Image
-        src={background}
+    <div
+      style={{
+        backgroundImage: `url(${verified.src})`,
+        backgroundSize: "95px",
+        backgroundPosition: "center",
+        backgroundRepeat: "repeat",
+        backgroundBlendMode: "darken",
+      }}
+      className="welcome grow relative overflow-hidden w-[calc(100%-32px)] h-[calc(100%-32px)] m-4 sm:w-[calc(100%-64px)] sm:h-[calc(100%-64px)] sm:m-8"
+    >
+      {/* Previous background */}
+
+      {/* <Image
+        src={verified}
         alt="Goat.Corp home background"
         className="absolute z-[-1] w-full h-full object-cover object-[right_48%_bottom_-96px] opacity-45 scale-[1.8] sm:top-0 sm:left-0 sm:object-[right_50%_top_42%] sm:scale-100"
+        aria-label="Goat.Corp home background"
         priority
-      />
+      /> */}
       <div className="content flex flex-col">
         <Image
           src={logo}

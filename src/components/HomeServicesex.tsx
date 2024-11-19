@@ -4,8 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IconInstagram, IconServicesexLogo, IconYoutube } from "public/icons";
 import logo from "public/icons/servicesex-logo-icon.png";
-import background from "public/images/servicesex-home-image.webp";
-import verified from "public/images/verified-opacity-15.png";
+import verified from "public/images/verified-opacity-13.png";
 
 import { HomeNavigation } from "./HomeNavigation";
 

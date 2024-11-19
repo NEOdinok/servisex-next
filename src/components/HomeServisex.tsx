@@ -1,15 +1,14 @@
-import { CopyrightServicesex } from "@/components";
+import { CopyrightServisex } from "@/components";
 import { url } from "inspector";
 import Image from "next/image";
 import Link from "next/link";
-import { IconInstagram, IconServicesexLogo, IconYoutube } from "public/icons";
-import logo from "public/icons/servicesex-logo-icon.png";
-import background from "public/images/servicesex-home-image.webp";
-import verified from "public/images/verified-opacity-15.png";
+import { IconInstagram, IconServisexLogo, IconYoutube } from "public/icons";
+import logo from "public/icons/servisex-logo-icon.png";
+import verified from "public/images/verified-opacity-13.png";
 
 import { HomeNavigation } from "./HomeNavigation";
 
-const HomeServicesex = () => {
+const HomeServisex = () => {
   return (
     <div
       style={{
@@ -33,7 +32,7 @@ const HomeServicesex = () => {
       <div className="content flex flex-col">
         <Image
           src={logo}
-          alt="Servicesex logo"
+          alt="Servisex logo"
           className="aspect-[1.65] w-fit h-[128px] mt-[220px] mb-0 ml-auto mr-auto text-white sm:mt-[10%]"
         />
 
@@ -59,7 +58,7 @@ const HomeServicesex = () => {
           </div>
 
           <div className="flex justify-end gap-4 opacity-55 items-center">
-            <CopyrightServicesex />
+            <CopyrightServisex />
           </div>
         </div>
       </div>
@@ -67,4 +66,4 @@ const HomeServicesex = () => {
   );
 };
 
-export { HomeServicesex };
+export { HomeServisex };

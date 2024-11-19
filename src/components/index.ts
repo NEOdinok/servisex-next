@@ -9,7 +9,7 @@ export { BaseFooter } from "./BaseFooter";
 export { HeaderNavigation } from "./HeaderNavigation";
 export { HomeNavigation } from "./HomeNavigation";
 export { HomeGoat } from "./HomeGoat";
-export { HomeServicesex } from "./HomeServicesex";
+export { HomeServisex } from "./HomeServisex";
 export { ShopProductCard } from "./ShopProductCard";
 export { CartProductCard } from "./CartProductCard";
 export { ProductsShowcase } from "./ProductsShowcase";
@@ -20,7 +20,7 @@ export { ConfirmationDialog } from "./ConfirmationDialog";
 export { HeaderCartCounter } from "./HeaderCartCounter";
 export { CheckoutFormField } from "./CheckoutFormField";
 
-export { CopyrightServicesex } from "./ui/copyright-servicesex";
+export { CopyrightServisex } from "./ui/copyright-servisex";
 export { CopyrightGoat } from "./ui/copyright-goat";
 export { Loading } from "./ui/loading";
 export { LoadingEllipsis } from "./ui/loading-ellipsis";

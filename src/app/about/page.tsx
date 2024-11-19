@@ -8,7 +8,7 @@ const AboutPage = () => {
         <h1 className="w-full text-5xl md:text-7xl text-center font-bold mb-6">SERVISEX®</h1>
 
         <p className="font-bold text-sm md:text-lg text-center uppercase mb-11">
-          SERVICESEX® основан там-то там-то. Нужно смешной абсурд. Занимается тем-то тем-то.
+          SERVISEX® основан там-то там-то. Нужно смешной абсурд. Занимается тем-то тем-то.
           <br />
           Больше чем бренд и больше чем стиль. Производится вручную, никакой ответственности за качество. Еще текст
           <br />

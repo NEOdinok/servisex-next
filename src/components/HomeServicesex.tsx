@@ -3,7 +3,7 @@ import { url } from "inspector";
 import Image from "next/image";
 import Link from "next/link";
 import { IconInstagram, IconServisexLogo, IconYoutube } from "public/icons";
-import logo from "public/icons/servicesex-logo-icon.png";
+import logo from "public/icons/servisex-logo-icon.png";
 import verified from "public/images/verified-opacity-13.png";
 
 import { HomeNavigation } from "./HomeNavigation";

@@ -20,7 +20,7 @@ export { ConfirmationDialog } from "./ConfirmationDialog";
 export { HeaderCartCounter } from "./HeaderCartCounter";
 export { CheckoutFormField } from "./CheckoutFormField";
 
-export { CopyrightServisex } from "./ui/copyright-servicesex";
+export { CopyrightServisex } from "./ui/copyright-servisex";
 export { CopyrightGoat } from "./ui/copyright-goat";
 export { Loading } from "./ui/loading";
 export { LoadingEllipsis } from "./ui/loading-ellipsis";

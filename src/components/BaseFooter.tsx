@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { HeaderNavigation } from "./HeaderNavigation";
-import { CopyrightServicesex } from "./ui/copyright-servicesex";
+import { CopyrightServisex } from "./ui/copyright-servicesex";
 
 const BaseFooter = () => {
   return (
@@ -24,7 +24,7 @@ const BaseFooter = () => {
       </div>
 
       <div className="flex justify-end gap-4">
-        <CopyrightServicesex />
+        <CopyrightServisex />
       </div>
     </footer>
   );

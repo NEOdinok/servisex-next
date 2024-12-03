@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 
 const useIntro = () => {
   const pathName = usePathname();
-  console.log(pathName);
   const storage = typeof window !== "undefined" ? window.localStorage : null; // Only access `localStorage` if it's available in the browser
   const currTimestamp = Date.now();
 

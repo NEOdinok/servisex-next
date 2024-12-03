@@ -173,6 +173,7 @@ export const findAllPossibleOffersOfAProduct = (product: Product): PossibleOffer
     isOutOfStock: offer.quantity === 0 ? true : false,
     parentProductName: product.name,
     parentProductId: product.id,
+    availableQuantity: offer.quantity,
     name: offer.name,
     price: offer.price,
     images: offer.images || [],

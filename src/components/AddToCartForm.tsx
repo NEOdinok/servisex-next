@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useEffect, useMemo, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
 import {
   Button,
@@ -41,8 +41,9 @@ const FormSchema = z.object({
 
 const AddToCartForm = ({ product, color }: Props) => {
   const router = useRouter();
-  const { addItem, items } = useCart();
-  const [currentOffer, setCurrentOffer] = useState<PossibleOffer | undefined>();
+  const { addItem, items, incrementItemQuantity, decrementItemQuantity } = useCart();
+  const [currentOffer, setCurrentOffer] = useState<PossibleOffer | undefined>(undefined);
+  const quantity = (currentOffer && items.find((item) => item.id === currentOffer?.id)?.quantity) || 0;
   type ProductForm = z.infer<typeof FormSchema>;
   const { isDialogOpen, offerToRemove, setIsDialogOpen, prepareProductForDeletion, handleRemoveProduct } =
     useProductDialog();
@@ -74,7 +75,6 @@ const AddToCartForm = ({ product, color }: Props) => {
     dynamicPossibleOffers && dynamicPossibleOffers?.find((offer) => !offer.isOutOfStock)?.properties.size;
 
   const handleToast = (product: PossibleOffer) => {
-    console.log("toast");
     toast("ТОВАР ДОБАВЛЕН В КОРЗИНУ", {
       description: product.name,
       duration: 2000,
@@ -107,9 +107,7 @@ const AddToCartForm = ({ product, color }: Props) => {
 
   useEffect(() => {
     if (initialSize) {
-      form.reset({
-        size: initialSize,
-      });
+      form.setValue("size", initialSize);
     }
   }, [initialSize, form]);
 
@@ -124,6 +122,29 @@ const AddToCartForm = ({ product, color }: Props) => {
       offer && setCurrentOffer(offer);
     }
   }, [color, size, dynamicPossibleOffers, product?.name]);
+
+  const handleIncrement = () => {
+    if (!currentOffer) return;
+
+    if (itemAlreadyInCart) {
+      incrementItemQuantity(currentOffer.id);
+    } else {
+      addItem(currentOffer);
+      handleToast(currentOffer);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (!currentOffer) return;
+
+    if (itemAlreadyInCart && quantity === 1) {
+      prepareProductForDeletion(currentOffer);
+    } else if (itemAlreadyInCart) {
+      decrementItemQuantity(currentOffer.id);
+    }
+  };
+
+  if (error) return "An error has occurred: " + (error as Error).message;
 
   if (isLoading || !initialSize) {
     return (
@@ -188,12 +209,13 @@ const AddToCartForm = ({ product, color }: Props) => {
                 />
               )}
               <QuantitySelector
-                offer={currentOffer}
-                prepareProductForDeletion={prepareProductForDeletion}
-                className="flex-grow max-w-[50%]"
+                value={quantity}
+                maxValue={currentOffer?.availableQuantity}
+                onIncrement={handleIncrement}
+                onDecrement={handleDecrement}
+                className="flex-grow max-w-[]"
               />
             </div>
-
             <Button
               type="submit"
               className="w-full text-foreground"

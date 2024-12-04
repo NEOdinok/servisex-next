@@ -92,6 +92,7 @@ export interface PossibleOffer {
   isOutOfStock: boolean;
   parentProductName: string;
   parentProductId: number;
+  availableQuantity: number;
   name: string;
   price: number;
   images: string[];

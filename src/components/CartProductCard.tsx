@@ -74,7 +74,6 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product, prepa
   if (isLoading || !currentOffer) {
     return <CartProductCardSkeleton />;
   }
-
   return (
     <CardContent className="p-0 py-2 sm:p-4">
       <div className="grid gap-2 cursor-pointer">
@@ -134,18 +133,18 @@ const ProductShopLink: React.FC<ProductShopLinkProps> = ({ product }) => {
 
 export const CartProductCardSkeleton: React.FC = () => {
   return (
-    <CardContent className="h-[140px] p-4">
+    <CardContent className="h-[140px] p-0 sm:p-4">
       <div className="flex justify-between items-center mb-2">
         <Skeleton className="w-full h-6" />
-        <Skeleton className="rounded-full h-6 aspect-square ml-12" />
+        <Skeleton className="rounded-full h-9 aspect-square ml-12" />
       </div>
 
-      <div className="grid grid-cols-[64px_1fr_auto] items-center gap-4">
+      <div className="grid grid-cols-[64px_1fr] items-center gap-4">
         <Skeleton className="h-16 w-16" />
-        <div className="flex flex-col gap-2">
-          <Skeleton className="h-4" />
-          <Skeleton className="h-4" />
-          <Skeleton className="h-4" />
+        <div className="w-full flex justify-between flex-col gap-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+          <Skeleton className="h-4 w-full" />
         </div>
       </div>
     </CardContent>

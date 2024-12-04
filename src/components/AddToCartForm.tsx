@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 
 import {
   Button,
@@ -41,9 +41,10 @@ const FormSchema = z.object({
 
 const AddToCartForm = ({ product, color }: Props) => {
   const router = useRouter();
-  const { addItem, items, incrementItemQuantity, decrementItemQuantity } = useCart();
+  const { addItem, items, incrementItemQuantity, decrementItemQuantity, setItemQuantity } = useCart();
   const [currentOffer, setCurrentOffer] = useState<PossibleOffer | undefined>(undefined);
   const quantity = (currentOffer && items.find((item) => item.id === currentOffer?.id)?.quantity) || 0;
+  const maxAvailableQuantity = currentOffer?.availableQuantity;
   type ProductForm = z.infer<typeof FormSchema>;
   const { isDialogOpen, offerToRemove, setIsDialogOpen, prepareProductForDeletion, handleRemoveProduct } =
     useProductDialog();
@@ -83,6 +84,12 @@ const AddToCartForm = ({ product, color }: Props) => {
     });
   };
 
+  const handleMaxQuantityAlertToast = useCallback(() => {
+    toast.info("Товар раскупают. Получится заказать чуть меньше", {
+      duration: 2000,
+    });
+  }, []);
+
   const handleAddProductToCart = (data: ProductForm) => {
     if (dynamicPossibleOffers) {
       const offer = findOffer(dynamicPossibleOffers, color, data.size, product?.name);
@@ -111,13 +118,6 @@ const AddToCartForm = ({ product, color }: Props) => {
     name: "size",
   });
 
-  useEffect(() => {
-    if (dynamicPossibleOffers) {
-      const offer = findOffer(dynamicPossibleOffers, color, size, product?.name);
-      offer && setCurrentOffer(offer);
-    }
-  }, [color, size, dynamicPossibleOffers, product?.name]);
-
   const handleIncrement = () => {
     if (!currentOffer) return;
 
@@ -138,6 +138,19 @@ const AddToCartForm = ({ product, color }: Props) => {
       decrementItemQuantity(currentOffer.id);
     }
   };
+  useEffect(() => {
+    if (dynamicPossibleOffers) {
+      const offer = findOffer(dynamicPossibleOffers, color, size, product?.name);
+      offer && setCurrentOffer(offer);
+    }
+  }, [color, size, dynamicPossibleOffers, product?.name]);
+
+  useEffect(() => {
+    if (currentOffer && maxAvailableQuantity !== undefined && quantity > maxAvailableQuantity) {
+      setItemQuantity(currentOffer.id, maxAvailableQuantity);
+      handleMaxQuantityAlertToast();
+    }
+  }, [maxAvailableQuantity, quantity, currentOffer, setItemQuantity, handleMaxQuantityAlertToast]);
 
   if (error) return "An error has occurred: " + (error as Error).message;
 
@@ -205,7 +218,7 @@ const AddToCartForm = ({ product, color }: Props) => {
               )}
               <QuantitySelector
                 value={quantity}
-                maxValue={currentOffer?.availableQuantity}
+                maxValue={maxAvailableQuantity}
                 onIncrement={handleIncrement}
                 onDecrement={handleDecrement}
                 className="flex-grow max-w-[]"

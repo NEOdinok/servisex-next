@@ -15,7 +15,6 @@ export const useCart = create<CartState>()(
   persist(
     (set) => ({
       items: [],
-
       // Update quantity if item already exists, add new item if it doesn't
       addItem: (item) =>
         set((state) => {

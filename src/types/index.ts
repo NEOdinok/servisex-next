@@ -8,6 +8,7 @@ export {
   type ShopItem,
   type ProductPreviewData,
   type PossibleOffer,
+  type TransformedProductData,
 } from "./product";
 
 export { type CartItem } from "./cart";

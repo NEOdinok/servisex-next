@@ -112,3 +112,8 @@ export interface ShopItem {
   description: string;
   color?: string;
 }
+
+export interface TransformedProductData {
+  dynamicProduct: ProductPreviewData;
+  dynamicPossibleOffers: PossibleOffer[];
+}

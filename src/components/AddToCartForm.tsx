@@ -20,7 +20,7 @@ import {
 } from "@/components";
 import { useCart, useProductDialog } from "@/hooks";
 import { cn, findAllPossibleOffersOfAProduct, findOffer, transformSingleProductData } from "@/lib/utils";
-import { PossibleOffer } from "@/types";
+import { PossibleOffer, TransformedProductData } from "@/types";
 import { ProductPreviewData } from "@/types";
 import { GetProductsResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,11 +47,6 @@ const AddToCartForm = ({ product, color }: Props) => {
   type ProductForm = z.infer<typeof FormSchema>;
   const { isDialogOpen, offerToRemove, setIsDialogOpen, prepareProductForDeletion, handleRemoveProduct } =
     useProductDialog();
-
-  type TransformedProductData = {
-    dynamicProduct: ProductPreviewData;
-    dynamicPossibleOffers: PossibleOffer[];
-  };
 
   const { isLoading, error, data } = useQuery<GetProductsResponse, Error, TransformedProductData>({
     queryKey: [product.parentProductId],

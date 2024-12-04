@@ -1,6 +1,6 @@
 "use client";
 
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useState } from "react";
 
 import { Skeleton } from "@/components";
 import { Button, CardContent, QuantitySelector } from "@/components";
@@ -11,6 +11,7 @@ import { CartItem, PossibleOffer } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface CartProductCardProps {
   product: CartItem;
@@ -18,8 +19,10 @@ interface CartProductCardProps {
 }
 
 export const CartProductCard: React.FC<CartProductCardProps> = ({ product, prepareProductForDeletion }) => {
-  const { incrementItemQuantity, decrementItemQuantity, items } = useCart();
+  const { incrementItemQuantity, decrementItemQuantity, setItemQuantity } = useCart();
   const [currentOffer, setCurrentOffer] = useState<PossibleOffer | undefined>(undefined);
+  const maxAvailableQuantity = currentOffer?.availableQuantity || Infinity;
+  const quantity = product.quantity;
 
   const handleRemoveProduct = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -57,6 +60,12 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product, prepa
     }
   };
 
+  const handleMaxQuantityAlertToast = useCallback(() => {
+    toast.info("Товар раскупают. Получится заказать чуть меньше", {
+      duration: 1000,
+    });
+  }, []);
+
   const handleDecrement = () => {
     if (!currentOffer) return;
 
@@ -67,7 +76,12 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product, prepa
     }
   };
 
-  const maxValue = currentOffer?.availableQuantity || Infinity;
+  useEffect(() => {
+    if (currentOffer && maxAvailableQuantity !== undefined && quantity > maxAvailableQuantity) {
+      setItemQuantity(currentOffer.id, maxAvailableQuantity);
+      handleMaxQuantityAlertToast();
+    }
+  }, [maxAvailableQuantity, quantity, currentOffer, setItemQuantity, handleMaxQuantityAlertToast]);
 
   if (error) return <div>An error has occurred: {error.message}</div>;
 
@@ -103,7 +117,7 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product, prepa
           </div>
           <QuantitySelector
             value={product.quantity}
-            maxValue={maxValue}
+            maxValue={maxAvailableQuantity}
             onIncrement={handleIncrement}
             onDecrement={handleDecrement}
           />

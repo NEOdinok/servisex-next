@@ -147,7 +147,7 @@ const ProductShopLink: React.FC<ProductShopLinkProps> = ({ product }) => {
 
 export const CartProductCardSkeleton: React.FC = () => {
   return (
-    <CardContent className="h-[140px] p-0 sm:p-4">
+    <CardContent className="p-0 py-2 sm:p-4">
       <div className="flex justify-between items-center mb-2">
         <Skeleton className="w-full h-6" />
         <Skeleton className="rounded-full h-9 aspect-square ml-12" />

@@ -22,6 +22,7 @@ import {
   TabsTrigger,
 } from "@/components";
 import { useCart, useProductDialog } from "@/hooks";
+import { useStore } from "@/hooks";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { CheckoutForm, formSchema } from "@/lib/checkout-form";
 import { cn, formatPrice } from "@/lib/utils";
@@ -41,17 +42,30 @@ const CartEmptyState = () => (
   </p>
 );
 
-const CheckoutBlockCart = () => {
+const CheckoutBlockCart: React.FC = () => {
   const { isDialogOpen, setIsDialogOpen, offerToRemove, prepareProductForDeletion, handleRemoveProduct } =
     useProductDialog();
-  const { items } = useCart();
+
+  // const { items, hasHydrated } = useCart();
+  // TODO this Zustand way of hook inside hook looks horrible
+  // This is only used here for hasHydrated to work
+  const items = useStore(useCart, (state) => state.items);
+  const hasHydrated = useStore(useCart, (state) => state.hasHydrated);
+
+  if (!hasHydrated) {
+    return (
+      <Card className="border-0 sm:border">
+        <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">КОРЗИНА</p>
+      </Card>
+    );
+  }
 
   return (
     <Card className="border-0 sm:border">
       <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">КОРЗИНА</p>
 
       <>
-        {items.length ? (
+        {items?.length ? (
           items?.map((product) => (
             <CartProductCard key={product.id} product={product} prepareProductForDeletion={prepareProductForDeletion} />
           ))

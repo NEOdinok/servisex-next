@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 
+import { useCart } from "@/hooks";
 import { PossibleOffer } from "@/types";
-
-import { useCart } from "./useStore";
 
 export const useProductDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

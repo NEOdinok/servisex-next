@@ -1,3 +1,4 @@
+export { useStore } from "./useStore";
 export { useProductDialog } from "./useConfirmationDialog";
-export { useCart } from "./useStore";
+export { useCart } from "./useCartStore";
 export { useIntro } from "./useIntro";

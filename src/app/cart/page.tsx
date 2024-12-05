@@ -65,7 +65,7 @@ const CheckoutBlockCart: React.FC = () => {
       <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">КОРЗИНА</p>
 
       <>
-        {items.length ? (
+        {items?.length ? (
           items?.map((product) => (
             <CartProductCard key={product.id} product={product} prepareProductForDeletion={prepareProductForDeletion} />
           ))

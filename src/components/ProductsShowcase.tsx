@@ -1,5 +1,6 @@
 "use client";
 
+import { LoadingServisex } from "@/components";
 import { useIntro } from "@/hooks";
 import { transformAllProductsData } from "@/lib/utils";
 import { ShopItem } from "@/types";
@@ -9,7 +10,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 import { ShopProductCard } from "./ShopProductCard";
-import { Loading } from "./ui/loading";
 
 interface ProductsShowcaseProps {
   products: ShopItem[];
@@ -27,7 +27,7 @@ const ProductsShowcase = ({ products }: ProductsShowcaseProps) => {
   if (isLoading)
     return (
       <div className="justify-center items-center flex h-screen w-screen">
-        <Loading />
+        <LoadingServisex />
       </div>
     );
 

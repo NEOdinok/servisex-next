@@ -19,10 +19,12 @@ export { QuantitySelector } from "./QuantitySelector";
 export { ConfirmationDialog } from "./ConfirmationDialog";
 export { HeaderCartCounter } from "./HeaderCartCounter";
 export { CheckoutFormField } from "./CheckoutFormField";
+export { Sidebar } from "./Sidebar";
 
 export { CopyrightServisex } from "./ui/copyright-servisex";
 export { CopyrightGoat } from "./ui/copyright-goat";
 export { Loading } from "./ui/loading";
+export { LoadingServisex } from "./ui/loading-servisex";
 export { LoadingEllipsis } from "./ui/loading-ellipsis";
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./ui/card";
 export { Button } from "./ui/button";

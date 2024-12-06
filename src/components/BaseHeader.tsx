@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { HeaderCartCounter, Sidebar } from "@/components";
 import { Menu, X } from "lucide-react";
@@ -10,7 +10,34 @@ const BaseHeader = () => {
   const environment = process.env.NEXT_PUBLIC_ENV;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const handleSidebarClose = () => {
+    setIsSidebarOpen(false);
+    document.body.classList.remove("overflow-hidden");
+  };
+
+  const removeScrollFromAppContent = (sidebarOpen: boolean) => {
+    if (sidebarOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => {
+      const newState = !prev;
+
+      removeScrollFromAppContent(newState);
+
+      return newState;
+    });
+  };
+
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
 
   return (
     <>
@@ -26,7 +53,7 @@ const BaseHeader = () => {
         </div>
       </header>
 
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={handleSidebarClose} />
     </>
   );
 };

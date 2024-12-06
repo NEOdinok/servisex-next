@@ -107,13 +107,13 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product, prepa
             className="object-cover aspect-square"
           />
           <div>
-            <p className="font-mono text-xs md:text-sm text-muted-foreground ">
+            <p className="font-mono text-xs lg:text-sm text-muted-foreground ">
               Цвет: {product.properties?.color ? <>{product.properties?.color} </> : <>Один цвет</>}
             </p>
-            <p className="font-mono text-xs md:text-sm text-muted-foreground ">
+            <p className="font-mono text-xs lg:text-sm text-muted-foreground ">
               Размер: {product.properties?.size ? <>{product.properties?.size}</> : <>Один размер</>}
             </p>
-            <p className="font-mono text-xs md:text-sm text-muted-foreground ">Цена: {formatPrice(product.price)} ₽</p>
+            <p className="font-mono text-xs lg:text-sm text-muted-foreground ">Цена: {formatPrice(product.price)} ₽</p>
           </div>
           <QuantitySelector
             value={product.quantity}

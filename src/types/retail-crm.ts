@@ -92,6 +92,7 @@ export interface Order {
   lastName: string;
   firstName: string;
   phone: string;
+  email?: string;
   call?: boolean;
   expired?: boolean;
   customer?: Customer;
@@ -101,6 +102,7 @@ export interface Order {
   };
   delivery?: {
     code?: string;
+    integrationCode?: string;
     cost?: number;
     netCost?: number;
     address?: {

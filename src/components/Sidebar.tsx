@@ -11,7 +11,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   return (
     <div
       className={cn(
-        "fixed inset-0 z-10 flex flex-col justify-between bg-background p-4 transition-transform",
+        "fixed inset-0 z-50 flex flex-col justify-between bg-background p-4 transition-transform",
         isOpen ? "translate-x-0" : "-translate-x-full",
         "sm:hidden",
       )}

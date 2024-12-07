@@ -14,9 +14,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 interface ImageSliderProps {
   urls: string[];
+  className?: string;
 }
 
-const ImageSlider = ({ urls }: ImageSliderProps) => {
+const ImageSlider = ({ urls, className }: ImageSliderProps) => {
   const [swiper, setSwiper] = useState<null | SwiperType>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const showButtons = urls?.length > 1;
@@ -47,7 +48,10 @@ const ImageSlider = ({ urls }: ImageSliderProps) => {
   }, [swiper, urls]);
 
   return (
-    <div className="group relative bg-zinc-100 aspect-square overflow-hidden">
+    <div
+      className={cn("group relative bg-zinc-100 aspect-square overflow-hidden", className)}
+      aria-label="Image Slider"
+    >
       {showButtons && (
         <div className="absolute z-10 inset-0 opacity-0 group-hover:opacity-100 transition">
           <SliderPreviousButton onClick={handlePreviousImage} hidden={slideConfig.isBeginning} />

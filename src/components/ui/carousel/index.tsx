@@ -238,7 +238,15 @@ const BaseCarousel = ({ className, imageUrls, productName }: Props) => {
       <CarouselContent>
         {imageUrls.map((url) => (
           <CarouselItem key={url}>
-            <Image key={url} src={url} className="w-full aspect-[1/1] object-cover" alt={`${productName} + preview`} />
+            <Image
+              width={1}
+              height={1}
+              layout="responsive"
+              key={url}
+              src={url}
+              className="w-full aspect-[1/1] object-cover"
+              alt={`${productName} + preview`}
+            />
           </CarouselItem>
         ))}
       </CarouselContent>

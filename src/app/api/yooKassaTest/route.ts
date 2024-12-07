@@ -120,7 +120,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         },
         body: JSON.stringify({
           by: "id",
-          order: { status: "no-product" },
+          order: JSON.stringify({ status: "no-product" }),
         }),
       });
 

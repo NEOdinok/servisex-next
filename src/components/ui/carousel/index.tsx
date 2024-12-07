@@ -238,8 +238,7 @@ const BaseCarousel = ({ className, imageUrls, productName }: Props) => {
       <CarouselContent>
         {imageUrls.map((url) => (
           <CarouselItem key={url}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img key={url} src={url} className="w-full aspect-[1/1] object-cover" alt={`${productName} + preview`} />
+            <Image key={url} src={url} className="w-full aspect-[1/1] object-cover" alt={`${productName} + preview`} />
           </CarouselItem>
         ))}
       </CarouselContent>

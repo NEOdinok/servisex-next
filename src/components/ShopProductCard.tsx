@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Card, CardContent, ImageSlider, Label } from "@/components";
 import { formatPrice } from "@/lib/utils";
 import type { ShopItem } from "@/types";
@@ -21,11 +20,7 @@ export const ShopProductCard = ({ product }: Props) => {
       >
         <div className="relative">
           <ImageSlider urls={product.imgs} />
-          {product.isOutOfStock && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <span className="text-error text-xl font-bold uppercase font-mono">распродано</span>
-            </div>
-          )}
+          {product.isOutOfStock && <ProductOutOfStockState />}
         </div>
         <CardContent className="h-full">
           <div className="grid w-full h-full items-center gap-4">
@@ -37,5 +32,13 @@ export const ShopProductCard = ({ product }: Props) => {
         </CardContent>
       </Card>
     </Link>
+  );
+};
+
+const ProductOutOfStockState: React.FC = () => {
+  return (
+    <div className="absolute z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <span className="text-error text-xl font-bold uppercase font-mono">распродано</span>
+    </div>
   );
 };

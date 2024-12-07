@@ -10,6 +10,7 @@ import { GetProductsResponse, TransformedProductData } from "@/types";
 import { CartItem, PossibleOffer } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { X } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -98,8 +99,7 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product, prepa
           </Button>
         </div>
         <div className="grid grid-cols-[64px_1fr_auto] items-center gap-4">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={product.images[0]}
             alt="Product template"
             width={64}

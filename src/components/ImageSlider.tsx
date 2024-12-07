@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { BaseSyntheticEvent, useEffect, useState } from "react";
 
+import { Button } from "@/components";
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import type SwiperType from "swiper";
 import "swiper/css";
@@ -18,6 +19,17 @@ interface ImageSliderProps {
 const ImageSlider = ({ urls }: ImageSliderProps) => {
   const [swiper, setSwiper] = useState<null | SwiperType>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const showButtons = urls?.length > 1;
+
+  const handleNextImage = (e: BaseSyntheticEvent) => {
+    e.preventDefault();
+    swiper?.slideNext();
+  };
+
+  const handlePreviousImage = (e: BaseSyntheticEvent) => {
+    e.preventDefault();
+    swiper?.slidePrev();
+  };
 
   const [slideConfig, setSlideConfig] = useState({
     isBeginning: true,
@@ -34,40 +46,14 @@ const ImageSlider = ({ urls }: ImageSliderProps) => {
     });
   }, [swiper, urls]);
 
-  const activeStyles =
-    "active:scale-[0.97] grid opacity-100 hover:scale-105 absolute top-1/2 -translate-y-1/2 aspect-square h-8 w-8 z-50 place-items-center rounded-full border-2 bg-white border-zinc-300";
-  const inactiveStyles = "hidden text-gray-400";
-
   return (
-    <div className="group relative bg-zinc-100 aspect-square overflow-hidden rounded-xl">
-      <div className="absolute z-10 inset-0 opacity-0 group-hover:opacity-100 transition">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            swiper?.slideNext();
-          }}
-          className={cn(activeStyles, "right-3 transition", {
-            [inactiveStyles]: slideConfig.isEnd,
-            "hover:bg-primary-300 text-primary-800 opacity-100": !slideConfig.isEnd,
-          })}
-          aria-label="next image"
-        >
-          <ChevronRight className="h-4 w-4 text-zinc-700" />{" "}
-        </button>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            swiper?.slidePrev();
-          }}
-          className={cn(activeStyles, "left-3 transition", {
-            [inactiveStyles]: slideConfig.isBeginning,
-            "hover:bg-primary-300 text-primary-800 opacity-100": !slideConfig.isBeginning,
-          })}
-          aria-label="previous image"
-        >
-          <ChevronLeft className="h-4 w-4 text-zinc-700" />{" "}
-        </button>
-      </div>
+    <div className="group relative bg-zinc-100 aspect-square overflow-hidden">
+      {showButtons && (
+        <div className="absolute z-10 inset-0 opacity-0 group-hover:opacity-100 transition">
+          <SliderPreviousButton onClick={handlePreviousImage} hidden={slideConfig.isBeginning} />
+          <SliderNextButton onClick={handleNextImage} hidden={slideConfig.isEnd} />
+        </div>
+      )}
 
       <Swiper
         pagination={{
@@ -94,6 +80,49 @@ const ImageSlider = ({ urls }: ImageSliderProps) => {
         ))}
       </Swiper>
     </div>
+  );
+};
+
+type SliderButtonProps = {
+  hidden?: boolean;
+  onClick: (e: BaseSyntheticEvent) => void;
+};
+
+const SliderNextButton: React.FC<SliderButtonProps> = ({ hidden, onClick }) => {
+  if (hidden) {
+    return;
+  }
+
+  return (
+    <Button
+      className={cn("absolute h-8 w-8 rounded-full right-4 top-1/2 -translate-y-1/2")}
+      onClick={onClick}
+      variant="outline"
+      size="icon"
+      aria-label="next image"
+    >
+      <ArrowRight className="h-4 w-4" />
+      <span className="sr-only">Next slide</span>
+    </Button>
+  );
+};
+
+const SliderPreviousButton: React.FC<SliderButtonProps> = ({ hidden, onClick }) => {
+  if (hidden) {
+    return;
+  }
+
+  return (
+    <Button
+      onClick={onClick}
+      className={cn("absolute h-8 w-8 rounded-full left-4 top-1/2 -translate-y-1/2")}
+      variant="outline"
+      size="icon"
+      aria-label="previous image"
+    >
+      <ArrowLeft className="h-4 w-4" />
+      <span className="sr-only">Previous slide</span>
+    </Button>
   );
 };
 

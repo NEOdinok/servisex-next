@@ -7,7 +7,6 @@ import { ShopItem } from "@/types";
 import { GetProductsResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 
 import { ShopProductCard } from "./ShopProductCard";
 
@@ -17,7 +16,6 @@ interface ProductsShowcaseProps {
 
 const ProductsShowcase = ({ products }: ProductsShowcaseProps) => {
   const showAnimation = useIntro();
-  const router = useRouter();
 
   const { isLoading, error, data } = useQuery<GetProductsResponse>({
     queryKey: [],
@@ -63,11 +61,7 @@ const ProductsShowcase = ({ products }: ProductsShowcaseProps) => {
             exit={showAnimation ? { y: -10, opacity: 0 } : { y: 0, opacity: 1 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
           >
-            <ShopProductCard
-              key={product.parentProductId}
-              product={product}
-              onClick={() => router.push(`/shop/${product.parentProductId}/${product.color}`)}
-            />
+            <ShopProductCard key={product.parentProductId} product={product} />
           </motion.div>
         ))}
       </AnimatePresence>

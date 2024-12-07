@@ -120,7 +120,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         },
         body: JSON.stringify({
           by: "id",
-          order: { status: "no-product" },
+          order: JSON.stringify({ status: "no-product" }),
         }),
       });
 
@@ -163,7 +163,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         },
         body: JSON.stringify({
           by: "id",
-          order: { status: "availability-confirmed" },
+          order: JSON.stringify({ status: "availability-confirmed" }),
         }),
       });
       if (!updateOrderResponse.ok) {

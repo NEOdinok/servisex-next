@@ -268,7 +268,7 @@ const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockProps) =
           setIsWidgetReady(true); // Hide loading component
         },
         onChoose(mode: unknown, second: { delivery_sum: number }, office: PickupPoint) {
-          console.log("[Widget] onChoose", mode, "second:", second, "office:", office);
+          console.log("[Widget] onChoose", "mode:", mode, "second:", second, "office:", office);
           setPickupPointAddress(`${office.city} ${office.address}`);
           setPrice(second.delivery_sum);
         },
@@ -450,11 +450,13 @@ const CartPage = () => {
         firstName: values.firstName,
         lastName: values.lastName,
         phone: values.phone,
+        email: values.email,
         items: cartItems.map((item) => ({
           offer: { id: item.id },
           quantity: item.quantity,
         })),
         delivery: {
+          cost: deliveryPrice,
           code: "courier",
           address: { text: values.address },
         },

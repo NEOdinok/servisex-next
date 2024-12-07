@@ -56,7 +56,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const phone = order.phone;
     const email = order.email;
     const address = order.delivery.address.text;
-    const delivery = order.delivery.code;
+    const delivery = order.delivery.code || "";
 
     const offersInCreatedOrder = orderProducts.map((product) => product.offer.id);
     console.log("offers in order:", offersInCreatedOrder);

@@ -20,3 +20,5 @@ export { type Customer, type OrderItem, type Order, type CreateOrderResponse } f
 export { type PickupPoint } from "./cdek";
 
 export { type GetOrdersResponse } from "./crmOrders";
+
+export { type TelegramOrderDetails } from "./telegram";

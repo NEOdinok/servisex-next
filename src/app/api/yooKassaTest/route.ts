@@ -1,4 +1,5 @@
-import { GetOrdersResponse, GetProductsResponse } from "@/types";
+import { sendOrderDetailsToTelegram } from "@/lib/utils";
+import { GetOrdersResponse, GetProductsResponse, TelegramOrderDetails } from "@/types";
 import ipRangeCheck from "ip-range-check";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
@@ -43,16 +44,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.log("Yookassa IP validated", notificationIp);
     console.log("Received notification from YooKassa:", notification);
 
-    // const parsedOfferIds =
-    //   typeof offerIds === "string"
-    //     ? offerIds.split(",").map((id) => parseInt(id.trim(), 10))
-    //     : offerIds.map((id) => parseInt(id.trim(), 10));
-
     //3. GET product offers in created order
     const ordersResponse = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${retailCrmApiKey}&id=${orderId}`);
     const orderProductsData: GetOrdersResponse = await ordersResponse.json();
     const order = orderProductsData.orders[0];
     const orderProducts = order.items;
+    const deliveryPrice = order.delivery.cost;
+    const productsPrice = order.summ;
+    const firstName = order.firstName;
+    const lastName = order.lastName;
+    const phone = order.phone;
+    const email = order.email;
+    const address = order.delivery.address.text;
+    const delivery = order.delivery.code;
+
     const offersInCreatedOrder = orderProducts.map((product) => product.offer.id);
     console.log("offers in order:", offersInCreatedOrder);
 
@@ -149,6 +154,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       if (!retailCrmApiKey) {
         throw new Error("Retail CRM API key is missing.");
       }
+
       const updateOrderResponse = await fetch(`${API_ENDPOINT_ORDERS}/${orderId}/edit`, {
         method: "POST",
         headers: {
@@ -166,6 +172,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           { status: updateOrderResponse.status },
         );
       }
+
+      const telegramOrderDetails: TelegramOrderDetails = {
+        name: `${firstName} ${lastName}`,
+        email: email,
+        phone: phone,
+        address: address,
+        delivery: delivery,
+        productsPrice: productsPrice,
+        deliveryPrice: deliveryPrice,
+        totalPrice: productsPrice + deliveryPrice,
+      };
+
+      sendOrderDetailsToTelegram(telegramOrderDetails);
+
       console.log("Order status updated to 'availability-confirmed'");
     }
 

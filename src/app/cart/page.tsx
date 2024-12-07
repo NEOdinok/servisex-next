@@ -130,7 +130,7 @@ const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) =
         </div>
         <div className="relative group">
           {/* group-hover:visible */}
-          {/* <img src={speed2} alt="Speed gif" className="absolute invisible -top-24 left-0 " /> */}
+          {/* <Image src={speed2} alt="Speed gif" className="absolute invisible -top-24 left-0 " /> */}
           <Button
             type="submit"
             size="lg"

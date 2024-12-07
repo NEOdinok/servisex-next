@@ -1,4 +1,5 @@
 import { BaseLayout } from "@/layouts/BaseLayout";
+import Image from "next/image";
 import image from "public/images/servisex-about-image.webp";
 
 const AboutPage = () => {
@@ -20,7 +21,7 @@ const AboutPage = () => {
           Все вещи в единственном экземпляре и, соответственно, соответственно.
         </p>
 
-        <img src={image.src} alt="About page image football style" className="w-full max-w-screen-xl" />
+        <Image src={image.src} alt="About page image football style" className="w-full max-w-screen-xl" />
       </div>
     </BaseLayout>
   );

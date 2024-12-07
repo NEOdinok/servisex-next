@@ -1,8 +1,8 @@
-import { AddToCartForm, BaseCarousel, ConfirmationDialog, Gallery, InfoBlock } from "@/components";
+import { AddToCartForm, BaseCarousel, Gallery, InfoBlock } from "@/components";
 import { BaseLayout } from "@/layouts";
 import { formatPrice } from "@/lib/utils";
 import { findAllPossibleOffersOfAProduct, transformAllProductsData, transformSingleProductData } from "@/lib/utils";
-import { GetProductsResponse, PossibleOffer, Product, ProductPreviewData, ShopItem } from "@/types";
+import { GetProductsResponse, Product, ShopItem } from "@/types";
 
 export const dynamicParams = false;
 
@@ -67,12 +67,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <BaseLayout>
       <>
-        <div className="grid sm:grid-cols-[400px_1fr] gap-8 sm:px-4">
-          <div className="flex items-center flex-col h-fit gap-4">
+        <div className="w-full grid sm:grid-cols-[400px_1fr] gap-8 sm:px-4">
+          <div className="relative flex items-center flex-col h-fit gap-4">
             <Gallery
               imageUrls={product?.imgs}
               productName={product.name}
-              className="hidden sm:flex sm:flex-col md:grid md:grid-cols-2 gap-4"
+              className="hidden sm:flex sm:flex-col md:grid md:grid-cols-2 gap-4 w-full"
             />
             <BaseCarousel
               imageUrls={product.imgs}

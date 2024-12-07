@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export interface Props {
   className?: string | undefined;
@@ -15,8 +16,15 @@ export const Gallery = ({ className, imageUrls, productName }: Props) => {
   return (
     <section aria-label="Image Gallery" className={classList}>
       {imageUrls.map((url) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img key={url} src={url} className="w-full aspect-[1/1] object-cover" alt={`${productName} + preview`} />
+        <Image
+          width={1}
+          height={1}
+          layout="responsive"
+          key={url}
+          src={url}
+          className="w-full aspect-[1/1] object-cover"
+          alt={`${productName} + preview`}
+        />
       ))}
     </section>
   );

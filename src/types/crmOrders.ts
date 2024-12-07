@@ -29,6 +29,7 @@ type Order = {
   lastName: string;
   firstName: string;
   phone: string;
+  email: string;
   call: boolean;
   expired: boolean;
   managerId: number;

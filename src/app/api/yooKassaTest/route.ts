@@ -48,7 +48,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const ordersResponse = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${retailCrmApiKey}&id=${orderId}`);
     const orderProductsData: GetOrdersResponse = await ordersResponse.json();
     const order = orderProductsData.orders[0];
-    const orderProducts = order.items;
+    const orderProducts = order?.items;
     const deliveryPrice = order.delivery.cost;
     const productsPrice = order.summ;
     const firstName = order.firstName;

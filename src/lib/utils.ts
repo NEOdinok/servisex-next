@@ -185,6 +185,8 @@ export const findAllPossibleOffersOfAProduct = (product: Product): PossibleOffer
   }));
 
 export const sendOrderDetailsToTelegram = async (values: TelegramOrderDetails) => {
+  console.log("sending order to telegram");
+
   try {
     const message = encodeURIComponent(`
       Новый заказ! ✅
@@ -209,6 +211,8 @@ export const sendOrderDetailsToTelegram = async (values: TelegramOrderDetails) =
     );
 
     const data = await response.json();
+
+    console.log("data is send sucessfully");
 
     if (!data.ok) {
       console.warn("Failed to send message:", data.description);

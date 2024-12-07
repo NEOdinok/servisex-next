@@ -1,4 +1,4 @@
-import { PossibleOffer } from "@/types";
+import { PossibleOffer, TelegramOrderDetails } from "@/types";
 import { Product, ProductPreviewData, ShopItem } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -183,3 +183,37 @@ export const findAllPossibleOffersOfAProduct = (product: Product): PossibleOffer
       size: offer.properties?.size || "one-size",
     },
   }));
+
+export const sendOrderDetailsToTelegram = async (values: TelegramOrderDetails) => {
+  try {
+    const message = encodeURIComponent(`
+      Новый заказ! ✅
+
+      👤 Получатель:
+      Имя: ${values.name}
+      Почта: ${values.email}
+      Телефон: ${values.phone}
+
+      🚚 Доставка:
+      Способ получения: ${values.delivery}
+      Адрес доставки: ${values.address}
+
+      💰 Деньги:
+      Стоимость товаров: ${values.productsPrice}
+      Стоимость доставки: ${values.deliveryPrice}
+      Всего: ${values.totalPrice}
+    `);
+
+    const response = await fetch(
+      `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.NEXT_PUBLIC_TELEGRAM_ORDER_CHAT_ID}&parse_mode=html&text=${message}`,
+    );
+
+    const data = await response.json();
+
+    if (!data.ok) {
+      console.warn("Failed to send message:", data.description);
+    }
+  } catch (error) {
+    console.warn("Error sending order to Telegram:", error);
+  }
+};

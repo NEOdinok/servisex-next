@@ -184,7 +184,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         totalPrice: productsPrice + deliveryPrice,
       };
 
-      sendOrderDetailsToTelegram(telegramOrderDetails);
+      await sendOrderDetailsToTelegram(telegramOrderDetails);
 
       console.log("Order status updated to 'availability-confirmed'");
     }

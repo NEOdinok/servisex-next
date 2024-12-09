@@ -37,6 +37,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const retailCrmApiKey = process.env.NEXT_PUBLIC_RETAIL_CRM_API;
     const notificationIp = request.headers.get("x-forwarded-for") || request.headers.get("client-ip");
 
+    if (!retailCrmApiKey) {
+      throw new Error("Retail CRM API key is missing.");
+    }
+
     console.log("[1] Received notification from YooKassa:", notification);
 
     //2. Validate IP
@@ -97,91 +101,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     //7. Capture or cancel payment
 
     if (outOfStockOffers.length) {
-      const errorIdempotenceKey = uuidv4();
       console.log(`❌ Error! Following items are out of stock: ${outOfStockOffers}`);
-
-      const cancelResponse = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/cancel`, {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${Buffer.from(`${shopId}:${secretKey}`).toString("base64")}`,
-          "Idempotence-Key": errorIdempotenceKey,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
-      });
+      await cancelPayment(paymentId, shopId!, secretKey!);
       console.log("❌ Payment canceled successfully");
-
-      if (!cancelResponse.ok) {
-        return NextResponse.json(
-          { error: `Failed to cancel payment: ${await cancelResponse.text()}` },
-          { status: cancelResponse.status },
-        );
-      }
-
-      if (!retailCrmApiKey) {
-        throw new Error("Retail CRM API key is missing.");
-      }
-
-      const updateOrderResponse = await fetch(`${API_ENDPOINT_ORDERS}/${orderId}/edit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": retailCrmApiKey,
-        },
-        body: JSON.stringify({
-          by: "id",
-          order: { status: "no-product" },
-        }),
-      });
-
-      if (!updateOrderResponse.ok) {
-        return NextResponse.json(
-          { error: `Failed to update order status: ${await updateOrderResponse.text()}` },
-          { status: updateOrderResponse.status },
-        );
-      }
-
+      await updateOrderStatus(orderId, retailCrmApiKey, "no-product");
       console.log("Order status updated to 'no-product'");
     } else {
-      const successIdempotenceKey = uuidv4();
-      console.log("🤝 All offers in stock! Proceed to payment");
-      // Capture payment
-      const captureResponse = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/capture`, {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${Buffer.from(`${shopId}:${secretKey}`).toString("base64")}`,
-          "Idempotence-Key": successIdempotenceKey,
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("✅ Payment captured successfully! ✅");
-      if (!captureResponse.ok) {
-        return NextResponse.json(
-          { error: `Failed to capture payment: ${await captureResponse.text()}` },
-          { status: captureResponse.status },
-        );
-      }
-      if (!retailCrmApiKey) {
-        throw new Error("Retail CRM API key is missing.");
-      }
-
-      const updateOrderResponse = await fetch(`${API_ENDPOINT_ORDERS}/${orderId}/edit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": retailCrmApiKey,
-        },
-        body: JSON.stringify({
-          by: "id",
-          order: { status: "availability-confirmed" },
-        }),
-      });
-      if (!updateOrderResponse.ok) {
-        return NextResponse.json(
-          { error: `Failed to update order status: ${await updateOrderResponse.text()}` },
-          { status: updateOrderResponse.status },
-        );
-      }
+      console.log("✅ All offers in stock! Proceed to payment");
+      await capturePayment(paymentId, shopId!, secretKey!);
+      console.log("✅ Payment captured successfully!");
+      await updateOrderStatus(orderId, retailCrmApiKey, "availability-confirmed");
 
       const telegramOrderDetails: TelegramOrderDetails = {
         name: `${firstName} ${lastName}`,
@@ -195,7 +124,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       };
 
       await sendOrderDetailsToTelegram(telegramOrderDetails);
-
       console.log("Order status updated to 'availability-confirmed'");
     }
 
@@ -204,4 +132,83 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.error("Error processing notification:", error);
     return NextResponse.json({ error: "Failed to process notification" }, { status: 500 });
   }
+}
+
+// async function updateOrderStatus(orderId: string, apiKey: string, status: string) {
+//   const response = await fetch(`${API_ENDPOINT_ORDERS}/${orderId}/edit`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "X-API-KEY": apiKey,
+//     },
+//     body: JSON.stringify({
+//       by: "id",
+//       order: { status: status },
+//     }),
+//   });
+
+//   if (!response.ok) {
+//     throw new Error(`Failed to update order status: ${await response.text()}`);
+//   }
+
+//   return response;
+// }
+
+async function updateOrderStatus(orderId: string, apiKey: string, status: string) {
+  const body = new URLSearchParams();
+  body.append("by", "id");
+  body.append("order[status]", "no-product");
+
+  const response = await fetch(`${API_ENDPOINT_ORDERS}/${orderId}/edit?apiKey=${apiKey}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: body.toString(),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update order status: ${await response.text()}`);
+  }
+
+  return response;
+}
+
+async function cancelPayment(paymentId: string, shopId: string, secretKey: string) {
+  const errorIdempotenceKey = uuidv4();
+
+  const response = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/cancel`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${shopId}:${secretKey}`).toString("base64")}`,
+      "Idempotence-Key": errorIdempotenceKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to cancel payment: ${await response.text()}`);
+  }
+
+  return response;
+}
+
+async function capturePayment(paymentId: string, shopId: string, secretKey: string) {
+  const successIdempotenceKey = uuidv4();
+
+  const response = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/capture`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${shopId}:${secretKey}`).toString("base64")}`,
+      "Idempotence-Key": successIdempotenceKey,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to capture payment: ${await response.text()}`);
+  }
+
+  return response;
 }

@@ -4,6 +4,9 @@ import ipRangeCheck from "ip-range-check";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 const API_ENDPOINT_PRODUCTS = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
 const API_ENDPOINT_ORDERS = "https://goshamartynovich.retailcrm.ru/api/v5/orders";
 
@@ -17,16 +20,14 @@ const validIpRanges = [
   "2a02:5180::/32",
 ];
 
-const isIpValid = (ip: string): boolean => {
+const isIpValid = (ip: string | null): boolean => {
+  if (!ip) return false;
   return ipRangeCheck(ip, validIpRanges);
 };
 
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    //1. Get Stuff
+    //1. Parse request, env variables
     const notification = await request.json();
     const { id: paymentId, metadata } = notification.object;
     const { orderId }: { orderId: string } = metadata;
@@ -36,13 +37,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const retailCrmApiKey = process.env.NEXT_PUBLIC_RETAIL_CRM_API;
     const notificationIp = request.headers.get("x-forwarded-for") || request.headers.get("client-ip");
 
+    console.log("Received notification from YooKassa:", notification);
+
     //2. Validate IP
     if (!notificationIp || !isIpValid(notificationIp)) {
       return NextResponse.json({ error: "Forbidden: Invalid IP address" }, { status: 403 });
     }
 
     console.log("Yookassa IP validated", notificationIp);
-    console.log("Received notification from YooKassa:", notification);
 
     //3. GET product offers in created order
     const ordersResponse = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${retailCrmApiKey}&id=${orderId}`);

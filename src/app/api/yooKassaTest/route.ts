@@ -30,6 +30,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     //1. Parse request, env variables
     const notification = await request.json();
     const { id: paymentId, metadata } = notification.object;
+    const event = notification.event;
     const { orderId }: { orderId: string } = metadata;
 
     const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
@@ -123,7 +124,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         totalPrice: productsPrice + deliveryPrice,
       };
 
-      await sendOrderDetailsToTelegram(telegramOrderDetails);
+      if (event === "payment.succeeded") await sendOrderDetailsToTelegram(telegramOrderDetails);
       console.log("Order status updated to 'availability-confirmed'");
     }
 

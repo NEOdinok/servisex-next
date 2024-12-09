@@ -189,21 +189,21 @@ export const sendOrderDetailsToTelegram = async (values: TelegramOrderDetails) =
 
   try {
     const message = encodeURIComponent(`
-      Новый заказ! ✅
+    Новый заказ! ✅
 
-      👤 Получатель:
-      Имя: ${values.name}
-      Почта: ${values.email}
-      Телефон: ${values.phone}
+    👤 Получатель:
+    Имя: ${values.name}
+    Почта: ${values.email}
+    Телефон: ${values.phone}
 
-      🚚 Доставка:
-      Способ получения: ${values.delivery}
-      Адрес доставки: ${values.address}
+    🚚 Доставка:
+    Способ получения: ${values.delivery}
+    Адрес доставки: ${values.address}
 
-      💰 Деньги:
-      Стоимость товаров: ${values.productsPrice}
-      Стоимость доставки: ${values.deliveryPrice}
-      Всего: ${values.totalPrice}
+    💰 Деньги:
+    Стоимость товаров: ${values.productsPrice}
+    Стоимость доставки: ${values.deliveryPrice}
+    Всего: ${values.totalPrice}
     `);
 
     const response = await fetch(
@@ -212,7 +212,7 @@ export const sendOrderDetailsToTelegram = async (values: TelegramOrderDetails) =
 
     const data = await response.json();
 
-    console.log("data is send sucessfully");
+    console.log("Data is sent sucessfully");
 
     if (!data.ok) {
       console.warn("Failed to send message:", data.description);

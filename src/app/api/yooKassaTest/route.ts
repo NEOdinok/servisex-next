@@ -157,7 +157,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 async function updateOrderStatus(orderId: string, apiKey: string, status: string) {
   const body = new URLSearchParams();
   body.append("by", "id");
-  body.append("order[status]", "no-product");
+  body.append("order", JSON.stringify({ status }));
 
   const response = await fetch(`${API_ENDPOINT_ORDERS}/${orderId}/edit?apiKey=${apiKey}`, {
     method: "POST",

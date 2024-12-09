@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 const API_ENDPOINT_PRODUCTS = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
 const API_ENDPOINT_ORDERS = "https://goshamartynovich.retailcrm.ru/api/v5/orders";
 
-const VALID_IP_RANGES = [
+const validIpRanges = [
   "185.71.76.0/27",
   "185.71.77.0/27",
   "77.75.153.0/25",
@@ -18,7 +18,7 @@ const VALID_IP_RANGES = [
 ];
 
 const isIpValid = (ip: string): boolean => {
-  return ipRangeCheck(ip, VALID_IP_RANGES);
+  return ipRangeCheck(ip, validIpRanges);
 };
 
 export const dynamic = "force-dynamic";

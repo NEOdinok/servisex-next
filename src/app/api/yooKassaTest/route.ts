@@ -102,13 +102,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     if (outOfStockOffers.length) {
       console.log(`❌ Error! Following items are out of stock: ${outOfStockOffers}`);
-      await cancelPayment(paymentId, shopId!, secretKey!);
+      await cancelPayment(paymentId, shopId, secretKey!);
       console.log("❌ Payment canceled successfully");
       await updateOrderStatus(orderId, retailCrmApiKey, "no-product");
       console.log("Order status updated to 'no-product'");
     } else {
       console.log("✅ All offers in stock! Proceed to payment");
-      await capturePayment(paymentId, shopId!, secretKey!);
+      await capturePayment(paymentId, shopId, secretKey!);
       console.log("✅ Payment captured successfully!");
       await updateOrderStatus(orderId, retailCrmApiKey, "availability-confirmed");
 
@@ -174,7 +174,7 @@ async function updateOrderStatus(orderId: string, apiKey: string, status: string
   return response;
 }
 
-async function cancelPayment(paymentId: string, shopId: string, secretKey: string) {
+async function cancelPayment(paymentId: string, shopId: string | undefined, secretKey: string) {
   const errorIdempotenceKey = uuidv4();
 
   const response = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/cancel`, {
@@ -194,7 +194,8 @@ async function cancelPayment(paymentId: string, shopId: string, secretKey: strin
   return response;
 }
 
-async function capturePayment(paymentId: string, shopId: string, secretKey: string) {
+async function capturePayment(paymentId: string, shopId: string | undefined, secretKey: string) {
+  console.log("credentials:", "paymentId:", paymentId, "shopId:", shopId, "secretKey:", secretKey);
   const successIdempotenceKey = uuidv4();
 
   const response = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/capture`, {

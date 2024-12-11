@@ -4,10 +4,10 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import { FieldError, useForm } from "react-hook-form";
 
 import {
-  Button,
   Card,
   CardContent,
   CheckoutBlockCart,
+  CheckoutBlockTotal,
   CheckoutFormField,
   Form,
   Label,
@@ -23,7 +23,7 @@ import {
 import { useCart } from "@/hooks";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { CheckoutForm, formSchema } from "@/lib/checkout-form";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import {
   CheckoutBlockProps,
   CreateOrderResponse,
@@ -35,68 +35,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import Script from "next/script";
-
-interface TotalBlockProps {
-  isLoading: boolean;
-  deliveryPrice: number | null;
-}
-
-const CheckoutBlockTotal = ({ isLoading, deliveryPrice = 0 }: TotalBlockProps) => {
-  const { items } = useCart();
-  const cartItemsCount = items.length;
-  const productsPrice = items.reduce((total, item) => {
-    return total + item.price * item.quantity;
-  }, 0);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  return (
-    <>
-      <div className="sticky top-16 h-fit bg-background space-y-4 md:space-y-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-mono font-medium">
-            ИТАК..
-            <br />
-            ТВОЙ ЗАКАЗ
-          </h2>
-          <Button onClick={scrollToTop} variant="outline">
-            ИЗМЕНИТЬ
-          </Button>
-        </div>
-        <div className="grid gap-2">
-          <div className="flex justify-between font-mono">
-            <span>ТОВАРЫ</span>
-            <span>{formatPrice(productsPrice)} ₽</span>
-          </div>
-          <div className="flex justify-between font-mono">
-            <span>ДОСТАВКА</span>
-            <span>{deliveryPrice} ₽</span>
-          </div>
-          <Separator />
-          <div className="flex justify-between font-medium font-mono">
-            <span>ИТОГО</span>
-            <span>{deliveryPrice ? formatPrice(deliveryPrice + productsPrice) : formatPrice(productsPrice)} ₽</span>
-          </div>
-        </div>
-        <div className="relative group">
-          {/* group-hover:visible */}
-          {/* <Image src={speed2} alt="Speed gif" className="absolute invisible -top-24 left-0 " /> */}
-          <Button
-            type="submit"
-            size="lg"
-            className="w-full"
-            loading={isLoading}
-            disabled={cartItemsCount === 0 || isLoading}
-          >
-            ОПЛАТИТЬ
-          </Button>
-        </div>
-      </div>
-    </>
-  );
-};
 
 interface DeliveryBlockProps extends CheckoutBlockProps {
   setDeliveryPrice: React.Dispatch<SetStateAction<number>>;

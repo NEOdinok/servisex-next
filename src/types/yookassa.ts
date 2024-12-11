@@ -1,4 +1,4 @@
-export interface YookassaPaymentResponse {
+export type YookassaPaymentResponse = {
   id: string;
   status: string;
   paid: boolean;
@@ -19,10 +19,10 @@ export interface YookassaPaymentResponse {
   };
   refundable: boolean;
   test: boolean;
-}
+};
 
-export interface YookassaPaymentRequest {
+export type YookassaPaymentRequest = {
   value: number;
   description: string;
   metadata: { orderId: number };
-}
+};

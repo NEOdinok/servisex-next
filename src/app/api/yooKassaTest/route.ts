@@ -99,6 +99,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     console.log("[6] Here's what's out of slock:", outOfStockOffers);
 
+    /**
+     * if waiting_for_capture
+     * check for isOutOfStock - capture or cancel
+     *
+     * if payment suceded - change status, message to tg
+     * else if payment failed - check logs, maybe nothing is cancelled and i'll need to change order status manually
+     */
+
     //7. Capture or cancel payment
 
     if (outOfStockOffers.length) {

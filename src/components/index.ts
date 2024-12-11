@@ -22,6 +22,7 @@ export { CheckoutFormField } from "./CheckoutFormField";
 export { Sidebar } from "./Sidebar";
 export { CheckoutBlockCart } from "./CheckoutBlockCart";
 export { CheckoutBlockTotal } from "./CheckoutBlockTotal";
+export { CheckoutBlockDelivery } from "./CheckoutBlockDelivery";
 
 export { CopyrightServisex } from "./ui/copyright-servisex";
 export { CopyrightGoat } from "./ui/copyright-goat";

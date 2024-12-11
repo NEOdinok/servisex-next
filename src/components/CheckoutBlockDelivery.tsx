@@ -42,6 +42,7 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
   // This leads to error inputs being impossible to type in
   // And weird scroll behavior. Page does not even scroll to address error
   // it does a random scroll
+
   useEffect(() => {
     if (!anyErrorApartFromAddress && addressError && addressErrorRef.current) {
       addressErrorRef.current.scrollIntoView({ behavior: "instant", block: "center" });
@@ -176,16 +177,9 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
               className={cn("absolute top-0 w-full", activeTab === "delivery" ? "" : "invisible")}
             >
               <div id="cdek-tab" className="relative flex flex-col p-0">
-                <div
-                  id="cdek-map"
-                  className={cn("", !isWidgetReady ? "hidden" : "h-96")}
-                  ref={widgetContainerRef}
-                ></div>
-                {!isWidgetReady && (
-                  <div className="h-96 flex flex-col items-center justify-center">
-                    <LoadingEllipsis text="СДЭК" />
-                  </div>
-                )}
+                <div id="cdek-map" className={!isWidgetReady ? "hidden" : "h-96"} ref={widgetContainerRef}></div>
+
+                {!isWidgetReady && <WidgetLoadingState />}
               </div>
             </TabsContent>
 
@@ -194,7 +188,8 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
               className={cn("absolute top-0 w-full", activeTab === "pickup" ? "" : "invisible")}
             >
               <div className="font-mono">
-                Электролитный Проезд, 3, строение 19, Москва, Россия, 115230 <br />
+                Лида, Беларусь улица улицы, дом дома
+                <br />
                 <br />
                 10:00 - 18:00 <br />
                 Каждый день
@@ -228,5 +223,13 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
         `}
       </style>
     </>
+  );
+};
+
+const WidgetLoadingState = () => {
+  return (
+    <div className="h-96 flex flex-col items-center justify-center">
+      <LoadingEllipsis text="СДЭК" />
+    </div>
   );
 };

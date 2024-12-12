@@ -13,7 +13,7 @@ export {
 
 export { type CartItem } from "./cart";
 
-export { type CheckoutBlockProps } from "./checkout";
+export { type CheckoutBlockProps, type DeliveryMethods } from "./checkout";
 
 export { type YookassaPaymentResponse, type YookassaPaymentRequest } from "./yookassa";
 

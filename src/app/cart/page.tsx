@@ -35,7 +35,8 @@ const CartPage = () => {
       familyName: "Гоша",
       email: "gosha@gmail.com",
       phone: "+79093555555",
-      address: undefined,
+      address: "",
+      deliveryMethod: "delivery",
     },
   });
 
@@ -64,6 +65,8 @@ const CartPage = () => {
   });
 
   const onSubmit = async (values: CheckoutForm) => {
+    const shouldAddAddres = form.getValues("deliveryMethod") === "delivery";
+
     try {
       setIsSubmitting(true);
 
@@ -78,8 +81,8 @@ const CartPage = () => {
         })),
         delivery: {
           cost: deliveryPrice,
-          code: "courier",
-          address: { text: values.address },
+          code: values.deliveryMethod,
+          address: { text: shouldAddAddres ? values.address : "" },
         },
       };
 
@@ -103,7 +106,7 @@ const CartPage = () => {
   return (
     <BaseLayout>
       <Form {...form}>
-        <div className="flex justify-center">
+        <div className="flex w-full justify-center">
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid md:grid-cols-[1fr_350px] gap-8 py-4 px-2 w-full max-w-screen-lg"

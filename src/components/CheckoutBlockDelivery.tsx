@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import type { FieldError } from "react-hook-form";
+import { FieldError, useWatch } from "react-hook-form";
 
 import { LoadingEllipsis, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components";
 import { cn } from "@/lib/utils";
-import type { PickupPoint } from "@/types";
+import type { DeliveryMethods, PickupPoint } from "@/types";
 import type { CheckoutBlockProps } from "@/types";
 import Script from "next/script";
 
@@ -18,12 +18,18 @@ type DeliveryBlockProps = CheckoutBlockProps & {
 
 export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockProps) => {
   const [pickupPointAddress, setPickupPointAddress] = useState<string>("");
-  const [activeTab, setActiveTab] = useState<string>("delivery");
   const [isWidgetReady, setIsWidgetReady] = useState<boolean>(false);
   const addressErrorRef = useRef<HTMLSpanElement | null>(null);
   const widgetContainerRef = useRef<HTMLDivElement | null>(null);
   const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+
+  const deliveryMethod = useWatch({
+    control: form.control,
+    name: "deliveryMethod",
+  });
+
+  const deliveryTabActive = deliveryMethod === "delivery";
 
   const { formState, setValue, trigger } = form;
   const addressError = formState.errors.address as FieldError | undefined;
@@ -51,7 +57,7 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
   }, [addressError]);
 
   const onTabChange = (value: string) => {
-    setActiveTab(value);
+    form.setValue("deliveryMethod", value as DeliveryMethods);
   };
 
   useEffect(() => {
@@ -171,10 +177,12 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
             </TabsTrigger>
           </TabsList>
 
-          <div className={cn("relative overflow-clip", activeTab === "delivery" ? "h-delivery-tab" : "h-pickup-tab")}>
+          <div
+            className={cn("relative overflow-clip", deliveryMethod === "delivery" ? "h-delivery-tab" : "h-pickup-tab")}
+          >
             <TabsContent
               value="delivery"
-              className={cn("absolute top-0 w-full", activeTab === "delivery" ? "" : "invisible")}
+              className={cn("absolute top-0 w-full", deliveryMethod === "delivery" ? "" : "invisible")}
             >
               <div id="cdek-tab" className="relative flex flex-col p-0">
                 <div id="cdek-map" className={!isWidgetReady ? "hidden" : "h-96"} ref={widgetContainerRef}></div>
@@ -185,7 +193,7 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
 
             <TabsContent
               value="pickup"
-              className={cn("absolute top-0 w-full", activeTab === "pickup" ? "" : "invisible")}
+              className={cn("absolute top-0 w-full", deliveryMethod === "pickup" ? "" : "invisible")}
             >
               <div className="font-mono">
                 Лида, Беларусь улица улицы, дом дома
@@ -196,7 +204,7 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
               </div>
             </TabsContent>
           </div>
-          {pickupPointAddress && (
+          {pickupPointAddress && deliveryTabActive && (
             <div className="flex flex-col gap-0 items-start justify-center mt-2">
               <span className="font-mono">Выбранный пункт:</span>
               <span className="font-mono">{pickupPointAddress}</span>

@@ -20,6 +20,11 @@ export { ConfirmationDialog } from "./ConfirmationDialog";
 export { HeaderCartCounter } from "./HeaderCartCounter";
 export { CheckoutFormField } from "./CheckoutFormField";
 export { Sidebar } from "./Sidebar";
+export { CheckoutBlockCart } from "./CheckoutBlockCart";
+export { CheckoutBlockTotal } from "./CheckoutBlockTotal";
+export { CheckoutBlockDelivery } from "./CheckoutBlockDelivery";
+export { CheckoutBlockPayment } from "./CheckoutBlockPayment";
+export { CheckoutBlockContacts } from "./CheckoutBlockContacts";
 
 export { CopyrightServisex } from "./ui/copyright-servisex";
 export { CopyrightGoat } from "./ui/copyright-goat";

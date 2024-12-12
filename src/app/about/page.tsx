@@ -21,7 +21,12 @@ const AboutPage = () => {
           Все вещи в единственном экземпляре и, соответственно, соответственно.
         </p>
 
-        <Image src={image.src} alt="About page image football style" className="w-full max-w-screen-xl" />
+        <Image
+          src={image.src}
+          alt="About page image football style"
+          className="w-full max-w-screen-xl"
+          layout="responsive"
+        />
       </div>
     </BaseLayout>
   );

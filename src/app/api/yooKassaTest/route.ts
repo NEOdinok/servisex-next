@@ -130,7 +130,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         delivery: delivery,
         productsPrice: productsPrice,
         deliveryPrice: deliveryPrice,
-        customerComment,
+        customerComment: customerComment,
         totalPrice: productsPrice + deliveryPrice,
       };
 

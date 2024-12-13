@@ -199,6 +199,7 @@ export const sendOrderDetailsToTelegram = async (values: TelegramOrderDetails) =
     🚚 Доставка:
     Способ получения: ${values.delivery}
     Адрес доставки: ${values.address}
+    Комментарий: ${values.customerComment}
 
     💰 Деньги:
     Стоимость товаров: ${values.productsPrice}

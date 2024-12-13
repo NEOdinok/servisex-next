@@ -6,5 +6,6 @@ export type TelegramOrderDetails = {
   delivery: string;
   productsPrice: number;
   deliveryPrice: number;
+  customerComment?: string;
   totalPrice: number;
 };

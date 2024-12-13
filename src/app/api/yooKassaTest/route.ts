@@ -58,6 +58,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const orderProducts = order?.items;
     const deliveryPrice = order.delivery.cost;
+    const customerComment = order.customerComment;
     const productsPrice = order.summ;
     const firstName = order.firstName;
     const lastName = order.lastName;
@@ -129,6 +130,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         delivery: delivery,
         productsPrice: productsPrice,
         deliveryPrice: deliveryPrice,
+        customerComment,
         totalPrice: productsPrice + deliveryPrice,
       };
 

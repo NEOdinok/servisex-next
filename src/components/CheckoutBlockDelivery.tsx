@@ -6,7 +6,7 @@ import { FieldError, useWatch } from "react-hook-form";
 
 import { LoadingEllipsis, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components";
 import { cn } from "@/lib/utils";
-import type { DeliveryMethods, PickupPoint } from "@/types";
+import type { CdekSelectedAddress, CdekSelectedDeliveryMode, CdekSelectedTariff, DeliveryMethods } from "@/types";
 import type { CheckoutBlockProps } from "@/types";
 import Script from "next/script";
 
@@ -17,7 +17,6 @@ type DeliveryBlockProps = CheckoutBlockProps & {
 };
 
 export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockProps) => {
-  const [pickupPointAddress, setPickupPointAddress] = useState<string>("");
   const [isWidgetReady, setIsWidgetReady] = useState<boolean>(false);
   const addressErrorRef = useRef<HTMLSpanElement | null>(null);
   const widgetContainerRef = useRef<HTMLDivElement | null>(null);
@@ -60,6 +59,11 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
     form.setValue("deliveryMethod", value as DeliveryMethods);
   };
 
+  const pickupPointAddress = useWatch({
+    control: form.control,
+    name: "address",
+  });
+
   useEffect(() => {
     if (pickupPointAddress) {
       setValue("address", pickupPointAddress);
@@ -94,7 +98,6 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
 
     const initializeCDEKWidget = (
       servicePath: string,
-      setPickupPointAddress: React.Dispatch<React.SetStateAction<string>>,
       setPrice: React.Dispatch<React.SetStateAction<number>>,
       setIsWidgetReady: React.Dispatch<React.SetStateAction<boolean>>,
     ) => {
@@ -140,10 +143,10 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
         onReady() {
           setIsWidgetReady(true); // Hide loading component
         },
-        onChoose(mode: unknown, second: { delivery_sum: number }, office: PickupPoint) {
-          console.log("[Widget] onChoose", "mode:", mode, "second:", second, "office:", office);
-          setPickupPointAddress(`${office.city} ${office.address}`);
-          setPrice(second.delivery_sum);
+        onChoose(mode: CdekSelectedDeliveryMode, tariff: CdekSelectedTariff, office: CdekSelectedAddress) {
+          setPrice(tariff.delivery_sum);
+          form.setValue("address", `${office.city} ${office.address}`);
+          form.setValue("deliveryTariff", `${tariff.tariff_description} ${tariff.tariff_name}`);
         },
         onCalculate(obj: unknown) {
           console.log("[Widget] onCalculate", obj);
@@ -159,9 +162,9 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
 
     if (document.getElementById("cdek-map") && !window.CDEKWidgetInitialized) {
       setIsWidgetReady(false);
-      initializeCDEKWidget(servicePath, setPickupPointAddress, setDeliveryPrice, setIsWidgetReady);
+      initializeCDEKWidget(servicePath, setDeliveryPrice, setIsWidgetReady);
     }
-  }, [isScriptLoaded, setPickupPointAddress, setDeliveryPrice, userLocation]);
+  }, [isScriptLoaded, setDeliveryPrice, userLocation, form]);
 
   return (
     <>

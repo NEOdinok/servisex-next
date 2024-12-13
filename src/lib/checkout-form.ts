@@ -24,6 +24,7 @@ const checkoutSchema = z.object({
       message: "[Строка] Номер не может быть таким коротким",
     }),
   deliveryMethod: z.enum(["delivery", "pickup"]),
+  deliveryTariff: z.string().optional(),
   address: z.string().optional(),
 });
 

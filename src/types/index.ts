@@ -19,7 +19,7 @@ export { type YookassaPaymentResponse, type YookassaPaymentRequest } from "./yoo
 
 export { type Customer, type OrderItem, type Order, type CreateOrderResponse } from "./retail-crm";
 
-export { type PickupPoint } from "./cdek";
+export { type CdekSelectedAddress, type CdekSelectedDeliveryMode, type CdekSelectedTariff } from "./cdek";
 
 export { type GetOrdersResponse } from "./crmOrders";
 

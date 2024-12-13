@@ -74,6 +74,7 @@ export interface OrderItem {
 
 export interface Order {
   slug?: number;
+  customerComment?: string;
   bonusesCreditTotal?: number;
   bonusesChargeTotal?: number;
   id?: number;

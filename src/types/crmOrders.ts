@@ -15,6 +15,7 @@ type Order = {
   bonusesChargeTotal: number;
   id: number;
   number: string;
+  customerComment?: string;
   orderType: string;
   orderMethod: string;
   privilegeType: string;

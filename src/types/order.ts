@@ -72,6 +72,9 @@ export interface OrderItem {
   ordering?: number;
 }
 
+// TODO: there are multiple Order entities on a project
+// interfact Order, type Order
+// they need to be merged and put in a one designated place
 export interface Order {
   slug?: number;
   bonusesCreditTotal?: number;
@@ -85,6 +88,7 @@ export interface Order {
   createdAt?: string;
   statusUpdatedAt?: string;
   summ?: number;
+  customerComment?: string;
   totalSumm?: number;
   prepaySum?: number;
   purchaseSumm?: number;

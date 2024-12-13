@@ -24,7 +24,7 @@ const ProductsShowcase = ({ products }: ProductsShowcaseProps) => {
 
   if (isLoading)
     return (
-      <div className="justify-center items-center flex h-screen w-screen">
+      <div className="justify-center items-center flex grow">
         <LoadingServisex />
       </div>
     );

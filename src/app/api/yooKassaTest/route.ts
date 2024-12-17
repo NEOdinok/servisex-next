@@ -110,7 +110,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
 
       return NextResponse.json({ message: "Notification processed successfully" });
-    } else if (event === "payment.succeded") {
+    } else if (event === "payment.succeeded") {
       // 1) Get order details
       const ordersResponse = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${retailCrmApiKey}&id=${orderId}`);
       const orderProductsData: GetOrdersResponse = await ordersResponse.json();

@@ -33,6 +33,7 @@ const HomeServisex = () => {
           src={logo}
           alt="Servisex logo"
           className="aspect-[1.65] w-fit h-[128px] mt-[220px] mb-0 ml-auto mr-auto text-white sm:mt-[10%]"
+          priority
         />
 
         <HomeNavigation className="w-full flex justify-center items-center" />

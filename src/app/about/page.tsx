@@ -25,7 +25,8 @@ const AboutPage = () => {
           src={image.src}
           alt="About page image football style"
           className="w-full max-w-screen-xl"
-          layout="responsive"
+          width={4608}
+          height={3072}
         />
       </div>
     </BaseLayout>

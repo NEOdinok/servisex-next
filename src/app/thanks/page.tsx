@@ -24,9 +24,11 @@ const ThanksPage = () => {
 
   if (isLoading)
     return (
-      <div className="justify-center items-center flex grow">
-        <LoadingServisex />
-      </div>
+      <BaseLayout>
+        <div className="justify-center items-center flex grow">
+          <LoadingServisex />
+        </div>
+      </BaseLayout>
     );
 
   return <BaseLayout>{orderPaid ? <SuccessAfterPayment /> : <ErrorAfterPayment />}</BaseLayout>;

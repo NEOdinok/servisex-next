@@ -184,28 +184,33 @@ export const findAllPossibleOffersOfAProduct = (product: Product): PossibleOffer
     },
   }));
 
-export const sendOrderDetailsToTelegram = async (values: TelegramOrderDetails) => {
-  console.log("sending order to telegram");
+export const sendOrderDetailsToTelegram = async (
+  values: TelegramOrderDetails,
+  status: "created" | "paid", // Accepts two statuses: "created" or "paid"
+) => {
+  console.log(`Sending ${status} order to Telegram`);
 
   try {
+    const statusMessage = status === "created" ? "Заказ создан" : "Заказ оплачен";
+
     const message = encodeURIComponent(`
-    Новый заказ! ✅
+      ${statusMessage} ✅
 
-    👤 Получатель:
-    Имя: ${values.name}
-    Почта: ${values.email}
-    Телефон: ${values.phone}
+      👤 Получатель:
+      Имя: ${values.name}
+      Почта: ${values.email}
+      Телефон: ${values.phone}
 
-    🚚 Доставка:
-    Способ получения: ${values.delivery}
-    Адрес доставки: ${values.address}
-    Комментарий: ${values.customerComment}
+      🚚 Доставка:
+      Способ получения: ${values.delivery}
+      Адрес доставки: ${values.address}
+      Комментарий: ${values.customerComment}
 
-    💰 Деньги:
-    Стоимость товаров: ${values.productsPrice}
-    Стоимость доставки: ${values.deliveryPrice}
-    Всего: ${values.totalPrice}
-    `);
+      💰 Деньги:
+      Стоимость товаров: ${values.productsPrice}
+      Стоимость доставки: ${values.deliveryPrice}
+      Всего: ${values.totalPrice}
+      `);
 
     const response = await fetch(
       `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.NEXT_PUBLIC_TELEGRAM_ORDER_CHAT_ID}&parse_mode=html&text=${message}`,
@@ -213,7 +218,7 @@ export const sendOrderDetailsToTelegram = async (values: TelegramOrderDetails) =
 
     const data = await response.json();
 
-    console.log("Data is sent sucessfully");
+    console.log("Data is sent successfully");
 
     if (!data.ok) {
       console.warn("Failed to send message:", data.description);

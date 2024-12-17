@@ -26,3 +26,5 @@ export type YookassaPaymentRequest = {
   description: string;
   metadata: { orderId: number };
 };
+
+export type YookassaPaymentNotification = "payment.waiting_for_capture" | "payment.succeeded" | "payment.canceled";

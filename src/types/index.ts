@@ -15,7 +15,11 @@ export { type CartItem } from "./cart";
 
 export { type CheckoutBlockProps, type DeliveryMethods } from "./checkout";
 
-export { type YookassaPaymentResponse, type YookassaPaymentRequest } from "./yookassa";
+export {
+  type YookassaPaymentResponse,
+  type YookassaPaymentRequest,
+  type YookassaPaymentNotification,
+} from "./yookassa";
 
 export { type Customer, type OrderItem, type Order, type CreateOrderResponse } from "./retail-crm";
 

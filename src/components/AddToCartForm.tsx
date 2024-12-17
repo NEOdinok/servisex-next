@@ -138,6 +138,7 @@ const AddToCartForm = ({ product, color }: Props) => {
       decrementItemQuantity(currentOffer.id);
     }
   };
+
   useEffect(() => {
     if (dynamicPossibleOffers) {
       const offer = findOffer(dynamicPossibleOffers, color, size, product?.name);

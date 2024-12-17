@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { HeaderNavigation } from "./HeaderNavigation";
 import { CopyrightServisex } from "./ui/copyright-servisex";
 
 const BaseFooter = () => {

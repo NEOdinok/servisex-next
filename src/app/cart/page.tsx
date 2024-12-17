@@ -14,7 +14,14 @@ import {
 import { useCart } from "@/hooks";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { CheckoutForm, formSchema } from "@/lib/checkout-form";
-import { CreateOrderResponse, Order, YookassaPaymentRequest, YookassaPaymentResponse } from "@/types";
+import { sendOrderDetailsToTelegram } from "@/lib/utils";
+import {
+  CreateOrderResponse,
+  Order,
+  TelegramOrderDetails,
+  YookassaPaymentRequest,
+  YookassaPaymentResponse,
+} from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 
@@ -69,6 +76,20 @@ const CartPage = () => {
 
     try {
       setIsSubmitting(true);
+
+      const telegramOrderDetails: TelegramOrderDetails = {
+        name: `${values.firstName} ${values.lastName}`,
+        email: values.email,
+        phone: values.phone,
+        address: values.address,
+        delivery: values.deliveryMethod,
+        customerComment: values.deliveryTariff,
+        productsPrice: productsPrice,
+        deliveryPrice: deliveryPrice,
+        totalPrice: productsPrice + deliveryPrice,
+      };
+
+      await sendOrderDetailsToTelegram(telegramOrderDetails, "created");
 
       const order = {
         firstName: values.firstName,

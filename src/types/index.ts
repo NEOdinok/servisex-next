@@ -19,6 +19,7 @@ export {
   type YookassaPaymentResponse,
   type YookassaPaymentRequest,
   type YookassaPaymentNotification,
+  type YookassaCreatePaymentResponse,
 } from "./yookassa";
 
 export { type Customer, type OrderItem, type Order, type CreateOrderResponse } from "./retail-crm";

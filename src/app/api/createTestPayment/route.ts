@@ -1,4 +1,4 @@
-import { YookassaPaymentResponse } from "@/types";
+import { YookassaCreatePaymentResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,9 +15,10 @@ export async function POST(req: NextRequest) {
     const idempotenceKey = uuidv4();
 
     //TODO: thanks page or page with error
-    const returnUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/thanks`;
     const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
     const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
+
+    const returnUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/thanks?orderId=${metadata.orderId}`;
 
     const paymentData = {
       amount: {
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify(paymentData),
     });
 
-    const data = (await response.json()) as YookassaPaymentResponse;
+    const data: YookassaCreatePaymentResponse = await response.json();
 
     return NextResponse.json(data, { status: response.status });
   } catch (error) {

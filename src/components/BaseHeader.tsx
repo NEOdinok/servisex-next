@@ -7,7 +7,8 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 
 const BaseHeader = () => {
-  const environment = process.env.NEXT_PUBLIC_ENV;
+  const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
+  const isDevEnvironment = environment === "dev";
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleSidebarClose = () => {
@@ -46,7 +47,7 @@ const BaseHeader = () => {
           <BurgerButton className="block sm:hidden p-2" onClick={toggleSidebar} isOpen={isSidebarOpen} />
           <DesktopHeaderNavigation className="hidden sm:flex gap-4" />
         </div>
-        {environment}
+        {isDevEnvironment && environment}
 
         <div className="header-right flex items-center">
           <HeaderCartCounter />

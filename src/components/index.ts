@@ -25,6 +25,7 @@ export { CheckoutBlockTotal } from "./CheckoutBlockTotal";
 export { CheckoutBlockDelivery } from "./CheckoutBlockDelivery";
 export { CheckoutBlockPayment } from "./CheckoutBlockPayment";
 export { CheckoutBlockContacts } from "./CheckoutBlockContacts";
+export { Thanks } from "./Thanks";
 
 export { CopyrightServisex } from "./ui/copyright-servisex";
 export { CopyrightGoat } from "./ui/copyright-goat";

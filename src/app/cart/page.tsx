@@ -112,7 +112,7 @@ const CartPage = () => {
 
       const paymentDetails = {
         value: productsPrice + deliveryPrice,
-        description: `Created order id: ${createOrderRes.id}}`,
+        description: `Created order id: ${createOrderRes.id}`,
         metadata: { orderId: createOrderRes.id },
       };
 

@@ -39,6 +39,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   //   console.log("Error:", err);
   // }
 
+  const notification = await request.json();
+  const { id: paymentId } = notification.object;
+  const event = notification.event as YookassaPaymentNotification;
+
+  console.log("Event received:", event);
+  console.log("Payment id:", paymentId);
+
   try {
     const notification = await request.json();
     const { id: paymentId, metadata } = notification.object;

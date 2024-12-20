@@ -44,8 +44,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const event = notification.event as YookassaPaymentNotification;
     const { orderId }: { orderId: string } = metadata;
 
-    const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
-    const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
     const retailCrmApiKey = process.env.NEXT_PUBLIC_RETAIL_CRM_API;
     const notificationIp = request.headers.get("x-forwarded-for") || request.headers.get("client-ip");
 
@@ -66,7 +64,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       const orderProductsData: GetOrdersResponse = await ordersResponse.json();
       const order = orderProductsData.orders[0];
 
-      const amount = notification.object.amount.value;
+      const value = notification.object.amount.value;
       const currency = notification.object.amount.currency;
 
       const orderProducts = order?.items;
@@ -108,7 +106,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.log("[1.5] Order status updated to 'no-product'");
       } else {
         console.log("✅ All offers in stock! Proceed to payment");
-        const capturePaymenetBody = { amount: { amount, currency } };
+        const capturePaymenetBody = { amount: { value, currency } };
         await capturePayment(capturePaymenetBody, paymentId);
 
         console.log("[1.5] proceed to capturing payment");

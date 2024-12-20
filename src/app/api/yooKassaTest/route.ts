@@ -26,19 +26,6 @@ const isIpValid = (ip: string | null): boolean => {
 };
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  // Stub
-  //
-  // try {
-  //   const notification = await request.json();
-  //   const { id: paymentId } = notification.object;
-  //   const event = notification.event as YookassaPaymentNotification;
-
-  //   console.log("Event received:", event);
-  //   console.log("Payment id:", paymentId);
-  // } catch (err) {
-  //   console.log("Error:", err);
-  // }
-
   const notification = await request.json();
   const { id: paymentId } = notification.object;
   const event = notification.event as YookassaPaymentNotification;
@@ -76,12 +63,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       const orderProducts = order?.items;
       const offersInCreatedOrder = orderProducts.map((product) => product.offer.id);
 
-      console.log("[1] Offers in order:", offersInCreatedOrder);
+      console.log("[1.1] Processing... Offers in order:", offersInCreatedOrder);
 
       const productsResponse = await fetch(`${API_ENDPOINT_PRODUCTS}?apiKey=${retailCrmApiKey}`);
       const productsData: GetProductsResponse = await productsResponse.json();
       const products = productsData.products;
-      console.log("[2] Got all the products");
+      console.log("[1.2] Got all the products");
 
       const offerQuantityMap = new Map<number, number>();
       const outOfStockOffers: number[] = [];
@@ -91,7 +78,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           offerQuantityMap.set(offer.id, offer.quantity);
         });
       });
-      console.log("[3] Create a map of offer - quantity:", offerQuantityMap);
+      console.log("[1.3] Create a map of offer - quantity:", offerQuantityMap);
 
       offersInCreatedOrder.forEach((offerId) => {
         const quantity = offerQuantityMap.get(offerId);
@@ -100,7 +87,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           outOfStockOffers.push(offerId);
         }
       });
-      console.log("[4] Here's what's out of slock:", outOfStockOffers);
+      console.log("[1.4] Here's what's out of slock:", outOfStockOffers);
 
       if (outOfStockOffers.length) {
         console.log(`❌ Error! Following items are out of stock: ${outOfStockOffers}`);
@@ -109,12 +96,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.log("❌ Payment canceled successfully");
         await updateOrderStatus(orderId, retailCrmApiKey, "no-product");
 
-        console.log("[5] Order status updated to 'no-product'");
+        console.log("[1.5] Order status updated to 'no-product'");
       } else {
         console.log("✅ All offers in stock! Proceed to payment");
         await capturePayment(paymentId, shopId, secretKey!);
 
-        console.log("[5] proceed to capturing payment");
+        console.log("[1.5] proceed to capturing payment");
       }
 
       return NextResponse.json({ message: "Notification processed successfully" });
@@ -133,11 +120,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       const address = order.delivery.address.text;
       const delivery = order.delivery.code || "";
 
-      console.log("[1] Got all the variables");
+      console.log("[2.1] Capturing paymenet");
 
       console.log("✅ Payment captured successfully!");
       await updateOrderStatus(orderId, retailCrmApiKey, "paid");
-      console.log("[2] Payment captured");
+      console.log("[2.2] Payment captured");
 
       const telegramOrderDetails: TelegramOrderDetails = {
         name: `${firstName} ${lastName}`,
@@ -153,7 +140,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
       await sendOrderDetailsToTelegram(telegramOrderDetails, "paid");
 
-      console.log("[3] Order status updated to 'paid'");
+      console.log("[2.3] Order status updated to 'paid'");
     }
 
     return NextResponse.json({ message: "Notification processed successfully" });

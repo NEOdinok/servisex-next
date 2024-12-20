@@ -100,7 +100,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
       if (outOfStockOffers.length) {
         console.log(`❌ Error! Following items are out of stock: ${outOfStockOffers}`);
-        await cancelPayment(paymentId, shopId, secretKey!);
+        await cancelPayment(paymentId);
 
         console.log("❌ Payment canceled successfully");
         await updateOrderStatus(orderId, retailCrmApiKey, "no-product");
@@ -108,7 +108,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.log("[1.5] Order status updated to 'no-product'");
       } else {
         console.log("✅ All offers in stock! Proceed to payment");
-        await capturePayment(paymentId, shopId, secretKey!);
+        const capturePaymenetBody = { amount: { amount, currency } };
+        await capturePayment(capturePaymenetBody, paymentId);
 
         console.log("[1.5] proceed to capturing payment");
       }

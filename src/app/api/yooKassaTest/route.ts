@@ -160,6 +160,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 async function updateOrderStatus(orderId: string, apiKey: string, status: string) {
   const body = new URLSearchParams();
 
+  body.append("by", "id");
+  body.append("order", JSON.stringify({ status }));
+
+  const response = await fetch(`${API_ENDPOINT_ORDERS}/${orderId}/edit?apiKey=${apiKey}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: body.toString(),
+  });
+
   if (!response.ok) {
     throw new Error(`Failed to update order status: ${await response.text()}`);
   }

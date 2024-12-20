@@ -1,5 +1,11 @@
 import { sendOrderDetailsToTelegram } from "@/lib/utils";
-import { GetOrdersResponse, GetProductsResponse, TelegramOrderDetails, YookassaPaymentNotification } from "@/types";
+import {
+  GetOrdersResponse,
+  GetProductsResponse,
+  TelegramOrderDetails,
+  YookassaCapturePaymentBody,
+  YookassaPaymentNotification,
+} from "@/types";
 import ipRangeCheck from "ip-range-check";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
@@ -59,6 +65,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       const ordersResponse = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${retailCrmApiKey}&id=${orderId}`);
       const orderProductsData: GetOrdersResponse = await ordersResponse.json();
       const order = orderProductsData.orders[0];
+
+      const amount = notification.object.amount.value;
+      const currency = notification.object.amount.currency;
 
       const orderProducts = order?.items;
       const offersInCreatedOrder = orderProducts.map((product) => product.offer.id);
@@ -171,8 +180,11 @@ async function updateOrderStatus(orderId: string, apiKey: string, status: string
   return response;
 }
 
-async function cancelPayment(paymentId: string, shopId: string | undefined, secretKey: string) {
+async function cancelPayment(paymentId: string) {
   const errorIdempotenceKey = uuidv4();
+
+  const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
+  const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
 
   const response = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/cancel`, {
     method: "POST",
@@ -191,9 +203,13 @@ async function cancelPayment(paymentId: string, shopId: string | undefined, secr
   return response;
 }
 
-async function capturePayment(paymentId: string, shopId: string | undefined, secretKey: string) {
-  console.log("credentials:", "paymentId:", paymentId, "shopId:", shopId, "secretKey:", secretKey);
+async function capturePayment(body: YookassaCapturePaymentBody, paymentId: string) {
   const successIdempotenceKey = uuidv4();
+
+  const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
+  const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
+
+  const requestBody = body;
 
   const response = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/capture`, {
     method: "POST",
@@ -202,6 +218,7 @@ async function capturePayment(paymentId: string, shopId: string | undefined, sec
       "Idempotence-Key": successIdempotenceKey,
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(requestBody),
   });
 
   if (!response.ok) {

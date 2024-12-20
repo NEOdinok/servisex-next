@@ -46,6 +46,10 @@ export const transformAllProductsData = (products: Product[]): { transformedProd
   const transformedProducts: ShopItem[] = [];
 
   products.forEach((product) => {
+    if (!product.manufacturer || product.manufacturer !== "SERVISEX") {
+      return;
+    }
+
     if (!product.active) {
       return;
     }
@@ -65,12 +69,12 @@ export const transformAllProductsData = (products: Product[]): { transformedProd
             price: product.minPrice,
             isOutOfStock: offer.quantity === 0,
             description: product.description,
-            color: color || "one-color", // Fallback value
+            color: color || "one-color",
           };
         } else {
           noColorProduct.isOutOfStock = noColorProduct.isOutOfStock && offer.quantity === 0;
 
-          // Manually add unique images to the array
+          // Add unique images
           offer.images.forEach((img) => {
             if (!noColorProduct!.imgs.includes(img)) {
               noColorProduct!.imgs.push(img);
@@ -109,6 +113,18 @@ export const transformAllProductsData = (products: Product[]): { transformedProd
 };
 
 export const transformSingleProductData = (product: Product, color?: string): ProductPreviewData => {
+  if (!product.manufacturer || product.manufacturer !== "SERVISEX") {
+    return {
+      name: "",
+      imgs: [],
+      parentProductId: product.id,
+      price: 0,
+      description: "",
+      sizes: [],
+      defaultSize: "one-size",
+    };
+  }
+
   // Determine if the product has color and size options
   const hasColorOption = product.options?.some((option) => option.code === "color");
   const hasSizeOption = product.options?.some((option) => option.code === "size");
@@ -138,7 +154,6 @@ export const transformSingleProductData = (product: Product, color?: string): Pr
    */
   const defaultSize = sizes.find((size) => size.quantity)?.value || "one-size";
 
-  // Build images
   let imgs: string[] = [];
 
   if (hasColorOption && hasSizeOption && color && color !== "one-color") {

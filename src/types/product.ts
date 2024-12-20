@@ -117,3 +117,5 @@ export interface TransformedProductData {
   dynamicProduct: ProductPreviewData;
   dynamicPossibleOffers: PossibleOffer[];
 }
+
+export type Manufacturer = "SERVISEX" | "GOAT.CORP";

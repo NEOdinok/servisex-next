@@ -9,6 +9,7 @@ export {
   type ProductPreviewData,
   type PossibleOffer,
   type TransformedProductData,
+  type Manufacturer,
 } from "./product";
 
 export { type CartItem } from "./cart";

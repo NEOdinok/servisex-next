@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart } from "@/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import { LoadingServisex } from "./ui/loading-servisex";
 export const Thanks: React.FC = () => {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
+  const { clearCart } = useCart();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders", orderId],
@@ -32,6 +34,8 @@ export const Thanks: React.FC = () => {
     );
 
   const orderPaid = data?.orders?.[0]?.status === "paid";
+
+  if (orderPaid) clearCart();
 
   return orderPaid ? <SuccessAfterPayment /> : <ErrorAfterPayment />;
 };

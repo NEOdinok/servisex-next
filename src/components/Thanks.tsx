@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { LoadingServisex } from "@/components";
 import { useCart } from "@/hooks";
+import { GetOrdersResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -14,10 +15,13 @@ export const Thanks: React.FC = () => {
   const orderId = searchParams.get("orderId");
   const { clearCart } = useCart();
 
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, error, data } = useQuery<GetOrdersResponse>({
     queryKey: ["orders", orderId],
-    queryFn: () => fetch(`/api/getOrdersByIds?ids=${orderId}`).then((res) => res.json()),
-    enabled: !!orderId, // Prevent the query from running if orderId is undefined
+    queryFn: async () => {
+      const res = await fetch(`/api/getOrdersByIds?ids=${orderId}`);
+      return res.json() as Promise<GetOrdersResponse>;
+    },
+    enabled: !!orderId,
   });
 
   const orderPaid = data?.orders?.[0]?.status === "paid";

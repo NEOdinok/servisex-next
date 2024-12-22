@@ -1,4 +1,4 @@
-export interface Customer {
+export type Customer = {
   type?: string;
   id?: number;
   isContact?: boolean;
@@ -41,9 +41,9 @@ export interface Customer {
     number?: string;
   }[];
   mgCustomers?: unknown[];
-}
+};
 
-export interface OrderItem {
+export type OrderItem = {
   bonusesChargeTotal?: number;
   bonusesCreditTotal?: number;
   id?: number;
@@ -70,7 +70,7 @@ export interface OrderItem {
   properties?: unknown[];
   purchasePrice?: number;
   ordering?: number;
-}
+};
 
 // TODO: there are multiple Order entities on a project
 // interfact Order, type Order
@@ -122,8 +122,19 @@ export interface Order {
   currency?: string;
 }
 
-export interface CreateOrderResponse {
+export type CreateOrderResponse = {
   success: boolean;
   id: number;
   order: Order;
-}
+};
+
+export type GetOrdersResponse = {
+  success: boolean;
+  pagination: {
+    limit: number;
+    totalCount: number;
+    currentPage: number;
+    totalPageCount: number;
+  };
+  orders: Order[];
+};

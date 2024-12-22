@@ -13,7 +13,7 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="servisex" enableSystem disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="servisex-dark" enableSystem disableTransitionOnChange>
       <TanStackQueryProvider>
         {children}
         <Toaster />

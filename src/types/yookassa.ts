@@ -78,3 +78,10 @@ export type YookassaCreatePaymentResponse = {
     currency: string;
   };
 };
+
+export type YookassaCapturePaymentBody = {
+  amount: {
+    value: string;
+    currency: string;
+  };
+};

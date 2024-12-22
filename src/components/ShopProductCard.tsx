@@ -1,5 +1,5 @@
 import { Card, CardContent, ImageSlider, Label } from "@/components";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import type { ShopItem } from "@/types";
 import Link from "next/link";
 
@@ -8,16 +8,14 @@ interface Props {
 }
 
 export const ShopProductCard = ({ product }: Props) => {
+  const productLink = `/shop/${product.parentProductId}/${product.color}`;
+
   return (
     <Link
-      className={"h-full w-full cursor-pointer group/main"}
-      href={`/shop/${product.parentProductId}/${product.color}`}
+      className={cn("h-full w-full cursor-pointer group/main", product.isOutOfStock && "pointer-events-none")}
+      href={!product.isOutOfStock ? productLink : ""}
     >
-      <Card
-        className={`cursor-pointer group h-full flex flex-col relative ${
-          product.isOutOfStock ? "pointer-events-none" : ""
-        }`}
-      >
+      <Card className="cursor-pointer group h-full flex flex-col relative">
         <div className="relative">
           <ImageSlider urls={product.imgs} />
           {product.isOutOfStock && <ProductOutOfStockState />}

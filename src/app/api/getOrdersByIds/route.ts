@@ -1,3 +1,4 @@
+import { GetOrdersResponse } from "@/types";
 import { NextResponse } from "next/server";
 
 const API_ENDPOINT_ORDERS = "https://goshamartynovich.retailcrm.ru/api/v5/orders";
@@ -20,7 +21,7 @@ export async function GET(request: Request) {
     const response = await fetch(
       `${API_ENDPOINT_ORDERS}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}&${filterParams}`,
     );
-    const data = await response.json();
+    const data: GetOrdersResponse = await response.json();
 
     return NextResponse.json(data, { headers: createCorsHeaders() });
   } catch (error) {

@@ -9,6 +9,7 @@ export {
   type ProductPreviewData,
   type PossibleOffer,
   type TransformedProductData,
+  type Manufacturer,
 } from "./product";
 
 export { type CartItem } from "./cart";
@@ -20,6 +21,7 @@ export {
   type YookassaPaymentRequest,
   type YookassaPaymentNotification,
   type YookassaCreatePaymentResponse,
+  type YookassaCapturePaymentBody,
 } from "./yookassa";
 
 export { type Customer, type OrderItem, type Order, type CreateOrderResponse } from "./retail-crm";

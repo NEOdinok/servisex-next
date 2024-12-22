@@ -1,12 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
+
+import { LoadingServisex } from "@/components";
 import { useCart } from "@/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-
-import { LoadingServisex } from "./ui/loading-servisex";
 
 export const Thanks: React.FC = () => {
   const searchParams = useSearchParams();
@@ -18,6 +19,14 @@ export const Thanks: React.FC = () => {
     queryFn: () => fetch(`/api/getOrdersByIds?ids=${orderId}`).then((res) => res.json()),
     enabled: !!orderId, // Prevent the query from running if orderId is undefined
   });
+
+  const orderPaid = data?.orders?.[0]?.status === "paid";
+
+  useEffect(() => {
+    if (orderPaid) {
+      clearCart();
+    }
+  }, [orderPaid, clearCart]);
 
   if (error)
     return (
@@ -33,21 +42,8 @@ export const Thanks: React.FC = () => {
       </div>
     );
 
-  const orderPaid = data?.orders?.[0]?.status === "paid";
-
-  if (orderPaid) clearCart();
-
   return orderPaid ? <SuccessAfterPayment /> : <ErrorAfterPayment />;
 };
-
-// const SuccessAfterPayment = () => (
-//   <div className="flex grow items-center justify-center gap-2 sm:gap-4 py-2 px-2 sm:py-0">
-//     <p>Спасибо за твой заказ друг!</p>
-//     <Link className="underline hover:text-primary" href="/shop">
-//       В магазин
-//     </Link>
-//   </div>
-// );
 
 const SuccessAfterPayment = () => {
   return (
@@ -64,8 +60,6 @@ const SuccessAfterPayment = () => {
     </motion.div>
   );
 };
-
-export default SuccessAfterPayment;
 
 const ErrorAfterPayment = () => (
   <div className="flex flex-col grow items-center justify-center gap-2 sm:gap-4 py-2 px-2 sm:py-0">

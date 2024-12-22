@@ -127,14 +127,3 @@ export type CreateOrderResponse = {
   id: number;
   order: Order;
 };
-
-export type GetOrdersResponse = {
-  success: boolean;
-  pagination: {
-    limit: number;
-    totalCount: number;
-    currentPage: number;
-    totalPageCount: number;
-  };
-  orders: Order[];
-};

@@ -59,6 +59,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     if (event === "payment.canceled") {
       console.error("Error processing the order");
+      await updateOrderStatus(orderId, retailCrmApiKey, "canceled");
     } else if (event === "payment.waiting_for_capture") {
       const ordersResponse = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${retailCrmApiKey}&id=${orderId}`);
       const orderProductsData: GetOrdersResponse = await ordersResponse.json();
@@ -107,6 +108,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       } else {
         console.log("✅ All offers in stock! Proceed to payment");
         const capturePaymenetBody = { amount: { value, currency } };
+        await updateOrderStatus(orderId, retailCrmApiKey, "availability-confirmed");
+
         await capturePayment(capturePaymenetBody, paymentId);
 
         console.log("[1.5] proceed to capturing payment");
@@ -131,6 +134,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       console.log("[2.1] Capturing paymenet");
 
       console.log("✅ Payment captured successfully!");
+
       await updateOrderStatus(orderId, retailCrmApiKey, "paid");
       console.log("[2.2] Payment captured");
 
@@ -226,3 +230,8 @@ async function capturePayment(body: YookassaCapturePaymentBody, paymentId: strin
 
   return response;
 }
+
+// await delayExecution(5000); // stop code for 5 secs
+const delayExecution = async (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};

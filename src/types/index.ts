@@ -24,7 +24,7 @@ export {
   type YookassaCapturePaymentBody,
 } from "./yookassa";
 
-export { type Customer, type OrderItem, type Order, type CreateOrderResponse } from "./retail-crm";
+export { type Customer, type OrderItem, type Order, type CreateOrderResponse } from "./order";
 
 export { type CdekSelectedAddress, type CdekSelectedDeliveryMode, type CdekSelectedTariff } from "./cdek";
 

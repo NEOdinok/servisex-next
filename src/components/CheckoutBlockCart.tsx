@@ -8,8 +8,10 @@ export const CheckoutBlockCart: React.FC = () => {
   const { isDialogOpen, setIsDialogOpen, offerToRemove, prepareProductForDeletion, handleRemoveProduct } =
     useProductDialog();
 
+  // Previously it was like this:
   // const { items, hasHydrated } = useCart();
-  // TODO this Zustand way of hook inside hook looks horrible
+  //
+  // This Zustand way of hook inside hook looks horrible
   // This is only used here for hasHydrated to work
   const items = useStore(useCart, (state) => state.items);
   const hasHydrated = useStore(useCart, (state) => state.hasHydrated);

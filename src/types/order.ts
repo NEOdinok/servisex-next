@@ -72,10 +72,7 @@ export type OrderItem = {
   ordering?: number;
 };
 
-// TODO: there are multiple Order entities on a project
-// interfact Order, type Order
-// they need to be merged and put in a one designated place
-export interface Order {
+export type Order = {
   slug?: number;
   bonusesCreditTotal?: number;
   bonusesChargeTotal?: number;
@@ -120,7 +117,7 @@ export interface Order {
   links?: unknown[];
   customFields?: unknown[];
   currency?: string;
-}
+};
 
 export type CreateOrderResponse = {
   success: boolean;

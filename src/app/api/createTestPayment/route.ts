@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
 
     const idempotenceKey = uuidv4();
 
-    //TODO: thanks page or page with error
     const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
     const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
 

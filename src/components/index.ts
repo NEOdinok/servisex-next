@@ -1,7 +1,6 @@
 /**
  * TODO:
- * move all base components to ui
- * move all compoles stuff like carousel, gallery out of ui
+ * What is the best FSD way of structuring component folders ?
  */
 
 export { BaseHeader } from "./BaseHeader";

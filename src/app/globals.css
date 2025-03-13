@@ -89,6 +89,34 @@
     --chart-5: 340 75% 55%;
     --error: 0, 82%, 60%, 1;
   }
+
+  .servisex-light {
+    --background: 210 40% 98%;
+    --foreground: 0, 0%, 0%;
+    --card: 210 40% 98%;
+    --card-foreground: 0, 0%, 0%;
+    --popover: 210 40% 98%;
+    --popover-foreground: 0, 0%, 0%;
+    --primary: 210 76% 58%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 217.2 32.6% 17.5%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 217.2 32.6% 17.5%;
+    --accent: 210 40% 98%;
+    --accent-foreground: 217.2 32.6% 17.5%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0, 0%, 0%;
+    --border: 210 40% 98%;
+    --input: 210 40% 98%;
+    --ring: 217.2 32.6% 17.5%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --error: 0, 82%, 60%, 1;
+  }
 }
 
 @layer base {

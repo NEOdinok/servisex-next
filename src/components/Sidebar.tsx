@@ -25,9 +25,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <Link href="/" onClick={onClose} className=" font-bold text-3xl hover:underline">
             МАГАЗИН
           </Link>
-          <Link href="/about" onClick={onClose} className=" font-bold text-3xl hover:underline">
-            ЧТО ЭТО?
-          </Link>
         </div>
       </div>
     </div>

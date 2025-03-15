@@ -94,9 +94,6 @@ const DesktopHeaderNavigation: React.FC<DesktopHeaderNavigationProps> = ({ class
         <Link href="/" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
           МАГАЗИН
         </Link>
-        <Link href="/about" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
-          ЧТО ЭТО?
-        </Link>
       </nav>
     </div>
   );

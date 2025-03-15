@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 
 import { HeaderCartCounter, Sidebar } from "@/components";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import logo from "public/icons/servisex-logo-header.png";
+import checkmark from "public/images/checkmark.gif";
 
 const BaseHeader = () => {
   const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
@@ -81,16 +84,20 @@ type DesktopHeaderNavigationProps = {
 
 const DesktopHeaderNavigation: React.FC<DesktopHeaderNavigationProps> = ({ className }) => {
   return (
-    <nav className={className}>
-      <Link href="/" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
-        ГЛАВНАЯ
-      </Link>
-      <Link href="/shop" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
-        МАГАЗИН
-      </Link>
-      <Link href="/about" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
-        ЧТО ЭТО?
-      </Link>
-    </nav>
+    <div className="flex items-center h-16">
+      <Image src={logo} alt="Servisex small logo" className="hidden h-full w-auto object-contain sm:flex" />
+      <Image src={checkmark} alt="spinning blue checkmark" className="h-full w-auto object-contain" />
+      <nav className={className}>
+        <Link href="/" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
+          ГЛАВНАЯ
+        </Link>
+        <Link href="/shop" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
+          МАГАЗИН
+        </Link>
+        <Link href="/about" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
+          ЧТО ЭТО?
+        </Link>
+      </nav>
+    </div>
   );
 };

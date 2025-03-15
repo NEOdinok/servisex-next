@@ -160,10 +160,10 @@ const AddToCartForm = ({ product, color }: Props) => {
       <div className="grid gap-4 mt-4 pointer-events-none">
         <div className="flex flex-col items-center gap-4 w-full">
           <div className="flex gap-4 w-full">
-            <Skeleton className="h-12 flex-grow border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium" />
-            <Skeleton className="h-12 flex-grow border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium" />
+            <Skeleton className="h-12 flex-grow border border-foreground flex items-center justify-center  uppercase text-xs font-medium" />
+            <Skeleton className="h-12 flex-grow border border-foreground flex items-center justify-center  uppercase text-xs font-medium" />
           </div>
-          <Skeleton className="h-12 w-full border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium"></Skeleton>
+          <Skeleton className="h-12 w-full border border-foreground flex items-center justify-center  uppercase text-xs font-medium"></Skeleton>
         </div>
       </div>
     );
@@ -176,7 +176,7 @@ const AddToCartForm = ({ product, color }: Props) => {
           <div className="flex flex-col items-center gap-4 w-full">
             <div className="flex gap-4 w-full">
               {isOneSize ? (
-                <div className="h-12 w-full flex-grow max-w-[50%] border border-foreground flex items-center justify-center font-mono uppercase text-xs font-medium">
+                <div className="h-12 w-full flex-grow max-w-[50%] border border-foreground flex items-center justify-center  uppercase text-xs font-medium">
                   один размер
                 </div>
               ) : (
@@ -184,7 +184,7 @@ const AddToCartForm = ({ product, color }: Props) => {
                   control={form.control}
                   name="size"
                   render={({ field, fieldState }) => (
-                    <FormItem className="h-12 border border-foreground w-full flex-grow max-w-[50%] flex items-center justify-center font-mono uppercase text-xs font-medium">
+                    <FormItem className="h-12 border border-foreground w-full flex-grow max-w-[50%] flex items-center justify-center  uppercase text-xs font-medium">
                       <DelayedSelect onValueChange={field.onChange} defaultValue={initialSize}>
                         <FormControl>
                           <SelectTrigger
@@ -199,12 +199,12 @@ const AddToCartForm = ({ product, color }: Props) => {
                           {dynamicProduct.sizes.map((size) => (
                             <SelectItem key={size.value} value={size.value} disabled={!size.quantity}>
                               <span
-                                className={cn("uppercase font-mono w-full", {
+                                className={cn("uppercase  w-full", {
                                   "text-error pointer-events-none": !size.quantity,
                                 })}
                               >
                                 {!size.quantity ? (
-                                  <span className="font-mono text-error uppercase">{size.value} - Распродано</span>
+                                  <span className="text-error uppercase z-[-1]">{size.value} - Распродано</span>
                                 ) : (
                                   <span>{size.value}</span>
                                 )}

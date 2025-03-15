@@ -23,18 +23,14 @@ CardFooter.displayName = "CardFooter";
 
 export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("font-mono flex bg-foreground flex-col items-center space-y-1.5 p-3", className)}
-      {...props}
-    />
+    <div ref={ref} className={cn(" flex bg-foreground flex-col items-center space-y-1.5 p-3", className)} {...props} />
   ),
 );
 CardHeader.displayName = "CardHeader";
 
 export const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, children, ...props }, ref) => (
-    <h3 ref={ref} className={cn("text-l font-mono text-background leading-none tracking-tight", className)} {...props}>
+    <h3 ref={ref} className={cn("text-l  text-background leading-none tracking-tight", className)} {...props}>
       {children || "Default Title"}
     </h3>
   ),

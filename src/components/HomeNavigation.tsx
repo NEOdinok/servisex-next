@@ -19,7 +19,7 @@ const HomeNavigation = ({ className }: MenuProps) => {
         </li>
         <li>
           <Link
-            href="/shop"
+            href="/"
             className="cursor-pointer p-2 w-fit hover:bg-foreground hover:text-background hover:underline uppercase"
           >
             Магазин

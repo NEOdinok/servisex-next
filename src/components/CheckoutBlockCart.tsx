@@ -17,14 +17,14 @@ export const CheckoutBlockCart: React.FC = () => {
   if (!hasHydrated) {
     return (
       <Card className="border-0 sm:border">
-        <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">КОРЗИНА</p>
+        <p className="text-xxl  text-3xl font-bold w-full items-left sm:px-4 py-4">КОРЗИНА</p>
       </Card>
     );
   }
 
   return (
     <Card className="border-0 sm:border">
-      <p className="text-xxl font-mono text-3xl font-bold w-full items-left sm:px-4 py-4">КОРЗИНА</p>
+      <p className="text-xxl  text-3xl font-bold w-full items-left sm:px-4 py-4">КОРЗИНА</p>
 
       <>
         {items?.length ? (
@@ -47,7 +47,5 @@ export const CheckoutBlockCart: React.FC = () => {
 };
 
 const CartEmptyState = () => (
-  <p className="text-base font-mono leading-none w-full items-left sm:px-4 sm:py-4 text-muted-foreground">
-    Тут пока пусто...
-  </p>
+  <p className="text-base  leading-none w-full items-left sm:px-4 sm:py-4 text-muted-foreground">Тут пока пусто...</p>
 );

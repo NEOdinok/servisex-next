@@ -1,11 +1,31 @@
-import { HomeServisex } from "@/components";
+import { ProductsShowcase } from "@/components";
+import { BaseLayout } from "@/layouts/BaseLayout";
+import { transformAllProductsData } from "@/lib/utils";
+import { GetProductsResponse, ShopItem } from "@/types";
 
-export default function Home() {
+const fetchProducts = async (): Promise<ShopItem[]> => {
+  const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
+  const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}`, {
+    cache: "force-cache",
+  });
+
+  if (!response.ok) {
+    throw new Error("[Shop] Failed to fetch products");
+  }
+
+  const data: GetProductsResponse = await response.json();
+  const { transformedProducts } = transformAllProductsData(data.products);
+  return transformedProducts;
+};
+
+const ShopPage = async () => {
+  const products = await fetchProducts();
+
   return (
-    <main className="min-h-screen flex flex-col">
-      <div className="grow flex flex-col">
-        <HomeServisex />
-      </div>
-    </main>
+    <BaseLayout>
+      <ProductsShowcase products={products} />
+    </BaseLayout>
   );
-}
+};
+
+export default ShopPage;

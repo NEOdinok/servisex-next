@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const ShopProductCard = ({ product }: Props) => {
-  const productLink = `/shop/${product.parentProductId}/${product.color}`;
+  const productLink = `/${product.parentProductId}/${product.color}`;
 
   return (
     <Link
@@ -22,9 +22,9 @@ export const ShopProductCard = ({ product }: Props) => {
         </div>
         <CardContent className="h-full">
           <div className="grid w-full h-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5 gap-2 font-mono">
-              <Label className="font-mono font-normal">{product.name}</Label>
-              <Label className="font-mono font-normal">{formatPrice(product.price)} ₽</Label>
+            <div className="flex flex-col space-y-1.5 gap-2 ">
+              <Label className="font-normal">{product.name}</Label>
+              <Label className="font-normal">{formatPrice(product.price)} ₽</Label>
             </div>
           </div>
         </CardContent>
@@ -36,7 +36,7 @@ export const ShopProductCard = ({ product }: Props) => {
 const ProductOutOfStockState: React.FC = () => {
   return (
     <div className="absolute z-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <span className="text-error text-xl font-bold uppercase font-mono">распродано</span>
+      <span className="text-error text-xl font-bold uppercase ">распродано</span>
     </div>
   );
 };

@@ -58,7 +58,7 @@ const SuccessAfterPayment = () => {
       className="flex grow items-center justify-center gap-2 sm:gap-4 py-2 px-2 sm:py-0"
     >
       <p>Спасибо за твой заказ друг!</p>
-      <Link className="underline hover:text-primary" href="/shop">
+      <Link className="underline hover:text-primary" href="/">
         В магазин
       </Link>
     </motion.div>

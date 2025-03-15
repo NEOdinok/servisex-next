@@ -113,13 +113,13 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product, prepa
             className="object-cover aspect-square"
           />
           <div>
-            <p className="font-mono text-xs lg:text-sm text-muted-foreground ">
+            <p className=" text-xs lg:text-sm text-muted-foreground ">
               Цвет: {product.properties?.color ? <>{product.properties?.color} </> : <>Один цвет</>}
             </p>
-            <p className="font-mono text-xs lg:text-sm text-muted-foreground ">
+            <p className=" text-xs lg:text-sm text-muted-foreground ">
               Размер: {product.properties?.size ? <>{product.properties?.size}</> : <>Один размер</>}
             </p>
-            <p className="font-mono text-xs lg:text-sm text-muted-foreground ">Цена: {formatPrice(product.price)} ₽</p>
+            <p className=" text-xs lg:text-sm text-muted-foreground ">Цена: {formatPrice(product.price)} ₽</p>
           </div>
           <QuantitySelector
             value={product.quantity}
@@ -141,11 +141,11 @@ const ProductShopLink: React.FC<ProductShopLinkProps> = ({ product }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/shop/${product.parentProductId}/${product.properties.color || "one-color"}`);
+    router.push(`/${product.parentProductId}/${product.properties.color || "one-color"}`);
   };
 
   return (
-    <h3 className="font-mono font-medium uppercase hover:underline" onClick={handleClick}>
+    <h3 className=" font-medium uppercase hover:underline" onClick={handleClick}>
       {product.parentProductName}
     </h3>
   );

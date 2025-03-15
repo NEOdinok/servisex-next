@@ -105,11 +105,12 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
 
       const cdekWidget = new window.CDEKWidget({
         from: {
-          country_code: "RU",
-          city: "Видное",
-          postal_code: 142701,
-          code: 1100,
-          address: "ул. Советская, 10/1",
+          address: "ул. Интернациональная, 3",
+          city: "Лида",
+          //city_code
+          code: 8635,
+          country_code: "BY",
+          postal_code: 231300,
         },
         canChoose: true,
         hideFilters: {
@@ -145,6 +146,7 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
         },
         onChoose(mode: CdekSelectedDeliveryMode, tariff: CdekSelectedTariff, office: CdekSelectedAddress) {
           setPrice(tariff.delivery_sum);
+          console.log("address:", office);
           form.setValue("address", `${office.city} ${office.address}`);
           form.setValue("deliveryTariff", `${tariff.tariff_description} ${tariff.tariff_name}`);
         },

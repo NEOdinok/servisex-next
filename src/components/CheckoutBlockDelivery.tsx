@@ -169,13 +169,13 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
   return (
     <>
       <div>
-        <p className="text-xxl font-mono text-3xl font-bold w-full items-left pb-4">ДОСТАВКА</p>
+        <p className="text-xxl  text-3xl font-bold w-full items-left pb-4">ДОСТАВКА</p>
         <Tabs className="relative flex flex-col" defaultValue="delivery" onValueChange={onTabChange}>
           <TabsList>
-            <TabsTrigger value="delivery" className="w-full font-mono rounded-none p-0 h-full">
+            <TabsTrigger value="delivery" className="w-full  rounded-none p-0 h-full">
               ДОСТАВКА
             </TabsTrigger>
-            <TabsTrigger value="pickup" className="w-full font-mono rounded-none p-0 h-full">
+            <TabsTrigger value="pickup" className="w-full  rounded-none p-0 h-full">
               САМОВЫВОЗ
             </TabsTrigger>
           </TabsList>
@@ -198,7 +198,7 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
               value="pickup"
               className={cn("absolute top-0 w-full", deliveryMethod === "pickup" ? "" : "invisible")}
             >
-              <div className="font-mono">
+              <div className="">
                 Лида, Беларусь улица улицы, дом дома
                 <br />
                 <br />
@@ -209,8 +209,8 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
           </div>
           {pickupPointAddress && deliveryTabActive && (
             <div className="flex flex-col gap-0 items-start justify-center mt-2">
-              <span className="font-mono">Выбранный пункт:</span>
-              <span className="font-mono">{pickupPointAddress}</span>
+              <span className="">Выбранный пункт:</span>
+              <span className="">{pickupPointAddress}</span>
             </div>
           )}
           {addressError && (

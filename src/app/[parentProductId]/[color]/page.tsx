@@ -67,8 +67,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <BaseLayout>
       <>
-        <div className="w-full grid sm:grid-cols-[400px_1fr] gap-8 sm:px-4">
-          <div className="relative flex items-center flex-col h-fit gap-4">
+        <div className="w-full grid sm:grid-cols-[1fr_400px] gap-8 sm:px-4">
+          <div className="relative flex items-center sm:order-first flex-col h-fit gap-4">
             <Gallery
               imageUrls={product?.imgs}
               productName={product.name}
@@ -81,16 +81,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
             />
           </div>
 
-          <div className="flex px-2 sm:px-0 flex-col sm:order-first mb-16">
+          <div className="flex px-2 sm:px-0 flex-col  mb-16">
             <div className="flex flex-col gap-8">
-              <h1 className="text-3xl font-mono font-bold uppercase">{product?.name}</h1>
+              <h1 className="text-3xl  font-bold uppercase">{product?.name}</h1>
               <div className="flex items-center justify-between">
-                <span className="text-3xl font-mono uppercase">{formatPrice(product.price)} ₽</span>
+                <span className="text-3xl  uppercase">{formatPrice(product.price)} ₽</span>
               </div>
             </div>
 
             <div className="grid gap-4 mt-8 text-xs leading-loose">
-              <InfoBlock title="описание" content={<span className="font-mono">{product?.description}</span>} />
+              <InfoBlock title="описание" content={<span className="">{product?.description}</span>} />
             </div>
 
             <AddToCartForm product={product} color={color} possibleOffers={productPossibleOffers} />

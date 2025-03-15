@@ -16,8 +16,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
         unstyled: true,
         classNames: {
           toast:
-            "group toast rounded-none p-4 font-mono border border-input items-center bg-background flex justify-between gap-4 text-xs font-bold ",
-          description: "font-mono text-muted-foreground",
+            "group toast rounded-none p-4  border border-input items-center bg-background flex justify-between gap-4 text-xs font-bold ",
+          description: " text-muted-foreground",
           actionButton: "rounded-none text-nowrap border border-primary hover:bg-primary hover:text-background p-4",
         },
       }}

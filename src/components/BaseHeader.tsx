@@ -7,7 +7,7 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "public/icons/servisex-logo-header.png";
-import checkmark from "public/images/checkmark.gif";
+import checkmark from "public/images/checkmark_slow.gif";
 
 const BaseHeader = () => {
   const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
@@ -45,11 +45,12 @@ const BaseHeader = () => {
 
   return (
     <>
-      <header className="sticky z-10 top-0 flex h-16 items-center justify-between px-4 bg-background">
+      <header className="sticky z-50 top-0 flex h-16 items-center justify-between px-4 bg-background">
         <div className="header-left flex items-center">
           <BurgerButton className="block sm:hidden p-2" onClick={toggleSidebar} isOpen={isSidebarOpen} />
           <DesktopHeaderNavigation className="hidden sm:flex gap-4" />
         </div>
+
         {isDevEnvironment && environment}
 
         <div className="header-right flex items-center">
@@ -84,18 +85,14 @@ type DesktopHeaderNavigationProps = {
 
 const DesktopHeaderNavigation: React.FC<DesktopHeaderNavigationProps> = ({ className }) => {
   return (
-    <div className="flex items-center h-16">
-      <Image src={logo} alt="Servisex small logo" className="hidden h-full w-auto object-contain sm:flex" />
-      <Image src={checkmark} alt="spinning blue checkmark" className="h-full w-auto object-contain" />
+    <div className="flex items-center justify-between h-16">
+      <Link href="/" className="h-full flex items-center">
+        <Image src={logo} alt="Servisex small logo" className="hidden h-1/2 w-auto object-contain sm:flex" />
+        <Image src={checkmark} alt="spinning blue checkmark" className="h-full w-auto object-contain" />
+      </Link>
       <nav className={className}>
         <Link href="/" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
-          ГЛАВНАЯ
-        </Link>
-        <Link href="/shop" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
           МАГАЗИН
-        </Link>
-        <Link href="/about" className="hover:cursor-pointer uppercase hover:underline hover:text-primary">
-          ЧТО ЭТО?
         </Link>
       </nav>
     </div>

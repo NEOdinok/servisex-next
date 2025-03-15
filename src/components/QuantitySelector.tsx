@@ -23,7 +23,7 @@ export const QuantitySelector = ({
   onIncrement,
   onDecrement,
 }: QuantitySelectorProps) => {
-  const rootStyle = "inline-flex w-full h-12 tems-center justify-between font-mono border border-foreground";
+  const rootStyle = "inline-flex w-full h-12 tems-center justify-between  border border-foreground";
   const classList = cn(rootStyle, className);
 
   return (
@@ -32,7 +32,7 @@ export const QuantitySelector = ({
         <MinusIcon className="w-5 h-5" />
       </Button>
 
-      <div className="flex items-center font-mono justify-center w-12 text-center">{value}</div>
+      <div className="flex items-center  justify-center w-12 text-center">{value}</div>
 
       <Button variant="ghost" className="h-full aspect-square p-0" onClick={onIncrement} disabled={value >= maxValue}>
         <PlusIcon className="w-5 h-5" />

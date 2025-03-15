@@ -2,7 +2,13 @@
 
 const nextConfig = {
   images: {
-    domains: ["s3-s1.retailcrm.tech"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "s3-s1.retailcrm.tech",
+        pathname: "/ru-central1/retailcrm/**",
+      },
+    ],
   },
   webpack(config) {
     config.module.rules.push({

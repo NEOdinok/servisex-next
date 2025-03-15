@@ -6,7 +6,6 @@
 
 export { BaseHeader } from "./BaseHeader";
 export { BaseFooter } from "./BaseFooter";
-export { HeaderNavigation } from "./HeaderNavigation";
 export { HomeNavigation } from "./HomeNavigation";
 export { HomeGoat } from "./HomeGoat";
 export { HomeServisex } from "./HomeServisex";

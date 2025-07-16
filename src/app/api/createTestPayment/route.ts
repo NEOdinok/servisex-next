@@ -34,6 +34,21 @@ export async function POST(req: NextRequest) {
       metadata: {
         orderId: metadata.orderId,
       },
+      receipt: {
+        customer: { email: metadata.email },
+        items: metadata.items.map((item: any) => ({
+          description: item.name,
+          quantity: item.quantity,
+          amount: {
+            value: item.price.toFixed(2),
+            currency: "RUB",
+          },
+          vat_code: 1, // без ндс
+          payment_mode: "full_prepayment", // предоплата
+          payment_subject: "commodity", // товар
+          measure: "piece",
+        })),
+      },
     };
 
     const response = await fetch(API_ENDPOINT, {

@@ -91,7 +91,7 @@ const CartPage = () => {
 
       await sendOrderDetailsToTelegram(telegramOrderDetails, "created");
 
-      const order = {
+      const order: Partial<Order> = {
         firstName: values.firstName,
         lastName: values.lastName,
         phone: values.phone,
@@ -113,7 +113,7 @@ const CartPage = () => {
       const paymentDetails = {
         value: productsPrice + deliveryPrice,
         description: `Created order id: ${createOrderRes.id}`,
-        metadata: { orderId: createOrderRes.id },
+        metadata: { orderId: createOrderRes.id, order },
       };
 
       const createPaymentRes = await createTestPaymentMutation.mutateAsync(paymentDetails);

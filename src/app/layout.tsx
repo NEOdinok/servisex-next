@@ -17,12 +17,11 @@ export const metadata: Metadata = {
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <StayTunedPlaceholder />
-    // <html lang="en">
-    //   <body className={cn("antialiased", inter.className)}>
-    //     <Providers>{children}</Providers>
-    //   </body>
-    // </html>
+    <html lang="en">
+      <body className={cn("antialiased", inter.className)}>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }
 

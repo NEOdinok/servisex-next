@@ -22,8 +22,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </button>
 
         <div className="flex flex-col gap-4 items-center">
-          <Link href="/" onClick={onClose} className=" font-bold text-3xl hover:underline">
+          <Link href="/" onClick={onClose} className="font-bold text-3xl hover:underline">
             МАГАЗИН
+          </Link>
+
+          <Link href="/about" className="font-bold text-3xl hover:underline">
+            КОНТАКТЫ
           </Link>
         </div>
       </div>

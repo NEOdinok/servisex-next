@@ -240,9 +240,21 @@ export const CheckoutBlockDelivery = ({ setDeliveryPrice, form }: DeliveryBlockP
 };
 
 const WidgetLoadingState = () => {
+  const [showHint, setShowHint] = useState(false);
+  const reloadTextTimeout = 20000;
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowHint(true);
+    }, reloadTextTimeout);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <div className="h-96 flex flex-col items-center justify-center">
       <LoadingEllipsis text="СДЭК" />
+      {showHint && <p className="mt-4 text-sm text-gray-500">Если устали ждать — перезагрузите страницу</p>}
     </div>
   );
 };

@@ -1,32 +1,40 @@
+import { Button } from "@/components";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import Image from "next/image";
-import image from "public/images/servisex-about-image.webp";
+import image from "public/images/martin_sample.jpeg";
 
 const AboutPage = () => {
   return (
     <BaseLayout>
-      <div className="flex items-center justify-center flex-col p-10 pt-0">
-        <h1 className="w-full text-5xl md:text-7xl text-center font-bold mb-6">SERVISEX®</h1>
+      <div className="flex flex-col md:flex-row h-full items-center justify-center p-10 pt-0 gap-5">
+        <div>
+          <p className="font-bold text-sm md:text-lg uppercase 1 text-left">
+            SERVISEX® <br />
+            <br />
+            Лида, Беларусь, Гараж.
+            <br />
+            Больше чем бренд и больше чем стиль. Производится вручную, никакой ответственности за качество не несем.
+            <br />
+            Все вещи в единственном экземпляре и ограниченном тираже
+          </p>
 
-        <p className="font-bold text-sm md:text-lg text-center uppercase mb-11">
-          SERVISEX® основан там-то там-то. Нужно смешной абсурд. Занимается тем-то тем-то.
-          <br />
-          Больше чем бренд и больше чем стиль. Производится вручную, никакой ответственности за качество. Еще текст
-          <br />
-          Все вещи в единственном экземпляре и, соответственно, соответственно. Чето еще. Можно цитаты с футболок,{" "}
-          <br />
-          Lorem pipsum. Занимается тем-то тем-то. Больше чем бренд и больше чем стиль.
-          <br /> Производится вручную, никакой ответственности за качество.
-          <br />
-          Все вещи в единственном экземпляре и, соответственно, соответственно.
-        </p>
+          <LegalInfo />
+        </div>
 
         <Image
           src={image.src}
-          alt="About page image football style"
-          className="w-full max-w-screen-xl"
-          width={4608}
-          height={3072}
+          alt="About page margin with sample t-shirt"
+          width={960}
+          height={1280}
+          className="max-h-[75vh] w-auto h-auto object-contain"
         />
       </div>
     </BaseLayout>
@@ -34,3 +42,59 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
+
+const LegalInfo: React.FC = () => (
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button className="mt-4 text-foreground" variant="outline" size="lg">
+        Показать Контакты
+      </Button>
+    </DialogTrigger>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>
+          <p className="font-bold uppercase">Контакты</p>
+        </DialogTitle>
+        <DialogDescription>
+          <div className="text-sm md:text-lg text-left space-y-2">
+            <div>ИП МАРТЫНОВИЧ ГЕОРГИЙ МАКСИМОВИЧ</div>
+            <div>
+              ИНН: 504806879532 <br />
+              ОГРНИП: 325508100347040
+            </div>
+            <div>Юр. адрес: 142703, Россия, Московская область, г. Видное, мкр. Солнечный, д. 6, кв. 96</div>
+            <div>Факт. адрес: Россия, Москва</div>
+            <div>
+              Банк: АО «ТБанк» <br />
+              Р/с: 4080 2810 3000 0847 4991 <br />
+              БИК: 044525974 <br />
+              ИНН банка: 7710140679 <br />
+              К/с: 3010 1810 1452 5000 0974 <br />
+              Адрес банка: 127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26
+            </div>
+            <div>
+              Контакты: <br />
+              <a href="mailto:goshamartynovich@gmail.com" className="underline">
+                goshamartynovich@gmail.com
+              </a>
+              <br />
+              +995 591 511 715 <br />
+              +7 903 624-55-56 <br />
+              <a href="https://t.me/shshmarti" className="underline">
+                @shshmarti
+              </a>
+              <br />
+              <a href="https://t.me/goshamartynovich" className="underline">
+                @goshamartynovich
+              </a>
+              <br />
+              Круглосуточно
+            </div>
+
+            <p>(Без этого нам не включат сайт)</p>
+          </div>
+        </DialogDescription>
+      </DialogHeader>
+    </DialogContent>
+  </Dialog>
+);

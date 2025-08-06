@@ -20,6 +20,10 @@ const BaseFooter = () => {
         >
           YOUTUBE
         </Link>
+
+        <Link href="/about" className="uppercase hover:cursor-pointer hover:underline hover:text-primary">
+          КОНТАКТЫ
+        </Link>
       </div>
 
       <div className="flex justify-end gap-4">

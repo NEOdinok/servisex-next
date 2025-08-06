@@ -97,6 +97,7 @@ export type Order = {
   expired?: boolean;
   customer?: Customer;
   contact?: Customer;
+  email?: string;
   contragent?: {
     contragentType?: string;
   };

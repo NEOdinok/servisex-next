@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
       },
       receipt: {
         customer: { email: metadata.email },
+        tax_system_code: 2, // УСН доходы (6%)
         items: metadata.items.map((item: any) => ({
           description: item.name,
           quantity: item.quantity,

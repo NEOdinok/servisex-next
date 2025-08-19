@@ -97,10 +97,12 @@ const CartPage = () => {
         lastName: values.lastName,
         phone: values.phone,
         email: values.email,
-        customerComment: `Тариф доставки: ${values.deliveryTariff}`,
+        customerComment: `Тариф доставки: ${values.deliveryTariff ?? ""}`,
         items: cartItems.map((item) => ({
           offer: { id: item.id },
           quantity: item.quantity,
+          name: item.name,
+          price: item.price,
         })),
         delivery: {
           cost: deliveryPrice,

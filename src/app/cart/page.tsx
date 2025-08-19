@@ -14,7 +14,7 @@ import {
 import { useCart } from "@/hooks";
 import { BaseLayout } from "@/layouts/BaseLayout";
 import { CheckoutForm, formSchema } from "@/lib/checkout-form";
-import { sendOrderDetailsToTelegram } from "@/lib/utils";
+import { getCreatePaymentApiPath, sendOrderDetailsToTelegram } from "@/lib/utils";
 import {
   CreateOrderResponse,
   Order,
@@ -59,9 +59,10 @@ const CartPage = () => {
     },
   });
 
-  const createTestPaymentMutation = useMutation<YookassaPaymentResponse, Error, YookassaPaymentRequest>({
+  const createPaymentMutation = useMutation<YookassaPaymentResponse, Error, YookassaPaymentRequest>({
     mutationFn: async (paymentDetails) => {
-      const response = await fetch("/api/createTestPayment", {
+      const paymentApi = getCreatePaymentApiPath();
+      const response = await fetch(paymentApi, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(paymentDetails),
@@ -116,7 +117,7 @@ const CartPage = () => {
         metadata: { orderId: createOrderRes.id, order },
       };
 
-      const createPaymentRes = await createTestPaymentMutation.mutateAsync(paymentDetails);
+      const createPaymentRes = await createPaymentMutation.mutateAsync(paymentDetails);
 
       window.location.href = createPaymentRes.confirmation.confirmation_url;
       setIsSubmitting(false);

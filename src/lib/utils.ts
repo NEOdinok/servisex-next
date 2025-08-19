@@ -242,3 +242,46 @@ export const sendOrderDetailsToTelegram = async (
     console.warn("Error sending order to Telegram:", error);
   }
 };
+
+// --------------------------- ENV, URL builder helpers ---------------------------
+export type AppEnvironment = "dev" | "prod";
+
+export const getEnvironment = (): AppEnvironment => {
+  // Read from public flag so it works client-side too
+  const env = process.env.NEXT_PUBLIC_ENVIRONMENT?.toLowerCase();
+  return env === "dev" ? "dev" : "prod";
+};
+
+export const isDevEnvironment = () => getEnvironment() === "dev";
+
+/**
+ * API route that the client should call to create a payment.
+ * Dev -> test endpoint, Prod -> real endpoint.
+ */
+export const getCreatePaymentApiPath = (): "/api/createTestPayment" | "/api/createPayment" =>
+  isDevEnvironment() ? "/api/createTestPayment" : "/api/createPayment";
+
+/**
+ * Webhook path you should register in YooKassa cabinet per environment.
+ * (Use these strings when you configure webhooks in the dashboard.)
+ */
+export const getYooKassaWebhookPath = (): "/api/yooKassaTest" | "/api/yooKassa" =>
+  isDevEnvironment() ? "/api/yooKassaTest" : "/api/yooKassa";
+
+/**
+ * Public site URL used for redirect/return_url (safe to read on client).
+ */
+export const getPublicSiteUrl = (): string => {
+  const url = process.env.NEXT_PUBLIC_SITE_URL;
+  if (!url) throw new Error("Missing NEXT_PUBLIC_SITE_URL");
+  return url;
+};
+
+/**
+ * Server-only helper for secrets (use inside API routes only).
+ */
+export const requireServerEnv = (name: string): string => {
+  const envVariable = process.env[name];
+  if (!envVariable) throw new Error(`Missing env var ${name}`);
+  return envVariable;
+};

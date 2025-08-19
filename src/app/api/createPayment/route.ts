@@ -1,4 +1,4 @@
-import { YookassaCreatePaymentResponse } from "@/types";
+import type { YookassaCreatePaymentResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,43 +8,48 @@ export async function POST(req: NextRequest) {
   try {
     const { value, description, metadata } = await req.json();
 
-    if (!value || !description) {
-      return NextResponse.json({ error: "Value and description are required" }, { status: 400 });
+    if (typeof value !== "number" || !description) {
+      return NextResponse.json({ error: "Value (number) and description are required" }, { status: 400 });
     }
-
-    const idempotenceKey = uuidv4();
 
     const shopId = process.env.YOOKASSA_SHOP_ID;
     const secretKey = process.env.YOOKASSA_KEY;
+    if (!shopId || !secretKey) {
+      return NextResponse.json({ error: "Missing Yookassa credentials" }, { status: 500 });
+    }
 
-    const returnUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/thanks?orderId=${metadata.orderId}`;
+    const order = metadata?.order;
+    const items = order?.items;
+    const email = order?.email ?? metadata?.email;
+
+    if (!Array.isArray(items) || items.length === 0 || !email) {
+      return NextResponse.json({ error: "Order items and customer email are required for receipt" }, { status: 400 });
+    }
+
+    for (const it of items) {
+      if (typeof it?.price !== "number" || typeof it?.quantity !== "number") {
+        return NextResponse.json({ error: "Each item must include numeric price and quantity" }, { status: 400 });
+      }
+    }
+
+    const idempotenceKey = uuidv4();
+    const returnUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/thanks?orderId=${metadata?.orderId}`;
 
     const paymentData = {
-      amount: {
-        value: value.toFixed(2),
-        currency: "RUB",
-      },
+      amount: { value: value.toFixed(2), currency: "RUB" },
       capture: false,
-      confirmation: {
-        type: "redirect",
-        return_url: returnUrl,
-      },
+      confirmation: { type: "redirect", return_url: returnUrl },
       description,
-      metadata: {
-        orderId: metadata.orderId,
-      },
+      metadata: { orderId: metadata?.orderId },
       receipt: {
-        customer: { email: metadata.email },
-        items: metadata.items.map((item: any) => ({
-          description: item.name,
+        customer: { email },
+        items: items.map((item: any) => ({
+          description: item.name ?? `Offer ${item?.offer?.id ?? ""}`,
           quantity: item.quantity,
-          amount: {
-            value: item.price.toFixed(2),
-            currency: "RUB",
-          },
-          vat_code: 1, // без ндс
-          payment_mode: "full_prepayment", // предоплата
-          payment_subject: "commodity", // товар
+          amount: { value: Number(item.price).toFixed(2), currency: "RUB" },
+          vat_code: 1,
+          payment_mode: "full_prepayment",
+          payment_subject: "commodity",
           measure: "piece",
         })),
       },

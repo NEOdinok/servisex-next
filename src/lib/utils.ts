@@ -228,7 +228,8 @@ export const sendOrderDetailsToTelegram = async (
       `);
 
     const response = await fetch(
-      `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.NEXT_PUBLIC_TELEGRAM_ORDER_CHAT_ID}&parse_mode=html&text=${message}`,
+      `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage` +
+        `?chat_id=${getTelegramChatId()}&parse_mode=html&text=${message}`,
     );
 
     const data = await response.json();
@@ -247,7 +248,6 @@ export const sendOrderDetailsToTelegram = async (
 export type AppEnvironment = "dev" | "prod";
 
 export const getEnvironment = (): AppEnvironment => {
-  // Read from public flag so it works client-side too
   const env = process.env.NEXT_PUBLIC_ENVIRONMENT?.toLowerCase();
   return env === "dev" ? "dev" : "prod";
 };
@@ -284,4 +284,16 @@ export const requireServerEnv = (name: string): string => {
   const envVariable = process.env[name];
   if (!envVariable) throw new Error(`Missing env var ${name}`);
   return envVariable;
+};
+
+export const getTelegramChatId = (): string => {
+  const env = getEnvironment();
+
+  const prodId = process.env.NEXT_PUBLIC_TELEGRAM_ORDER_CHAT_ID_PROD;
+  const devId = process.env.NEXT_PUBLIC_TELEGRAM_ORDER_CHAT_ID_DEV;
+  const id = env === "dev" ? devId : prodId;
+
+  if (!id) throw new Error(`Missing Telegram chat id for env ${env}`);
+
+  return id;
 };

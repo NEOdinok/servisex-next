@@ -289,8 +289,8 @@ export const requireServerEnv = (name: string): string => {
 export const getTelegramChatId = (): string => {
   const env = getEnvironment();
 
-  const prodId = process.env.NEXT_PUBLIC_TELEGRAM_ORDER_CHAT_ID_PROD;
-  const devId = process.env.NEXT_PUBLIC_TELEGRAM_ORDER_CHAT_ID_DEV;
+  const prodId = process.env.NEXT_PUBLIC_TG_ORDERS_CHAT_ID;
+  const devId = process.env.NEXT_PUBLIC_TG_TEST_ORDERS_CHAT_ID;
   const id = env === "dev" ? devId : prodId;
 
   if (!id) throw new Error(`Missing Telegram chat id for env ${env}`);

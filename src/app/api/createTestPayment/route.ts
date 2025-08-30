@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Value (number) and description are required" }, { status: 400 });
     }
 
-    const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
-    const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
+    const shopId = process.env.YOOKASSA_TEST_SHOP_ID;
+    const secretKey = process.env.YOOKASSA_TEST_KEY;
 
     if (!shopId || !secretKey) {
       return NextResponse.json({ error: "Missing Yookassa credentials" }, { status: 500 });

@@ -186,8 +186,8 @@ async function updateOrderStatus(orderId: string, apiKey: string, status: string
 async function cancelPayment(paymentId: string) {
   const errorIdempotenceKey = uuidv4();
 
-  const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
-  const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
+  const secretKey = process.env.YOOKASSA_TEST_KEY;
+  const shopId = process.env.YOOKASSA_TEST_SHOP_ID;
 
   const response = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/cancel`, {
     method: "POST",
@@ -209,8 +209,8 @@ async function cancelPayment(paymentId: string) {
 async function capturePayment(body: YookassaCapturePaymentBody, paymentId: string) {
   const successIdempotenceKey = uuidv4();
 
-  const secretKey = process.env.NEXT_PUBLIC_YOOKASSA_TEST_KEY;
-  const shopId = process.env.NEXT_PUBLIC_YOOKASSA_TEST_SHOP_ID;
+  const secretKey = process.env.YOOKASSA_TEST_KEY;
+  const shopId = process.env.YOOKASSA_TEST_SHOP_ID;
 
   const requestBody = body;
 

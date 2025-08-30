@@ -18,9 +18,7 @@ export async function GET(request: Request) {
   const filterParams = idsArray.map((id) => `filter[ids][]=${id}`).join("&");
 
   try {
-    const response = await fetch(
-      `${API_ENDPOINT_ORDERS}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}&${filterParams}`,
-    );
+    const response = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${process.env.RETAIL_CRM_API}&${filterParams}`);
     const data: GetOrdersResponse = await response.json();
 
     return NextResponse.json(data, { headers: createCorsHeaders() });

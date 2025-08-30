@@ -8,7 +8,7 @@ const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/product
 
 export async function GET(request: Request): Promise<NextResponse> {
   try {
-    const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}`);
+    const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.RETAIL_CRM_API}`);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

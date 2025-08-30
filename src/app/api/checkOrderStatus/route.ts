@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
   try {
     const response = await fetch(
-      `${API_ENDPOINT_ORDERS}?apiKey=${process.env.NEXT_PUBLIC_RETAIL_CRM_API}&filter[ids][]=${orderId}`,
+      `${API_ENDPOINT_ORDERS}?apiKey=${process.env.RETAIL_CRM_API}&filter[ids][]=${orderId}`,
     );
     const data: GetOrdersResponse = await response.json();
 

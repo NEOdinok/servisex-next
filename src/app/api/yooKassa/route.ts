@@ -44,7 +44,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const event = notification.event as YookassaPaymentNotification;
     const { orderId }: { orderId: string } = metadata;
 
-    const retailCrmApiKey = process.env.NEXT_PUBLIC_RETAIL_CRM_API;
+    const retailCrmApiKey = process.env.RETAIL_CRM_API;
     const notificationIp = request.headers.get("x-forwarded-for") || request.headers.get("client-ip");
 
     if (!retailCrmApiKey) {

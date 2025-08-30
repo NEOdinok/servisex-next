@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 export async function POST(request: Request): Promise<NextResponse<CreateOrderResponse | { error: string }>> {
-  const apiKey = process.env.NEXT_PUBLIC_RETAIL_CRM_API;
+  const apiKey = process.env.RETAIL_CRM_API;
   let order: Partial<Order>;
 
   try {

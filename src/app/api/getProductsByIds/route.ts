@@ -19,6 +19,9 @@ export async function GET(request: Request) {
 
   try {
     const response = await fetch(`${retailCrm.endpoints.products}?apiKey=${retailCrm.apiKey}&${filterParams}`);
+    console.log("env:", process.env.NODE_ENV);
+    console.log("endpoint:", retailCrm.endpoints.products);
+    console.log("retailCRM key:", retailCrm.apiKey);
 
     const data = await response.json();
 

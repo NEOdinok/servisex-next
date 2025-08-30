@@ -43,9 +43,9 @@ export async function POST(req: NextRequest) {
       description,
       metadata: { orderId: metadata?.orderId },
       receipt: {
-        customer: { email: metadata.email },
-        tax_system_code: 2, // УСН доходы (6%)
-        items: metadata.items.map((item: any) => ({
+        customer: { email }, // <- use the computed email
+        tax_system_code: 2, // keep if required for your account
+        items: items.map((item: any) => ({
           description: item.name ?? `Offer ${item?.offer?.id ?? ""}`,
           quantity: item.quantity,
           amount: { value: Number(item.price).toFixed(2), currency: "RUB" },

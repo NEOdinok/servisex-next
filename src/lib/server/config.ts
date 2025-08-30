@@ -2,7 +2,7 @@ import "server-only";
 
 type Mode = "prod" | "dev";
 
-const mode: Mode = (process.env.RETAILCRM_ENV as Mode) ?? (process.env.NODE_ENV === "production" ? "prod" : "dev");
+const mode: Mode = (process.env.NEXT_PUBLIC_ENVIRONMENT as Mode) ?? "prod";
 
 function req(name: string) {
   const v = process.env[name];

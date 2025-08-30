@@ -1,14 +1,13 @@
+import { retailCrm } from "@/lib/server/config";
 import { GetProductsResponse } from "@/types";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
-const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
-
 export async function GET(request: Request): Promise<NextResponse> {
   try {
-    const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.RETAIL_CRM_API}`);
+    const response = await fetch(`${retailCrm.endpoints.products}?apiKey=${retailCrm.apiKey}`);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

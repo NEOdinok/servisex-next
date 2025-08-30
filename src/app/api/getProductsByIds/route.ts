@@ -1,3 +1,4 @@
+import { retailCrm } from "@/lib/server/config";
 import { NextResponse } from "next/server";
 
 const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
@@ -17,7 +18,8 @@ export async function GET(request: Request) {
   const filterParams = idsArray.map((id) => `filter[ids][]=${id}`).join("&");
 
   try {
-    const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.RETAIL_CRM_API}&${filterParams}`);
+    const response = await fetch(`${retailCrm.endpoints.products}?apiKey=${retailCrm.apiKey}&${filterParams}`);
+
     const data = await response.json();
 
     return NextResponse.json(data, { headers: createCorsHeaders() });

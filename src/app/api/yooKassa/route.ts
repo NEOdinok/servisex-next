@@ -1,3 +1,4 @@
+import { retailCrm, yookassa } from "@/lib/server/config";
 import { sendOrderDetailsToTelegram } from "@/lib/utils";
 import {
   GetOrdersResponse,
@@ -12,9 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
-
-const API_ENDPOINT_PRODUCTS = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
-const API_ENDPOINT_ORDERS = "https://goshamartynovich.retailcrm.ru/api/v5/orders";
+const retailCrmApiKey = retailCrm.apiKey;
 
 const validIpRanges = [
   "185.71.76.0/27",
@@ -44,7 +43,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const event = notification.event as YookassaPaymentNotification;
     const { orderId }: { orderId: string } = metadata;
 
-    const retailCrmApiKey = process.env.RETAIL_CRM_API;
     const notificationIp = request.headers.get("x-forwarded-for") || request.headers.get("client-ip");
 
     if (!retailCrmApiKey) {
@@ -61,7 +59,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       console.error("Error processing the order");
       await updateOrderStatus(orderId, retailCrmApiKey, "canceled");
     } else if (event === "payment.waiting_for_capture") {
-      const ordersResponse = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${retailCrmApiKey}&id=${orderId}`);
+      const ordersResponse = await fetch(`${retailCrm.endpoints.orders}?apiKey=${retailCrmApiKey}&id=${orderId}`);
       const orderProductsData: GetOrdersResponse = await ordersResponse.json();
       const order = orderProductsData.orders[0];
 
@@ -73,7 +71,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
       console.log("[1.1] Processing... Offers in order:", offersInCreatedOrder);
 
-      const productsResponse = await fetch(`${API_ENDPOINT_PRODUCTS}?apiKey=${retailCrmApiKey}`);
+      const productsResponse = await fetch(`${retailCrm.endpoints.products}?apiKey=${retailCrmApiKey}`);
       const productsData: GetProductsResponse = await productsResponse.json();
       const products = productsData.products;
       console.log("[1.2] Got all the products");
@@ -117,7 +115,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
       return NextResponse.json({ message: "Notification processed successfully" });
     } else if (event === "payment.succeeded") {
-      const ordersResponse = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${retailCrmApiKey}&id=${orderId}`);
+      const ordersResponse = await fetch(`${retailCrm.endpoints.orders}?apiKey=${retailCrmApiKey}&id=${orderId}`);
       const orderProductsData: GetOrdersResponse = await ordersResponse.json();
       const order = orderProductsData.orders[0];
 
@@ -168,7 +166,7 @@ async function updateOrderStatus(orderId: string, apiKey: string, status: string
   body.append("by", "id");
   body.append("order", JSON.stringify({ status }));
 
-  const response = await fetch(`${API_ENDPOINT_ORDERS}/${orderId}/edit?apiKey=${apiKey}`, {
+  const response = await fetch(`${retailCrm.endpoints.orders}/${orderId}/edit?apiKey=${apiKey}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -186,8 +184,8 @@ async function updateOrderStatus(orderId: string, apiKey: string, status: string
 async function cancelPayment(paymentId: string) {
   const errorIdempotenceKey = uuidv4();
 
-  const secretKey = process.env.YOOKASSA_KEY;
-  const shopId = process.env.YOOKASSA_SHOP_ID;
+  const secretKey = yookassa.prod.key;
+  const shopId = yookassa.prod.shopId;
 
   const response = await fetch(`https://api.yookassa.ru/v3/payments/${paymentId}/cancel`, {
     method: "POST",
@@ -209,8 +207,8 @@ async function cancelPayment(paymentId: string) {
 async function capturePayment(body: YookassaCapturePaymentBody, paymentId: string) {
   const successIdempotenceKey = uuidv4();
 
-  const secretKey = process.env.YOOKASSA_KEY;
-  const shopId = process.env.YOOKASSA_SHOP_ID;
+  const secretKey = yookassa.prod.key;
+  const shopId = yookassa.prod.shopId;
 
   const requestBody = body;
 

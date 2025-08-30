@@ -1,13 +1,11 @@
+import { retailCrm } from "@/lib/server/config";
 import { CreateOrderResponse, Order } from "@/types";
 import { NextResponse } from "next/server";
-
-const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/orders/create";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 export async function POST(request: Request): Promise<NextResponse<CreateOrderResponse | { error: string }>> {
-  const apiKey = process.env.RETAIL_CRM_API;
   let order: Partial<Order>;
 
   try {
@@ -34,11 +32,11 @@ export async function POST(request: Request): Promise<NextResponse<CreateOrderRe
   }
 
   try {
-    const response = await fetch(`${API_ENDPOINT}?apiKey=${apiKey}`, {
+    const apiKey = retailCrm.apiKey;
+
+    const response = await fetch(`${retailCrm.endpoints.createOrder}?apiKey=${apiKey}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
         site: JSON.stringify(order.site),
         order: JSON.stringify(order),

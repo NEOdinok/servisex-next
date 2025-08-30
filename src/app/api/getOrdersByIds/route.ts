@@ -1,3 +1,4 @@
+import { retailCrm } from "@/lib/server/config";
 import { GetOrdersResponse } from "@/types";
 import { NextResponse } from "next/server";
 
@@ -18,7 +19,7 @@ export async function GET(request: Request) {
   const filterParams = idsArray.map((id) => `filter[ids][]=${id}`).join("&");
 
   try {
-    const response = await fetch(`${API_ENDPOINT_ORDERS}?apiKey=${process.env.RETAIL_CRM_API}&${filterParams}`);
+    const response = await fetch(`${retailCrm.endpoints.orders}?apiKey=${retailCrm.apiKey}&${filterParams}`);
     const data: GetOrdersResponse = await response.json();
 
     return NextResponse.json(data, { headers: createCorsHeaders() });

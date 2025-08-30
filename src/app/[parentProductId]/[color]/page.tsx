@@ -1,5 +1,6 @@
 import { AddToCartForm, BaseCarousel, Gallery, InfoBlock } from "@/components";
 import { BaseLayout } from "@/layouts";
+import { retailCrm } from "@/lib/server/config";
 import { formatPrice } from "@/lib/utils";
 import { findAllPossibleOffersOfAProduct, transformAllProductsData, transformSingleProductData } from "@/lib/utils";
 import { GetProductsResponse, Product, ShopItem } from "@/types";
@@ -7,8 +8,7 @@ import { GetProductsResponse, Product, ShopItem } from "@/types";
 export const dynamicParams = false;
 
 const fetchProducts = async (): Promise<ShopItem[]> => {
-  const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
-  const response = await fetch(`${API_ENDPOINT}?apiKey=${process.env.RETAIL_CRM_API}`, {
+  const response = await fetch(`${retailCrm.endpoints.products}?apiKey=${retailCrm.apiKey}`, {
     cache: "force-cache",
   });
 
@@ -22,12 +22,9 @@ const fetchProducts = async (): Promise<ShopItem[]> => {
 };
 
 const fetchSingleProduct = async (parentProductId: string, color?: string): Promise<Product> => {
-  const API_ENDPOINT = "https://goshamartynovich.retailcrm.ru/api/v5/store/products";
   const response = await fetch(
-    `${API_ENDPOINT}?apiKey=${process.env.RETAIL_CRM_API}&filter[ids][]=${parentProductId}`,
-    {
-      cache: "force-cache",
-    },
+    `${retailCrm.endpoints.products}?apiKey=${retailCrm.apiKey}&filter[ids][]=${parentProductId}`,
+    { cache: "force-cache" },
   );
 
   if (!response.ok) {

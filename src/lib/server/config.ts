@@ -14,7 +14,7 @@ const prodBase = process.env.RETAILCRM_PROD_BASE_URL ?? "https://goshamartynovic
 const devBase = process.env.RETAILCRM_TEST_BASE_URL ?? "https://servisex-dev-vercel.retailcrm.ru";
 
 const baseUrl = mode === "prod" ? prodBase : devBase;
-const apiKey = mode === "prod" ? req("RETAILCRM_PROD_API_KEY") : req("RETAILCRM_TEST_API_KEY");
+const apiKey = mode === "prod" ? req("RETAILCRM_API_KEY") : req("RETAILCRM_TEST_API_KEY");
 
 export const retailCrm = {
   mode,

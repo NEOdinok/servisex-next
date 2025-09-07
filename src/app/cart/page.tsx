@@ -37,11 +37,11 @@ const CartPage = () => {
   const form = useForm<CheckoutForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "Мартин",
-      lastName: "Мартин",
-      familyName: "Мартин",
-      email: "servisex@gmail.com",
-      phone: "+79036666666",
+      firstName: "",
+      lastName: "",
+      familyName: "",
+      email: "",
+      phone: "",
       address: "",
       deliveryMethod: "delivery",
     },
